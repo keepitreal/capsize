@@ -1,24 +1,11 @@
 ﻿extends auth
 
 block auth
-    div.login-container
+    div.auth
         h2 Login
-        div.row.social-login
-            ul
-                li
-                    a(href="#")
-                        img(src="/img/icons/facebook.png")
-                li
-                    a(href="#")
-                        img(src="/img/icons/linkedin.png")
-                li
-                    a(href="#")
-                        img(src="/img/icons/plus.png")
-                li
-                    a(href="#")
-                        img(src="/img/icons/twitter.png")
-        div.row.login-separator or
-        div.row.local-login
+        include ../includes/social
+        div.row.auth-separator or
+        div.row.auth-local
             form.signin(action="/users/session", method="post")
                 p.error= message
                 .form-group

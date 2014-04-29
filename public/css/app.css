@@ -15,7 +15,7 @@ img {
     padding: 0 30%;
 }
 
-.login-container {
+.auth {
     margin: 10vh 0;
     padding: 3em 5em;
     text-align: center;
@@ -24,25 +24,25 @@ img {
     color: #888888;
 }
 
-.social-login {
+.auth-social {
     margin: 2em auto;
     text-align: center;
 }
 
-.login-separator {
-    margin: 1.5em 0;
-    font-size: 1.3em;
-}
-
-.social-login li {
+.auth-social li {
     width: 25%;
     float: left;
     text-align: left;
     list-style-type: none;
 }
 
-.social-login img {
+.auth-social img {
     width: 80%;
+}
+
+.auth-separator {
+    margin: 1.5em 0;
+    font-size: 1.3em;
 }
 
 

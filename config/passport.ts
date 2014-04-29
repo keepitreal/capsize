@@ -111,8 +111,8 @@ module.exports = function (passport) {
 
     // google strategy
     passport.use(new GoogleStrategy({
-            clientID: config.google.clientID,
-            clientSecret: config.google.clientSecret,
+            consumerKey: config.google.clientID,
+            consumerSecret: config.google.clientSecret,
             callbackURL: config.google.callbackURL
     },
         function(accessToken, refreshToken, profile, done) {
@@ -139,7 +139,7 @@ module.exports = function (passport) {
     ));
 
     // linkedin strategy
-    passport.use(new LinkedinStrategy({
+    passport.use(new LinkedInStrategy({
             consumerKey: config.linkedin.clientID,
             consumerSecret: config.linkedin.clientSecret,
             callbackURL: config.linkedin.callbackURL,
