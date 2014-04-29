@@ -1,0 +1,21 @@
+{
+    "name": "PlatyNEM",
+    "version": "1.0.0",
+    "description": "Full Stack JavaScript Web Development based on the MEAN stack",
+    "main": "server.js",
+    "authors": [
+        "Darion Welch"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "latest",
+        "jquery": "latest"
+    }
+}

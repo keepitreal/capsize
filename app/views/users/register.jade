@@ -1,0 +1,20 @@
+﻿extends auth
+
+block auth
+    form.register(action="/users", method="post")
+        .form-group
+            label(for="name") Full Name
+            input#name(type="text", name="name", placeholder="Full Name", value=user.name)
+
+        .form-group
+            label(for="email") Email
+            input#email(type="text", name="email", placeholder="Email", value=user.email)
+
+        .form-group
+            label(for="password") Password
+            input#password(type="password", name="password", placeholder="Password")
+
+        button.btn.btn-primary(type="submit") Register
+        &nbsp;
+        | or&nbsp;
+        a(href="/login") login

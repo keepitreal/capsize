@@ -1,0 +1,32 @@
+﻿extends auth
+
+block auth
+    div.login-container
+        h2 Login
+        div.row.social-login
+            ul
+                li
+                    a(href="#")
+                        img(src="/img/icons/facebook.png")
+                li
+                    a(href="#")
+                        img(src="/img/icons/linkedin.png")
+                li
+                    a(href="#")
+                        img(src="/img/icons/plus.png")
+                li
+                    a(href="#")
+                        img(src="/img/icons/twitter.png")
+        div.row.login-separator or
+        div.row.local-login
+            form.signin(action="/users/session", method="post")
+                p.error= message
+                .form-group
+                    input#email(type="text", class="form-control", name="email", placeholder="Email")
+                    .form-group
+                    input#password(type="password", class="form-control", name="password", placeholder="Password")
+                .row
+                    .col-md-6
+                        a.btn.btn-default.btn-block(herf="/register") Register
+                    .col-md-6
+                        button.btn.btn-primary.btn-block(type="submit") Log in

@@ -1,0 +1,43 @@
+{
+    "name": "PlatyNEM",
+    "version": "1.0.0",
+    "description": "Full stack JavaScript boilerplate based on MEANjs",
+    "main": "server.js",
+    "private": false,
+    "author": {
+        "name": "Darion Welch",
+        "email": "darion@getplatypi.com"
+    },
+    "dependencies": {
+        "async": "latest",
+        "body-parser": "latest",
+        "compression": "latest",
+        "connect-flash": "^0.1.1",
+        "connect-mongo": "latest",
+        "cookie-parser": "latest",
+        "crypto": "latest",
+        "express": "latest",
+        "express-session": "latest",
+        "grunt": "latest",
+        "grunt-cli": "latest",
+        "grunt-bower-task": "latest",
+        "jade": "latest",
+        "mongoose": "latest",
+        "morgan": "latest",
+        "passport": "latest",
+        "passport-facebook": "latest",
+        "passport-google-oauth": "latest",
+        "passport-linkedin": "latest",
+        "passport-local": "latest",
+        "passport-twitter": "latest",
+        "underscore": "latest"
+    },
+    "devDependencies": {
+        "debug": "^0.8.0",
+        "grunt-contrib-watch": "latest",
+        "grunt-contrib-jshint": "latest",
+        "grunt-nodemon": "^0.2.1",
+        "grunt-concurrent": "latest",
+        "grunt-mocha-test": "latest"
+    }
+}
