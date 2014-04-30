@@ -28,7 +28,7 @@ module platynem.viewcontrols {
             this.navigator.goBack();
         }
 
-        update() {
+        updatePost() {
             var post = <models.IPost>this.utils.deepExtend({}, this.context.post);
             this.postsRepository.update(post);
         }

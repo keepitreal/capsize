@@ -3,9 +3,9 @@ module platynem.repositories {
         constructor(private postFactory: platynem.models.IPostFactory,
                     private postsService: services.IPostsService) { }
 
-        createPost(post: models.IPost) {
+        create(post: models.IPost) {
             var p = this.postFactory.createPost(post);
-            return this.postsService.createPost(p);
+            return this.postsService.create(p);
         }
 
         update(post: any) {
@@ -17,15 +17,15 @@ module platynem.repositories {
             this.postsService.destroy(post);
         }
 
-        getPosts(): plat.async.IPromise<Array<models.IPost>, Error> {
+        getAll(): plat.async.IPromise<Array<models.IPost>, Error> {
             return this.postsService
-                .findAll()
+                .getAll()
                 .then((result) => this.postFactory.getAll(result.response));
         }
 
         getPost(id: string): plat.async.IPromise<models.IPost, Error> {
             return this.postsService
-                .findOne(id)
+                .getOne(id)
                 .then((result) => this.postFactory.createPost(result.response));
         }
     }

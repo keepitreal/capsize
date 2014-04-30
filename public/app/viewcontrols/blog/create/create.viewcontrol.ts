@@ -20,7 +20,7 @@ module platynem.viewcontrols {
 
         createPost() {
             var post = <models.IPost>this.utils.deepExtend({}, this.context.post);
-            this.postsRepository.createPost(post);
+            this.postsRepository.create(post);
         }
     }
 

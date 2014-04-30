@@ -1,7 +1,6 @@
 # PlatyNEM
 
-> PlatyNEM is a full stack TypeScript/JavaScript web/mobile app development boilerplate adapted from the popular [MEAN stack](http://www.mean.io). See the official repository
-      [here](https://github.com/Platypi/PlatyNEM).
+> PlatyNEM is a full stack TypeScript/JavaScript web/mobile app development boilerplate adapted from the popular [MEAN stack](http://www.mean.io). It serves as a starting point for web apps built with PlatypusTS, Node, Express and Mongo as well as an example of best practices when creating PlatypusTS apps and web apps in general.
 
 ## What's included PlatyNEM?
 
@@ -33,7 +32,7 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
 ### Optional
 * Grunt - Download and install [Grunt](http://gruntjs.com/getting-started).
 
-## Install
+## Installation
 
 1. First clone the repository into your desired directory. Then cd into your app's directory and install the dependencies with:
 

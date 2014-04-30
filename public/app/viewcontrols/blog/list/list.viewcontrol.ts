@@ -12,7 +12,7 @@ module platynem.viewcontrols {
         };
 
         initialize() {
-            this.postsRepository.getPosts().then((posts) => {
+            this.postsRepository.getAll().then((posts) => {
                 this.context.posts = posts;
             });
         }

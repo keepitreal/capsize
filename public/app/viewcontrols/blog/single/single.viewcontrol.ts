@@ -4,25 +4,20 @@ module platynem.viewcontrols {
         navigator: plat.navigation.IRoutingNavigator;
 
         constructor(private postsRepository: repositories.PostsRepository,
-                    private usersRepository: repositories.UsersRepository) {
+        private usersRepository: repositories.UsersRepository) {
             super();
         }
 
-        context = {
-            post: null,
-            user: null
-        };
-
         navigatedTo(route: plat.web.IRoute<{ id: string; }>) {
+            var user = this.usersRepository.getUser();
             this.postsRepository
                 .getPost(route.parameters.id)
                 .then((post) => {
-                    this.context.post = post;
-                    console.log(this.context.post.user._id);
+                    this.context = {
+                        post: post,
+                        user: user
+                    };
                 });
-
-            this.context.user = this.usersRepository.getUser();
-            console.log(this.context.user.id);
         }
 
         goBack() {

@@ -8,7 +8,7 @@ module platynem.services {
          * @param post: an object containing post content, title, etc
          * @return response: returns a promise for the created post
          */
-        createPost(post: models.IPost) {
+        create(post: models.IPost) {
             return this.__http({
                 url: '/posts',
                 method: 'POST',
@@ -22,7 +22,7 @@ module platynem.services {
          * @param id: the id for the requested post
          * @return postPromise: returns a promise for the requested post
          */
-        findOne(id: string) {
+        getOne(id: string) {
             return this.__http({
                 url: '/posts/' + id,
                 method: 'GET'
@@ -34,7 +34,7 @@ module platynem.services {
          * Finds all blog posts
          * @return postsPromise: returns a promise for all posts
          */
-        findAll() {
+        getAll() {
             return this.__http({
                 url: '/posts',
                 method: 'GET'
@@ -76,9 +76,9 @@ module platynem.services {
     }
 
     export interface IPostsService {
-        createPost(post: models.IPost): any;
-        findOne(id: string): any;
-        findAll(): any;
+        create(post: models.IPost): any;
+        getOne(id: string): any;
+        getAll(): any;
         destroy(post: models.IPost): any;
         update(post: models.IPost): any;
     }

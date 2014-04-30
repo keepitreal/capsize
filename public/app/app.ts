@@ -4,8 +4,9 @@ module platynem {
          * Class for every app. This class contains hooks for Application Lifecycle Events
          * as well as error handling and navigation events.
          */
-        constructor() {
+        constructor(config: plat.web.IBrowserConfig) {
             super();
+            config.hashPrefix = '!';
         }
 
         /**
@@ -53,5 +54,9 @@ module platynem {
         }
     }
 
-    plat.register.app('platynem', App);
+    plat.register.app('platynem', App, [
+        plat.web.BrowserConfig
+    ]);
+
+    plat.register.control('a', plat.controls.AttributeControl);
 }

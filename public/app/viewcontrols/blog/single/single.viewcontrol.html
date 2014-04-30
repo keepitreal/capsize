@@ -1,6 +1,6 @@
 <h1>{{post.title}}</h1>
-<plat-if plat-options="{ condition: user.id == post.user._id }">
-    <span><a plat-href="posts/{{post._id}}/edit">edit</a></span>
+<plat-if plat-options="{ condition: user.id === post.user._id }">
+    <span><a plat-href="posts/{{post._id}}/edit">Edit</a></span>
     <span><a plat-tap="destroyPost()">Delete</a></span>
 </plat-if>
 Published on <span>{{post.created}}</span>
