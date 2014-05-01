@@ -56,7 +56,7 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
 If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
 
     ```
-    $ grunt tscompile    # only run if you are using an IDE or text editor without watched TypeScript compilation support
+    $ grunt tscompile
     ```
 
 4. Ensure that you have a MongoDB server running on port 27017.

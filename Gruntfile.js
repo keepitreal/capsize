@@ -22,7 +22,8 @@ module.exports = function (grunt) {
                     './config/passport.ts',
                     './config/routes.ts',
                     './config/env/all.ts',
-                    './config/middleware/auth.ts'
+                    './config/middleware/auth.ts',
+                    './server.ts'
                 ],
                 options: {
                     module: 'commonjs',
