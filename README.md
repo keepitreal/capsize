@@ -51,12 +51,10 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
     $ tsd update -so
     ```
 
-3. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. 
-
-If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
+3. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
 
     ```
-    $ grunt tscompile
+    $ grunt tscompile     # only run if your IDE or text editor doesn't have watched TypeScript compilation
     ```
 
 4. Ensure that you have a MongoDB server running on port 27017.
