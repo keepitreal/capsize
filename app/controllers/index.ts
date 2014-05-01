@@ -1,6 +1,6 @@
 import async = require('async');
-var mongoose = require('mongoose'),
-    _ = require('underscore');
+import _ = require('underscore');
+var mongoose = require('mongoose');
 
 exports.render = function (req, res) {
     res.render('index', {

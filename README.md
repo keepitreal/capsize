@@ -29,6 +29,7 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
 * Node.js - Download and install [Node](http://nodejs.org/download/).
 * MongoDB - Download and install [MongoDB](http://www.mongodb.org/downloads). Once its downloaded, start a server and make sure it is listening on port 27017 (which should be the default).
 * TSD - After you install Node, you'll need to global install the TSD package from npm. TSD will download TypeScript definition files for many of the JavaScript libraries used in PlatyNEM:
+
     ```
     $ npm install tsd -g
     ```

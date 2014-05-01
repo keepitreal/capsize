@@ -1,4 +1,4 @@
-var _ = require('underscore');
+import _ = require('underscore');
 
 var config = _.extend(
     require(__dirname + '/../config/env/all.js'),

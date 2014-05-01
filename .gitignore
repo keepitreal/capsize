@@ -2,8 +2,9 @@
 .nodemonignore
 .sass-cache
 node_modules/
-public/app/lib
+public/lib
 typings/
 .idea/
 *.js
 *.js.map
+!Gruntfile.js
