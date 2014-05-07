@@ -22,7 +22,7 @@ var PostSchema = new Schema({
         default: Date.now
     },
     published: {
-        type: Date
+        type: Boolean
     },
     updated: [],
     tags: [String]
