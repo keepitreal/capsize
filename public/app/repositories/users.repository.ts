@@ -1,4 +1,6 @@
 module platynem.repositories {
+    'use strict';
+
     export class UsersRepository {
         constructor(private userFactory: models.IUserFactory,
                     private usersService: services.IUserInfo) { }

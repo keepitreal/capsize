@@ -1,4 +1,5 @@
-var _ = require('underscore');
+/// <reference path="../typings/tsd.d.ts" />
+import _ = require('underscore');
 
 var config = _.extend(
     require(__dirname + '/../config/env/all.js'),

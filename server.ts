@@ -10,14 +10,14 @@ var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
 
 import config = require('./config/config');
 
-// Bootstrap db connection
+// bootstrap db connection
 var db = mongoose.connect(config.db);
 
-// Bootstrap models
+// bootstrap models
 var models_path = __dirname + '/app/models',
     isJSExt = /\.js$/gm; // ensures that only .js files are read (not .ts or .js.map)
 
-// Recursively walk through and require models
+// recursively walk through and require models
 var walk = function (path) {
     fs.readdirSync(path).forEach(function (file) {
         var newPath = path + '/' + file;
@@ -25,8 +25,7 @@ var walk = function (path) {
 
         if (stat.isFile() && isJSExt.test(newPath)) {
             require(newPath);
-        }
-        else if (stat.isDirectory()) {
+        } else if (stat.isDirectory()) {
             walk(newPath);
         }
     });
@@ -41,10 +40,10 @@ require('./config/express')(app, passport);
 
 var port = config.port;
 var server = app.listen(port, function () {
-    console.log("Listening on address %d.", server.address().port);
+    console.log('Listening on address %d.', server.address().port);
 });
 
 // either use mean-logger or find correct method for morgan
-//logger.init(app, mongoose);
+// logger.init(app, mongoose);
 
 exports = module.exports = app;

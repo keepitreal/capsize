@@ -1,5 +1,7 @@
 module platynem.viewcontrols {
-    class SingleViewControl extends plat.ui.ViewControl {
+    'use strict';
+
+    class SingleViewControl extends plat.ui.WebViewControl {
         templateUrl = 'app/viewcontrols/blog/single/single.viewcontrol.html';
         navigator: plat.navigation.IRoutingNavigator;
 

@@ -1,20 +1,24 @@
 import async = require('async');
+import _ = require('underscore');
 
 var mongoose = require('mongoose'),
-    Post = mongoose.model('Post'),
-    _ = require('underscore');
+    Post = mongoose.model('Post');
 
 // find a post by id
 exports.post = function (req, res, next, id) {
     Post.load(id, function (err, post) {
-        if (err) return next(err);
-        if (!post) return next(new Error('Failed to load post ' + id));
+        if (err) {
+            return next(err);
+        }
+        if (!post) {
+            return next(new Error('Failed to load post ' + id));
+        }
         req.post = post;
         next();
     });
 };
 
-// Create a post
+// create a post
 exports.create = function (req, res) {
     var post = new Post(req.body);
     post.user = req.user;
@@ -31,7 +35,7 @@ exports.create = function (req, res) {
     });
 };
 
-// Update post
+// update post
 exports.update = function (req, res) {
     var post = req.post;
     post = _.extend(post, req.body);
@@ -40,7 +44,7 @@ exports.update = function (req, res) {
     });
 };
 
-// Delete a post
+// delete a post
 exports.destroy = function (req, res) {
     var post = req.post;
     post.remove(function (err) {
@@ -54,12 +58,12 @@ exports.destroy = function (req, res) {
     });
 };
 
-// Show a post
+// show a post
 exports.show = function (req, res) {
     res.jsonp(req.post);
 };
 
-// List all articles
+// list all articles
 exports.all = function (req, res) {
     Post.find().sort('-created').populate('user').exec(function (err, posts) {
         if (err) {

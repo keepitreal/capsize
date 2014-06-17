@@ -1,13 +1,14 @@
 module platynem.models {
+    'use strict';
+
     export class Post {
+        private static __utils: plat.IUtils;
+
         static createPost(post: any): IPost {
             return Post.__utils.deepExtend({}, post);
         }
 
         static update(post: any): IPost {
-            //if (!Post.__utils.isArray(post.updated)) {
-            //    post.updated = [];
-            //}
             post.updated.push(new Date().getTime());
             return Post.__utils.deepExtend({}, post);
         }
@@ -17,8 +18,6 @@ module platynem.models {
                 return Post.createPost(post);
             });
         }
-
-        private static __utils: plat.IUtils;
     }
 
     export interface IPostFactory {
@@ -44,6 +43,6 @@ module platynem.models {
     }
 
     plat.register.injectable('postFactory', PostFactory, [
-        plat.Utils
-    ], plat.register.injectableType.STATIC);
+        plat.IUtils
+    ], plat.register.injectable.FACTORY);
 }

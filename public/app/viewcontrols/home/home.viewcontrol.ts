@@ -1,5 +1,7 @@
 module platynem.viewcontrols.home {
-    class HomeViewControl extends plat.ui.ViewControl {
+    'use strict';
+
+    class HomeViewControl extends plat.ui.WebViewControl {
         templateUrl = 'app/viewcontrols/home/home.viewcontrol.html';
         navigator: plat.navigation.IRoutingNavigator;
 
@@ -8,7 +10,7 @@ module platynem.viewcontrols.home {
         }
 
         context = {
-            title: "Home!"
+            title: 'Home!'
         };
 
         goBack() {

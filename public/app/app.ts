@@ -1,4 +1,6 @@
 module platynem {
+    'use strict';
+
     class App extends plat.App {
         /**
          * Class for every app. This class contains hooks for Application Lifecycle Events
@@ -10,9 +12,8 @@ module platynem {
         }
 
         /**
-         * Event fired when the app is ready.
-         *
-         * @param ev The ILifecycleEvent object.
+         * Event fired when the app is ready
+         * @param ev The ILifecycleEvent object
          */
         ready(ev: plat.events.ILifecycleEvent) {
             // can be used to configure various 
@@ -22,7 +23,6 @@ module platynem {
 
         /**
          * Event fired when an internal error occurs.
-         *
          * @param ev The IErrorEvent object.
          */
         error(ev: plat.events.IErrorEvent<Error>) {
@@ -31,31 +31,29 @@ module platynem {
 
         /**
          * Event fired when the app is suspended.
-         *
          * @param ev The ILifecycleEvent object.
          */
         suspend(ev: plat.events.ILifecycleEvent) {
-            // If running on a device,
+            // if running on a device,
             // this is where you want to save important 
             // data and finish ongoing processes.
         }
 
         /**
          * Event fired when the app resumes from the suspended state.
-         *
          * @param ev The ILifecycleEvent object.
          */
         resume(ev: plat.events.ILifecycleEvent) {
-            // If running on a device,
+            // if running on a device,
             // this is where you want to re-initialize 
             // the app state.
-            // This is called only when the app was 
+            // this is called only when the app was 
             // previously suspended.
         }
     }
 
     plat.register.app('platynem', App, [
-        plat.web.BrowserConfig
+        plat.web.IBrowserConfig
     ]);
 
     plat.register.control('a', plat.controls.AttributeControl);

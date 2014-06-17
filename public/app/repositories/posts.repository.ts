@@ -1,4 +1,6 @@
 module platynem.repositories {
+    'use strict';
+
     export class PostsRepository {
         constructor(private postFactory: platynem.models.IPostFactory,
                     private postsService: services.IPostsService) { }
@@ -17,16 +19,16 @@ module platynem.repositories {
             this.postsService.destroy(post);
         }
 
-        getAll(): plat.async.IPromise<Array<models.IPost>, Error> {
+        getAll(): plat.async.IThenable<Array<models.IPost>> {
             return this.postsService
                 .getAll()
-                .then((result) => this.postFactory.getAll(result.response));
+                .then((result) => this.postFactory.getAll(result));
         }
 
-        getPost(id: string): plat.async.IPromise<models.IPost, Error> {
+        getPost(id: string): plat.async.IThenable<models.IPost> {
             return this.postsService
                 .getOne(id)
-                .then((result) => this.postFactory.createPost(result.response));
+                .then((result) => this.postFactory.createPost(result));
         }
     }
 

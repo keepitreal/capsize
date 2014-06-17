@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User');
 
 module.exports = function (passport) {
-    // Serialize user's session
+    // serialize user's session
     passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
@@ -52,7 +52,7 @@ module.exports = function (passport) {
         consumerSecret: config.twitter.clientSecret,
         callbackURL: config.twitter.callbackURL
     },
-        function(token, tokenSecret, profile, done){
+        function(token, tokenSecret, profile, done) {
             User.findOne({
                 'twitter.id_str': profile.id
             }, function (err, user) {
@@ -67,7 +67,9 @@ module.exports = function (passport) {
                         twitter: profile._json
                     });
                     user.save(function(err) {
-                        if (err) console.log(err);
+                        if (err) {
+                            console.log(err);
+                        }
                         return done(err, user);
                     });
                 } else {
@@ -99,7 +101,9 @@ module.exports = function (passport) {
                         facebook: profile._json
                     });
                     user.save(function(err) {
-                        if (err) console.log(err);
+                        if (err) {
+                            console.log(err);
+                        }
                         return done(err, user);
                     });
                 } else {
@@ -128,7 +132,9 @@ module.exports = function (passport) {
                         google: profile._json
                     });
                     user.save(function(err) {
-                        if (err) console.log(err);
+                        if (err) {
+                            console.log(err);
+                        }
                         return done(err, user);
                     });
                 } else {
@@ -157,7 +163,9 @@ module.exports = function (passport) {
                         provider: 'linkedin'
                     });
                     user.save(function(err) {
-                        if (err) console.log(err);
+                        if (err) {
+                            console.log(err);
+                        }
                         return done(err, user);
                     });
                 } else {
@@ -167,4 +175,3 @@ module.exports = function (passport) {
         }
     ));
 };
-//# sourceMappingURL=passport.js.map

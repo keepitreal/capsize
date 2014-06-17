@@ -1,5 +1,7 @@
 module platynem.viewcontrols {
-    class CreateViewControl extends plat.ui.ViewControl {
+    'use strict';
+
+    class CreateViewControl extends plat.ui.WebViewControl {
         templateUrl = 'app/viewcontrols/blog/create/create.viewcontrol.html';
         navigator: plat.navigation.IRoutingNavigator;
 
@@ -26,6 +28,6 @@ module platynem.viewcontrols {
 
     plat.register.viewControl('createViewControl', CreateViewControl, [
         platynem.repositories.PostsRepository,
-        plat.Utils
+        plat.IUtils
     ], ['posts/create']);
 }

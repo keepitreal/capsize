@@ -1,4 +1,21 @@
 module.exports = function (grunt) {
+    serverFiles = [
+            './server/app/models/**/*.ts',
+            './server/app/controllers/**/*.ts',
+            './server/config/**/*.ts',
+            './server/server.ts'
+    ], clientFiles = [
+            './public/app/lib/**/*.ts',
+            './public/app/injectables/**/*.ts',
+            './public/app/common/**/*.ts',
+            './public/app/services/**/*.ts',
+            './public/app/models/**/*.ts',
+            './public/app/repositories/**/*.ts',
+            './public/app/viewcontrols/**/*.ts',
+            './public/admin/viewcontrols/**/*.ts',
+            './public/app/app.ts'
+    ];
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         nodemon: {
@@ -8,45 +25,14 @@ module.exports = function (grunt) {
         },
         typescript: {
             server: {
-                src: [
-                    './typings/node/node.d.ts',
-                    './typings/express/express.d.ts',
-                    './typings/async/async.d.ts',
-                    './app/models/post.ts',
-                    './app/models/user.ts',
-                    './app/controllers/index.ts',
-                    './app/controllers/posts.ts',
-                    './app/controllers/users.ts',
-                    './config/config.ts',
-                    './config/express.ts',
-                    './config/passport.ts',
-                    './config/routes.ts',
-                    './config/env/all.ts',
-                    './config/middleware/auth.ts',
-                    './server.ts'
-                ],
+                src: serverFiles,
                 options: {
                     module: 'commonjs',
                     target: 'es5'
                 }
             },
             platypus: {
-                src: [
-                    './public/app/lib/platypus/platypus.ts',
-                    './public/app/app.ts',
-                    './public/app/models/post.model.ts',
-                    './public/app/models/user.model.ts',
-                    './public/app/services/posts.service.ts',
-                    './public/app/services/user.service.ts',
-                    './public/app/repositories/posts.repository.ts',
-                    './public/app/repositories/users.repository.ts',
-                    './public/app/common/templatecontrols/navigation.templatecontrol.ts',
-                    './public/app/viewcontrols/blog/create/create.viewcontrol.ts',
-                    './public/app/viewcontrols/blog/edit/edit.viewcontrol.ts',
-                    './public/app/viewcontrols/blog/list/list.viewcontrol.ts',
-                    './public/app/viewcontrols/blog/single/single.viewcontrol.ts',
-                    './public/app/viewcontrols/home/home.viewcontrol.ts'
-                ],
+                src: clientFiles,
                 options: {
                     module: 'commonjs',
                     target: 'es5'
@@ -56,7 +42,7 @@ module.exports = function (grunt) {
         bower: {
             install: {
                 options: {
-                    targetDir: './public/lib',
+                    targetDir: './public/app/lib',
                     layout: 'byComponent',
                     verbose: true
                 }
@@ -70,7 +56,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bower-task');
 
     // Register tasks
-    grunt.registerTask('tscompile', ['typescript:server','typescript:platypus']);
+    grunt.registerTask('ts', ['typescript:server','typescript:platypus']);
     grunt.registerTask('default', ['nodemon']);
     grunt.registerTask('install', ['bower']);
 };

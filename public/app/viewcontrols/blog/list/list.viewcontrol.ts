@@ -1,5 +1,7 @@
 module platynem.viewcontrols {
-    export class ListViewControl extends plat.ui.ViewControl {
+    'use strict';
+
+    export class ListViewControl extends plat.ui.WebViewControl {
         templateUrl = 'app/viewcontrols/blog/list/list.viewcontrol.html';
         navigator: plat.navigation.IRoutingNavigator;
 

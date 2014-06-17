@@ -1,4 +1,6 @@
 module platynem.templatecontrols {
+    'use strict';
+
     export class NavigationBar extends plat.ui.TemplateControl {
         templateUrl = 'app/common/templatecontrols/navigation.templatecontrol.html';
 

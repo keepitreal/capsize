@@ -1,5 +1,7 @@
 module platynem.viewcontrols {
-    class EditViewControl extends plat.ui.ViewControl {
+    'use strict';
+
+    class EditViewControl extends plat.ui.WebViewControl {
         templateUrl = 'app/viewcontrols/blog/edit/edit.viewcontrol.html';
         navigator: plat.navigation.IRoutingNavigator;
 
@@ -37,6 +39,6 @@ module platynem.viewcontrols {
     plat.register.viewControl('editViewControl', EditViewControl, [
         platynem.repositories.PostsRepository,
         platynem.repositories.UsersRepository,
-        plat.Utils
+        plat.IUtils
     ], ['posts/:id/edit']);
 }

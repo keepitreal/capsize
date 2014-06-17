@@ -1,5 +1,9 @@
 module platynem.models {
+    'use strict';
+
     export class User {
+        private static __utils: plat.IUtils;
+
         static createUser(user: any): IUser {
             return User.__utils.deepExtend({}, {
                 id: user._id,
@@ -7,8 +11,6 @@ module platynem.models {
                 email: user.email
             });
         }
-
-        private static __utils: plat.IUtils;
     }
 
     export interface IUserFactory {
@@ -27,6 +29,6 @@ module platynem.models {
     }
 
     plat.register.injectable('userFactory', UserFactory, [
-        plat.Utils
-    ], plat.register.injectableType.STATIC);
+        plat.IUtils
+    ], plat.register.injectable.FACTORY);
 }

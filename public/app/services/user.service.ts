@@ -1,4 +1,6 @@
 module platynem.services {
+    'use strict';
+
     export function UserInfo(): IUserInfo {
         return;
     }

@@ -24,7 +24,7 @@ router.post('/users/session', passport.authenticate('local', {
 router.get('/users/me', users.me);
 router.get('/users/:userId', users.show);
 
-// FACEBOOK
+// facebook
 router.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['email', 'user_about_me'],
     failureRedirect: '/login'
@@ -34,7 +34,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/login'
 }), users.authCallback);
 
-// LINKEDIN
+// linkedin
 router.get('/auth/linkedin', passport.authenticate('linkedin', {
     scope: ['r_emailaddress'],
     failureRedirect: '/login'
@@ -44,7 +44,7 @@ router.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
     failureRedirect: '/login'
 }), users.authCallback);
 
-// TWITTER
+// twitter
 router.get('/auth/twitter', passport.authenticate('twitter', {
     failureRedirect: '/login'
 }), users.login);
@@ -53,7 +53,7 @@ router.get('/auth/twitter/callback', passport.authenticate('twitter', {
     failureRedirect: '/login'
 }), users.authCallback);
 
-// GOOGLE
+// google
 router.get('/auth/google', passport.authenticate('google', {
     failureRedirect: '/login',
     scope: [

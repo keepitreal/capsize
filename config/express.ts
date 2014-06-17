@@ -15,6 +15,8 @@ var session = require('express-session'),
     posts = require('../app/controllers/posts');
 
 function expressConfig(app) {
+    'use strict';
+
     app.use(compress({
         filter: function (req, res) {
             return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
@@ -49,7 +51,7 @@ function expressConfig(app) {
 
     app.use(function (req, res, next) {
         var err = new Error('Not Found');
-        //err.status = 404;
+        // err.status = 404;
         next(err);
     });
 
