@@ -1,17 +1,17 @@
 /// <reference path="typings/express/express.d.ts" />
 import express = require('express');
 import fs = require('fs');
-import auth = require('./config/middleware/auth');
+
+require('./config/middleware/auth');
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     mongoose = require('mongoose'),
-    passport = require('passport'),
-    logger = require('morgan');
+    passport = require('passport');
 
 import config = require('./config/config');
 
 // bootstrap db connection
-var db = mongoose.connect(config.db);
+mongoose.connect(config.db);
 
 // bootstrap models
 var models_path = __dirname + '/app/models',

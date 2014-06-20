@@ -10,9 +10,7 @@ var session = require('express-session'),
     cookieParser = require('cookie-parser'),
     compress = require('compression'),
     logger = require('morgan'),
-    passport = require('passport'),
-    users = require('../app/controllers/users'),
-    posts = require('../app/controllers/posts');
+    passport = require('passport');
 
 function expressConfig(app) {
     'use strict';

@@ -1,70 +1,77 @@
-/// <reference path="../typings/async/async.d.ts" />
-import async = require('async');
-import auth = require('./middleware/auth');
+/// <reference path="../typings/tsd.d.ts" />
 
-var posts = require('../app/controllers/posts'),
-    users = require('../app/controllers/users'),
-    index = require('../app/controllers/index'),
-    express = require('express'),
-    passport = require('passport'),
-    router = express.Router();
+import auth = require('./middleware/auth');
+import posts = require('../app/controllers/posts');
+import users = require('../app/controllers/users');
+import index = require('../app/controllers/index');
+import express = require('express');
+import passport = require('passport');
+
+var router = new express.Router();
 
 /*
  * User Routes
  * Order matters!
  */
-router.get('/login', users.login);
-router.get('/register', users.register);
-router.get('/logout', users.logout);
-router.post('/users', users.create);
-router.post('/users/session', passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: 'Invalid email or password.'
-}), users.session);
-router.get('/users/me', users.me);
-router.get('/users/:userId', users.show);
+router
+    .get('/login', users.login)
+    .get('/register', users.register)
+    .get('/logout', users.logout)
+    .post('/users', users.create)
+    .post('/users/session', passport.authenticate('local', {
+        failureRedirect: '/login',
+        failureFlash: 'Invalid email or password.'
+    }), users.session)
+    .get('/users/me', users.me)
+    .get('/users/:userId', users.show)
+    .get('/app/viewcontrols/admin/*', (req: express.Request, res: express.Response, next: Function) => {
+        if (req.user && req.user.role === 'admin') {
+            return next();
+        }
+        res.send(401);
+    });
 
 // facebook
-router.get('/auth/facebook', passport.authenticate('facebook', {
-    scope: ['email', 'user_about_me'],
-    failureRedirect: '/login'
-}), users.login);
-
-router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/login'
-}), users.authCallback);
+router
+    .get('/auth/facebook', passport.authenticate('facebook', {
+        scope: ['email', 'user_about_me'],
+        failureRedirect: '/login'
+    }), users.login)
+    .get('/auth/facebook/callback', passport.authenticate('facebook', {
+        failureRedirect: '/login'
+    }), users.authCallback);
 
 // linkedin
-router.get('/auth/linkedin', passport.authenticate('linkedin', {
-    scope: ['r_emailaddress'],
-    failureRedirect: '/login'
-}), users.login);
-
-router.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
-    failureRedirect: '/login'
-}), users.authCallback);
+router
+    .get('/auth/linkedin', passport.authenticate('linkedin', {
+        scope: ['r_emailaddress'],
+        failureRedirect: '/login'
+    }), users.login)
+    .get('/auth/linkedin/callback', passport.authenticate('linkedin', {
+        failureRedirect: '/login'
+    }), users.authCallback);
 
 // twitter
-router.get('/auth/twitter', passport.authenticate('twitter', {
-    failureRedirect: '/login'
-}), users.login);
-
-router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-    failureRedirect: '/login'
-}), users.authCallback);
+router
+    .get('/auth/twitter', passport.authenticate('twitter', {
+        failureRedirect: '/login'
+    }), users.login)
+    .get('/auth/twitter/callback', passport.authenticate('twitter', {
+        failureRedirect: '/login'
+    }), users.authCallback);
 
 // google
-router.get('/auth/google', passport.authenticate('google', {
-    failureRedirect: '/login',
-    scope: [
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
-    ]
-}), users.login);
-
-router.get('/auth/google/callback', passport.authenticate('google', {
-    failureRedirect: '/login'
-}), users.authCallback);
+router
+    .get('/auth/google', passport.authenticate('google', {
+        failureRedirect: '/login',
+        scope: [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+        ]
+    }), users.login)
+    .get('/auth/google/callback', passport.authenticate('google', {
+        failureRedirect: '/login'
+    }), users.authCallback);
 
 // :userId route param matcher
 router.param('userId', users.user);
@@ -73,14 +80,14 @@ router.param('userId', users.user);
  * Blog Post Routes
  * Order matters here too!
  */
-router.get('/posts', posts.all);
-router.post('/posts', auth.requiresLogin, posts.create);
-router.get('/posts/:postId', posts.show);
-router.put('/posts/:postId/edit', auth.requiresLogin, auth.post.hasAuthorization, posts.update);
-router.delete('/posts/:postId', auth.requiresLogin, auth.post.hasAuthorization, posts.destroy);
-
-// :postId route param matcher
-router.param('postId', posts.post);
+(<express.Router>(<any>router
+    .get('/posts', posts.all)
+    .post('/posts', auth.requiresLogin, posts.create)
+    .get('/posts/:postId', posts.show)
+    .put('/posts/:postId/edit', auth.requiresLogin, auth.post.hasAuthorization, posts.update))
+    .delete('/posts/:postId', auth.requiresLogin, auth.post.hasAuthorization, posts.destroy))
+    // :postId route param matcher
+    .param('postId', posts.post);
 
 /*
  * Index Routes

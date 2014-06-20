@@ -1,77 +1,82 @@
+/// <reference path="../../typings/tsd.d.ts" />
 import async = require('async');
+import express = require('express');
+import mongoose = require('mongoose');
+import models = require('../models/post');
 import _ = require('underscore');
 
-var mongoose = require('mongoose'),
-    Post = mongoose.model('Post');
+// TODO: When mongoose type definitions are updated, we can remove the type casting.
+var Post: models.IPostModel = (<any>mongoose).model('Post');
 
 // find a post by id
-exports.post = function (req, res, next, id) {
-    Post.load(id, function (err, post) {
+export var post = (req: express.Request, res: express.Response, next: Function, id: string) => {
+    Post.load(id, (err, post) => {
         if (err) {
             return next(err);
-        }
-        if (!post) {
+        } else if (!_.isObject(post)) {
             return next(new Error('Failed to load post ' + id));
         }
-        req.post = post;
+
+        (<any>req).post = post;
         next();
     });
 };
 
-// create a post
-exports.create = function (req, res) {
-    var post = new Post(req.body);
-    post.user = req.user;
+// Create a post
+export var create = (req: express.Request, res: express.Response) => {
+    var postDoc = new Post(req.body);
+    postDoc.user = req.user;
 
-    post.save(function (err) {
+    postDoc.save<models.IPost>((err, post) => {
         if (err) {
-            return res.send('users/signup', {
+            // TODO: When express declarations are updated we can remove this.
+            return (<any>res).send('users/signup', {
                 errors: err.errors,
                 post: post
             });
-        } else {
-            res.jsonp(post);
         }
+        res.json(post);
     });
 };
 
-// update post
-exports.update = function (req, res) {
-    var post = req.post;
-    post = _.extend(post, req.body);
-    post.save(function (err) {
-        res.jsonp(post);
+// Update post
+export var update = (req: express.Request, res: express.Response) => {
+    var postDoc: models.IPostDocument = (<any>req).post;
+    postDoc = _.extend(postDoc, req.body);
+
+    postDoc.save<models.IPost>((err, post) => {
+        res.json(200, post);
     });
 };
 
-// delete a post
-exports.destroy = function (req, res) {
-    var post = req.post;
-    post.remove(function (err) {
+// Delete a post
+export var destroy = (req: express.Request, res: express.Response) => {
+    var postDoc: models.IPostDocument = (<any>req).post;
+    postDoc.remove((err: any) => {
         if (err) {
             res.render('error', {
                 status: 500
             });
         } else {
-            res.jsonp(post);
+            res.json(200, postDoc);
         }
     });
 };
 
-// show a post
-exports.show = function (req, res) {
-    res.jsonp(req.post);
+// Show a post
+export var show = (req: express.Request, res: express.Response) => {
+    res.json(200, (<any>req).post);
 };
 
-// list all articles
-exports.all = function (req, res) {
-    Post.find().sort('-created').populate('user').exec(function (err, posts) {
+// List all articles
+export var all = (req: express.Request, res: express.Response) => {
+    Post.find(null).sort('-created').populate('user').exec((err, posts) => {
         if (err) {
             res.render('error', {
                 status: 500
             });
         } else {
-            res.jsonp(posts);
+            res.json(200, posts);
         }
     });
 };
