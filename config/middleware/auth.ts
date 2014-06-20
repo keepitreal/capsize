@@ -1,5 +1,10 @@
+/// <reference path="../../typings/tsd.d.ts" />
+
+import express = require('express');
+import userModels = require('../../app/models/user');
+
 // generic require login routing middleware
-var requiresLogin = function (req, res, next) {
+export var requiresLogin = (req: express.Request, res: express.Response, next: Function) => {
     if (!req.isAuthenticated()) {
         return res.send(401, 'User is not authorized');
     }
@@ -7,9 +12,9 @@ var requiresLogin = function (req, res, next) {
 };
 
 // user authorization routing middleware
-var user = {
-    hasAuthorization: function (req, res, next) {
-        if (req.profile.id !== req.user.id) {
+export var user = {
+    hasAuthorization: (req: express.Request, res: express.Response, next: Function) => {
+        if ((<any>req).profile.id !== req.user._id) {
             return res.send(401, 'User is not authorized');
         }
         next();
@@ -17,19 +22,11 @@ var user = {
 };
 
 // post authorization routing middleware
-var post = {
-    hasAuthorization: function (req, res, next) {
-        if (req.post.user.id !== req.user.id) {
+export var post = {
+    hasAuthorization: (req: express.Request, res: express.Response, next: Function) => {
+        if ((<any>req).post.user._id.toString() !== req.user._id.toString()) {
             return res.send(401, 'User is not authorized');
         }
         next();
     }
 };
-
-var auth = {
-    requiresLogin: requiresLogin,
-    user: user,
-    post: post
-};
-
-export = auth;

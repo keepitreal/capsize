@@ -1,7 +1,8 @@
 import path = require('path');
 import express = require('express');
-import routes = require('./routes');
+import router = require('./routes');
 import config = require('./config');
+import passport = require('passport');
 
 var session = require('express-session'),
     mongoStore = require('connect-mongo')({ session: session }),
@@ -9,26 +10,26 @@ var session = require('express-session'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     compress = require('compression'),
-    logger = require('morgan'),
-    passport = require('passport');
+    logger = require('morgan');
 
-function expressConfig(app) {
+var expressConfig = (app: express.Application) => {
     'use strict';
 
     app.use(compress({
-        filter: function (req, res) {
+        filter: (req: express.Request, res: express.Response) => {
             return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
         },
         level: 9
     }));
 
-    app.set('views', path.join(__dirname, '../app/views'));
-    app.set('view engine', 'jade');
-    app.use(logger('dev'));
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded());
-    app.use(cookieParser());
-    app.use(express.static(path.join(__dirname, '../public')));
+    app
+        .set('views', path.join(__dirname, '../app/views'))
+        .set('view engine', 'jade')
+        .use(logger('dev'))
+        .use(bodyParser.json())
+        .use(bodyParser.urlencoded())
+        .use(cookieParser())
+        .use(express.static(path.join(__dirname, '../public')));
 
     // express/mongo session storage
     app.use(session({
@@ -40,14 +41,14 @@ function expressConfig(app) {
     }));
 
     // use passport session
-    app.use(passport.initialize());
-    app.use(passport.session());
+    app
+        .use(passport.initialize())
+        .use(passport.session())
+        .use(flash());
 
-    app.use(flash());
+    (<any>app).use(router);
 
-    app.use('/', routes);
-
-    app.use(function (req, res, next) {
+    app.use((req: express.Request, res: express.Response, next: Function) => {
         var err = new Error('Not Found');
         // err.status = 404;
         next(err);
@@ -55,7 +56,7 @@ function expressConfig(app) {
 
     // production error handler
     // no stacktraces leaked to user
-    app.use(function (err, req, res, next) {
+    app.use((err: any, req: express.Request, res: express.Response, next: Function) => {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,

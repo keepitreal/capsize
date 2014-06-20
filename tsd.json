@@ -22,6 +22,9 @@
     },
     "passport/passport.d.ts": {
       "commit": "b2e96a424672735fcd74fc989d1092386cbe082f"
+    },
+    "passport-facebook/passport-facebook.d.ts": {
+      "commit": "b2e96a424672735fcd74fc989d1092386cbe082f"
     }
   }
 }

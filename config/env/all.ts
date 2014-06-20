@@ -1,8 +1,7 @@
-var path = require('path'),
-    rootPath = path.normalize(__dirname + '/../..');
+/// <reference path="../../typings/tsd.d.ts" />
 
-module.exports = {
-    root: rootPath,
-    port: process.env.PORT || 3000,
-    db: process.env.MONGOHQ_URL
-};
+import path = require('path');
+
+export var root = path.normalize(__dirname + '/../..');
+export var port = process.env.PORT || 3000;
+export var db = process.env.MONGOHQ_URL;

@@ -4,7 +4,7 @@ import _ = require('underscore');
 import crypto = require('crypto');
 
 var Schema = mongoose.Schema,
-    authTypes = ['github', 'twitter', 'facebook', 'google'];
+    authTypes = ['linkedin', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
     name: String,
