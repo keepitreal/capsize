@@ -10,25 +10,25 @@ module platynem.repositories {
             return this.postsService.create(p);
         }
 
-        update(post: any) {
+        update(post: models.IPost) {
             var p = this.postFactory.update(post);
-            this.postsService.update(p);
+            return this.postsService.update(p);
         }
 
-        destroy(post) {
-            this.postsService.destroy(post);
+        destroy(id: string) {
+            return this.postsService.destroy(id);
         }
 
         getAll(): plat.async.IThenable<Array<models.IPost>> {
             return this.postsService
                 .getAll()
-                .then((result) => this.postFactory.getAll(result));
+                .then((posts) => this.postFactory.getAll(posts));
         }
 
         getPost(id: string): plat.async.IThenable<models.IPost> {
             return this.postsService
                 .getOne(id)
-                .then((result) => this.postFactory.createPost(result));
+                .then((post) => this.postFactory.createPost(post));
         }
     }
 

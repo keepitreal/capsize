@@ -2,15 +2,15 @@ module platynem.viewcontrols {
     'use strict';
 
     class CreateViewControl extends plat.ui.WebViewControl {
+        title = 'Blog - Create';
         templateUrl = 'app/viewcontrols/blog/create/create.viewcontrol.html';
-        navigator: plat.navigation.IRoutingNavigator;
 
         constructor(private postsRepository: repositories.PostsRepository, private utils: plat.IUtils) {
             super();
         }
 
         context = {
-            post: {
+            post: <models.IPost>{
                 title: '',
                 content: ''
             }
@@ -21,8 +21,10 @@ module platynem.viewcontrols {
         }
 
         createPost() {
-            var post = <models.IPost>this.utils.deepExtend({}, this.context.post);
-            this.postsRepository.create(post);
+            var post = this.utils.clone(this.context.post);
+            this.postsRepository.create(post).then(() => {
+                this.goBack();
+            });
         }
     }
 

@@ -2,8 +2,8 @@ module platynem.viewcontrols.home {
     'use strict';
 
     class HomeViewControl extends plat.ui.WebViewControl {
+        title = 'Home';
         templateUrl = 'app/viewcontrols/home/home.viewcontrol.html';
-        navigator: plat.navigation.IRoutingNavigator;
 
         constructor() {
             super();

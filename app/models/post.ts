@@ -25,7 +25,7 @@ var Schema = mongoose.Schema,
         published: {
             type: Boolean
         },
-        updated: [],
+        updated: [Date],
         tags: [String]
     });
 

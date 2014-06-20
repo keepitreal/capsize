@@ -2,8 +2,8 @@ module platynem.viewcontrols {
     'use strict';
 
     class EditViewControl extends plat.ui.WebViewControl {
+        title = 'Blog - Edit';
         templateUrl = 'app/viewcontrols/blog/edit/edit.viewcontrol.html';
-        navigator: plat.navigation.IRoutingNavigator;
 
         constructor(private postsRepository: repositories.PostsRepository,
                     private usersRepository: repositories.UsersRepository,
@@ -20,6 +20,7 @@ module platynem.viewcontrols {
             this.postsRepository
                 .getPost(route.parameters.id)
                 .then((post) => {
+                    this.setTitle('Edit - ' + post.title);
                     this.context.post = post;
                 });
 
@@ -30,9 +31,10 @@ module platynem.viewcontrols {
             this.navigator.goBack();
         }
 
-        updatePost() {
-            var post = <models.IPost>this.utils.deepExtend({}, this.context.post);
-            this.postsRepository.update(post);
+        updatePost(post: models.IPost) {
+            this.postsRepository.update(post).then(() => {
+                this.goBack();
+            });
         }
     }
 
