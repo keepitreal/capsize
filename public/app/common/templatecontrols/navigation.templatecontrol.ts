@@ -5,15 +5,21 @@ module platynem.templatecontrols {
         templateUrl = 'app/common/templatecontrols/navigation.templatecontrol.html';
 
         context = {
-            user: this.user
+            user: <models.IUser>null
         };
 
-        constructor(private user: services.IUserInfo) {
+        constructor(private usersRepository: platynem.repositories.UsersRepository) {
             super();
+        }
+
+        initialize() {
+            this.usersRepository.getUser().then((user) => {
+                this.context.user = user;
+            });
         }
     }
 
     plat.register.control('navigation', NavigationBar, [
-        platynem.services.UserInfo
+        platynem.repositories.UsersRepository
     ]);
 }

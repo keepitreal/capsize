@@ -78,7 +78,7 @@ export var me = (req: express.Request, res: express.Response) => {
     if (_.isUndefined(user)) {
         return res.json(200, null);
     }
-    console.log(user);
+
     res.json(200, __filterUser(user, ['hashed_password', 'salt']));
 };
 

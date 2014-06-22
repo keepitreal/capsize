@@ -3,7 +3,6 @@
 import auth = require('./middleware/auth');
 import posts = require('../app/controllers/posts');
 import users = require('../app/controllers/users');
-import index = require('../app/controllers/index');
 import express = require('express');
 import passport = require('passport');
 
@@ -88,10 +87,5 @@ router.param('userId', users.user);
     .delete('/posts/:postId', auth.requiresLogin, auth.post.hasAuthorization, posts.destroy))
     // :postId route param matcher
     .param('postId', posts.post);
-
-/*
- * Index Routes
- */
-router.get('/', index.render);
 
 export = router;
