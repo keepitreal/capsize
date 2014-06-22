@@ -46,18 +46,19 @@ export var session = (req: express.Request, res: express.Response) => {
 // create user
 export var create = (req: express.Request, res: express.Response, next: Function) => {
     delete req.body._id;
+    console.log(req.body);
     var userDoc = new User(req.body);
     userDoc.provider = 'local';
 
     userDoc.save<userModels.IUser>((err, user) => {
         if (err) {
-            return res.redirect('users/register');
+            return res.json(500, err.errors);
         }
         req.logIn(user, (err: any) => {
             if (err) {
                 return next(err);
             }
-            return res.redirect('/#!/');
+            return res.json(200, user);
         });
     });
 };

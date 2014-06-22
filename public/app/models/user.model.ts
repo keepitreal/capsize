@@ -3,13 +3,12 @@ module platynem.models {
 
     export class User {
         static createUser(user: any): IUser {
-            return new User(user._id, user.name, user.email, user.username);
+            return new User(user._id, user.name, user.email);
         }
 
         constructor(public _id: string,
             public name: string,
-            public email: string,
-            public username: string) { }
+            public email: string) { }
     }
 
     export interface IUserFactory {
@@ -20,7 +19,6 @@ module platynem.models {
         _id: string;
         name: string;
         email: string;
-        username: string;
     }
 
     export function UserFactory() {

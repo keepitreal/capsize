@@ -55,6 +55,4 @@ module platynem {
     plat.register.app('platynem', App, [
         plat.web.IBrowserConfig
     ]);
-
-    plat.register.control('a', plat.controls.AttributeControl);
 }

@@ -15,14 +15,14 @@
                         <a href="#!/" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#!/">Profile</a></li>
-                            <li><a href="logout">Log Out</a></li>
+                            <li><a plat-tap="logout()">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
                 <!-- Displays when no user is detected -->
                 <ul class="nav navbar-nav navbar-right" plat-visible="{{!user._id}}">
-                    <li><a href="login">Login</a></li>
-                    <li><a href="register">Register</a></li>
+                    <li><a href="#!/login">Login</a></li>
+                    <li><a href="#!/register">Register</a></li>
                 </ul>
             </div>
         </div>

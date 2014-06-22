@@ -13,9 +13,7 @@ var router = new express.Router();
  * Order matters!
  */
 router
-    .get('/login', users.login)
-    .get('/register', users.register)
-    .get('/logout', users.logout)
+    .post('/logout', users.logout)
     .post('/users', users.create)
     .post('/users/session', passport.authenticate('local', {
         failureRedirect: '/login',
