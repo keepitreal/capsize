@@ -5,7 +5,7 @@ module platynem.viewcontrols {
         title = 'Blog - Create';
         templateUrl = 'app/viewcontrols/blog/create/create.viewcontrol.html';
 
-        constructor(private postsRepository: repositories.PostsRepository, private utils: plat.IUtils) {
+        constructor(private postsRepository: repositories.PostsRepository) {
             super();
         }
 
@@ -21,7 +21,6 @@ module platynem.viewcontrols {
         }
 
         createPost(post: models.IPost) {
-            var post = this.utils.clone(post);
             this.postsRepository.create(post).then(() => {
                 this.goBack();
             });
@@ -29,7 +28,6 @@ module platynem.viewcontrols {
     }
 
     plat.register.viewControl('createViewControl', CreateViewControl, [
-        platynem.repositories.PostsRepository,
-        plat.IUtils
+        platynem.repositories.PostsRepository
     ], ['posts/create']);
 }
