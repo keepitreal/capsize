@@ -1,7 +1,7 @@
 module platynem.viewcontrols {
     'use strict';
 
-    class EditViewControl extends plat.ui.WebViewControl {
+    export class EditViewControl extends plat.ui.WebViewControl {
         title = 'Blog - Edit';
         templateUrl = 'app/viewcontrols/blog/edit/edit.viewcontrol.html';
 

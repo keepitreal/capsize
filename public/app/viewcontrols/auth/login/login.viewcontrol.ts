@@ -13,8 +13,8 @@
             user: <models.IUser>{}
         };
 
-        login() {
-            this.usersRepository.login(this.context.user).then(() => {
+        login(user: models.IUser) {
+            this.usersRepository.login(user).then(() => {
                 this.navigator.goBack();
             });
         }

@@ -1,7 +1,7 @@
 module platynem.viewcontrols {
     'use strict';
 
-    class CreateViewControl extends plat.ui.WebViewControl {
+    export class CreateViewControl extends plat.ui.WebViewControl {
         title = 'Blog - Create';
         templateUrl = 'app/viewcontrols/blog/create/create.viewcontrol.html';
 
@@ -20,8 +20,8 @@ module platynem.viewcontrols {
             this.navigator.goBack();
         }
 
-        createPost() {
-            var post = this.utils.clone(this.context.post);
+        createPost(post: models.IPost) {
+            var post = this.utils.clone(post);
             this.postsRepository.create(post).then(() => {
                 this.goBack();
             });

@@ -1,6 +1,5 @@
 /// <reference path="../../typings/tsd.d.ts" />
 import mongoose = require('mongoose');
-import config = require('../../config/config');
 
 var Schema = mongoose.Schema,
     PostSchema = new Schema({

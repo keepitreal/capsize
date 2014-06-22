@@ -58,11 +58,11 @@ var expressConfig = (app: express.Application) => {
     // no stacktraces leaked to user
     app.use((err: any, req: express.Request, res: express.Response, next: Function) => {
         res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: {}
-        });
+        //res.render('error', {
+        //    message: err.message,
+        //    error: {}
+        //});
     });
-}
+};
 
 export = expressConfig;

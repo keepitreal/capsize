@@ -1,7 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import express = require('express');
-import userModels = require('../../app/models/user');
 
 // generic require login routing middleware
 export var requiresLogin = (req: express.Request, res: express.Response, next: Function) => {

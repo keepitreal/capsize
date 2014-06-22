@@ -3,9 +3,6 @@ import mongoose = require('mongoose');
 import express = require('express');
 import _ = require('underscore');
 import userModels = require('../models/user');
-import async = require('async');
-import config = require('../../config/config');
-
 
 // TODO: When mongoose type definitions are updated, we can remove the type casting.
 var User: userModels.IUserModel = (<any>mongoose).model('User');

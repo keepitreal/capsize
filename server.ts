@@ -6,7 +6,7 @@ import passport = require('passport');
 
 require('./config/middleware/auth');
 
-var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 import config = require('./config/config');
 

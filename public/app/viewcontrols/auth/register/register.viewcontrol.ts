@@ -15,10 +15,7 @@ module platynem.viewcontrols {
             errors: <Array<string>>[]
         };
 
-        create() {
-            var user = this.context.user,
-                errors: any;
-
+        create(user: models.IUser) {
             this.usersRepository.create(user)
                 .then(() => {
                     this.navigator.goBack();

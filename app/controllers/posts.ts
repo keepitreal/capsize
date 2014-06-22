@@ -1,5 +1,4 @@
 /// <reference path="../../typings/tsd.d.ts" />
-import async = require('async');
 import express = require('express');
 import mongoose = require('mongoose');
 import models = require('../models/post');
@@ -42,7 +41,10 @@ export var create = (req: express.Request, res: express.Response) => {
 // Update post
 export var update = (req: express.Request, res: express.Response) => {
     var postDoc: models.IPostDocument = (<any>req).post;
+    
+    /* tslint:disable:ban */
     postDoc = _.extend(postDoc, req.body);
+    /* tslint:enable:ban */
 
     postDoc.save<models.IPost>((err, post) => {
         res.json(200, post);

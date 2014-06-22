@@ -1,6 +1,4 @@
 /// <reference path="../typings/tsd.d.ts" />
-
-import _ = require('underscore');
 import all = require('./env/all');
 
 var cfg = require('./env/' + process.env.NODE_ENV + '.json') || {};

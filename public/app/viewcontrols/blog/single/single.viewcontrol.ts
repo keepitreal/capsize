@@ -1,20 +1,26 @@
 module platynem.viewcontrols {
     'use strict';
 
-    class SingleViewControl extends plat.ui.WebViewControl {
+    export class SingleViewControl extends plat.ui.WebViewControl {
         title = 'Blog';
         templateUrl = 'app/viewcontrols/blog/single/single.viewcontrol.html';
 
         constructor(private postsRepository: repositories.PostsRepository,
-        private usersRepository: repositories.UsersRepository) {
+            private usersRepository: repositories.UsersRepository,
+            private Promise: plat.async.IPromise) {
             super();
         }
 
         navigatedTo(route: plat.web.IRoute<{ id: string; }>) {
-            var user = this.usersRepository.getUser();
-            this.postsRepository
-                .getPost(route.parameters.id)
-                .then((post) => {
+            var promises: Array<plat.async.IThenable<any>> = [];
+            promises.push(this.usersRepository.getUser());
+            promises.push(this.postsRepository.getPost(route.parameters.id));
+
+            this.Promise.all(promises)
+                .then((results) => {
+                    var post = results[1],
+                        user = results[0];
+
                     this.setTitle('Blog - ' + post.title);
                     this.context = {
                         post: post,
@@ -36,6 +42,7 @@ module platynem.viewcontrols {
 
     plat.register.viewControl('singleViewControl', SingleViewControl, [
         platynem.repositories.PostsRepository,
-        platynem.repositories.UsersRepository
+        platynem.repositories.UsersRepository,
+        plat.async.IPromise
     ], ['posts/:id']);
 }
