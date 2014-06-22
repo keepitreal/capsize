@@ -1,0 +1,15 @@
+﻿
+.auth-social {
+    margin: 2em auto;
+    text-align: center;
+}
+    .auth-social ul > li {
+        float: left;
+        margin: 0;
+        list-style-type: none;
+    }
+
+    .auth-social img {
+        width: 3.3em;
+        margin-left: 1em;
+    }

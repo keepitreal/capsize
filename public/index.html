@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" itemscope="itemscope" itemtype="http://schema.org/Product">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
+    <title>PlatyNEM</title>
+    <link href="app/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="app/common/templatecontrols/socialauth/socialauth.templatcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/create/create.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/edit/edit.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/list/list.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/single/single.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/auth/auth.viewcontrol.css" rel="stylesheet" />
+</head>
+<body>
+    <navigation></navigation>
+    <section class="content">
+        <section class="container">
+            <plat-routeport></plat-routeport>
+        </section>
+    </section>
+
+    <!-- lib -->
+    <script src="app/lib/jquery/dist/jquery.min.js"></script>
+    <script src="app/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="app/lib/platypus/platypus.js"></script>
+
+    <!-- Models -->
+    <script src="app/models/user.model.js"></script>
+    <script src="app/models/post.model.js"></script>
+
+    <!-- Services -->
+    <script src="app/services/users.service.js"></script>
+    <script src="app/services/posts.service.js"></script>
+
+    <!-- Repositories -->
+    <script src="app/repositories/users.repository.js"></script>
+    <script src="app/repositories/posts.repository.js"></script>
+
+    <!-- TemplateControls -->
+    <script src="app/common/templatecontrols/navigation/navigation.templatecontrol.js"></script>
+    <script src="app/common/templatecontrols/socialauth/socialauth.templatecontrol.js"></script>
+
+    <!-- ViewControls -->
+    <script src="app/viewcontrols/home/home.viewcontrol.js"></script>
+    <script src="app/viewcontrols/blog/list/list.viewcontrol.js"></script>
+    <script src="app/viewcontrols/blog/single/single.viewcontrol.js"></script>
+    <script src="app/viewcontrols/blog/create/create.viewcontrol.js"></script>
+    <script src="app/viewcontrols/blog/edit/edit.viewcontrol.js"></script>
+    <script src="app/viewcontrols/auth/login/login.viewcontrol.js"></script>
+    <script src="app/viewcontrols/auth/register/register.viewcontrol.js"></script>
+
+    <!-- App -->
+    <script src="app/app.js"></script>
+</body>
+</html>

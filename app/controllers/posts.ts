@@ -54,9 +54,7 @@ export var destroy = (req: express.Request, res: express.Response) => {
     var postDoc: models.IPostDocument = (<any>req).post;
     postDoc.remove((err: any) => {
         if (err) {
-            res.render('error', {
-                status: 500
-            });
+            res.json(500, err);
         } else {
             res.json(200, postDoc);
         }
@@ -72,9 +70,7 @@ export var show = (req: express.Request, res: express.Response) => {
 export var all = (req: express.Request, res: express.Response) => {
     Post.find(null).sort('-created').populate('user').exec((err, posts) => {
         if (err) {
-            res.render('error', {
-                status: 500
-            });
+            res.json(500, err);
         } else {
             res.json(200, posts);
         }

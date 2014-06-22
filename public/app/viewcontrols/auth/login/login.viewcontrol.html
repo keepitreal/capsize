@@ -1,0 +1,19 @@
+﻿<div class="auth">
+    <h3>Login</h3>
+    <social-auth></social-auth>
+    <div class="auth-local">
+        <form class="signin" plat-submit="login()">
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Email" plat-bind="user.email" />
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" plat-bind="user.password" />
+            </div>
+            <div class="row auth-actions">
+                <div class="col-md-7">
+                    <button class="btn btn-info btn-block" type="submit">Log In</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
