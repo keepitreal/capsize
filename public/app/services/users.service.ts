@@ -1,74 +1,48 @@
 module platynem.services {
     'use strict';
 
-    export class UsersService implements IUsersService {
-        constructor(private http: plat.async.IHttp,
-            private utils: plat.IUtils) { }
+    export class UsersService extends BaseService implements IUsersService {
+        constructor(private utils: plat.IUtils) {
+            super();
+        }
 
-        create(user: models.IUser, password: string) {
-            return this.__http({
+        create(user: models.IUser, password: string): plat.async.IThenable<any> {
+            return this._http({
                 url: '/users',
                 method: 'POST',
                 data: this.utils.extend({}, user, {
                     password: password
                 })
-            }).then<any>((result) => {
-                return result.response;
             });
         }
 
-        findOne(id: string) {
-            return this.__http({
+        findOne(id: string): plat.async.IThenable<models.IUser> {
+            return this._http({
                 url: '/users/' + id,
                 method: 'GET'
-            }).then<models.IUser>((result) => {
-                return result.response;
             });
         }
 
-        findAll() {
-            return this.__http({
-                url: '/users',
-                method: 'GET'
-            }).then<Array<models.IUser>>((result) => {
-                return result.response;
-            });
-        }
-
-        login(user: models.IUser, password: string) {
-            return this.__http({
-                url: '/users/session',
+        login(user: models.IUser, password: string): plat.async.IThenable<any> {
+            return this._http({
+                url: '/login',
                 method: 'POST',
                 data: this.utils.extend({}, user, { password: password })
-            }).then((result) => {
-                if (result && result.response) {
-                    return result.response;
-                }
             });
         }
 
-        logout() {
-            return this.__http({
+        logout(): plat.async.IThenable<void> {
+            return this._http({
                 url: '/logout',
                 method: 'POST'
-            }).then((result) => { });
-        }
-
-        loggedInUser() {
-            return this.__http({
-                url: '/users/me',
-                method: 'GET'
-            }).then((result) => {
-                return result.response;
             });
         }
 
-        /**
-         * Private wrapper method
-         * @param {object} options: options defined by plat.asyc.IHttpConfigStatic
-         */
-        private __http(options: plat.async.IHttpConfig) {
-            return this.http.json<any>(options);
+        loggedInUser(): plat.async.IThenable<models.IUser> {
+            return this._http({
+                url: '/users/me',
+                method: 'GET'
+            });
         }
     }
 
@@ -88,17 +62,11 @@ module platynem.services {
         findOne(id: string): plat.async.IThenable<models.IUser>;
 
         /**
-         * findAll
-         * Finds all blog posts
-         */
-        findAll(): plat.async.IThenable<Array<models.IUser>>;
-
-        /**
          * login
          * Creates a session for the user
          * @param user: the user to be updated
          */
-        login(user: models.IUser, password: string): plat.async.IThenable<void>;
+        login(user: models.IUser, password: string): plat.async.IThenable<any>;
 
         /**
          * logout
@@ -114,7 +82,6 @@ module platynem.services {
     }
 
     plat.register.injectable('usersService', UsersService, [
-        plat.async.IHttp,
         plat.IUtils
     ]);
 }

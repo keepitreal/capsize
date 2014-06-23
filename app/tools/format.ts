@@ -3,9 +3,9 @@
 import _ = require('underscore');
 import userModels = require('../models/user');
 
-export var response = (err: any, data: any): { status: number; body: IResponseBody; } => {
+export var response = (err?: any, data?: any): { status: number; body: IResponseBody; } => {
     if (_.isObject(err)) {
-        if (err instanceof Error) {
+        if (err instanceof Error && !_.isObject(err.errors)) {
             return {
                 status: 500,
                 body: {
@@ -17,7 +17,7 @@ export var response = (err: any, data: any): { status: number; body: IResponseBo
         }
 
         return {
-            status: 500,
+            status: 400,
             body: {
                 status: 'fail',
                 data: err
@@ -40,7 +40,7 @@ export var response = (err: any, data: any): { status: number; body: IResponseBo
             data: data
         }
     };
-}
+};
 
 export var filterUser = (user: userModels.IUserDocument, properties: Array<string>) => {
     if (_.isFunction(user.toObject)) {

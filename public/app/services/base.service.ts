@@ -16,7 +16,6 @@
             switch (response.status) {
                 case 'fail':
                     throw response.data;
-                    break;
                 case 'error':
                     console.log(response.message);
                     break;

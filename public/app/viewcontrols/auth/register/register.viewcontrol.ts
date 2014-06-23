@@ -20,13 +20,11 @@ module platynem.viewcontrols {
                 .then(() => {
                     this.navigator.goBack();
                 })
-                .catch((error) => {
+                .catch((response) => {
                     var utils = this.$utils;
-                    if (utils.isObject(error) && utils.isObject(error.response)) {
-                        this.context.errors = utils.map(error.response, (err: any) => {
-                            return err;
-                        });
-                    }
+                    this.context.errors = utils.map(response.errors, (err: any) => {
+                        return err;
+                    });
                 });
         }
     }

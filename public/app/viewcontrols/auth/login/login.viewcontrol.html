@@ -2,6 +2,11 @@
     <h3>Login</h3>
     <social-auth></social-auth>
     <div class="auth-local">
+        <div class="alert alert-danger" plat-visible="{{!!error}}">
+            <ul>
+                <li>{{error.message}}</li>
+            </ul>
+        </div>
         <form class="signin" plat-submit="login(user)">
             <div class="form-group">
                 <input type="email" class="form-control" name="email" placeholder="Email" plat-bind="user.email" />

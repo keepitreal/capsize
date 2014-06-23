@@ -10,13 +10,17 @@
         }
 
         context = {
-            user: <models.IUser>{}
+            user: <models.IUser>{},
+            error: null
         };
 
         login(user: models.IUser) {
-            this.usersRepository.login(user).then(() => {
-                this.navigator.goBack();
-            });
+            this.usersRepository.login(user)
+                .then(() => {
+                    this.navigator.goBack();
+                }).catch((error) => {
+                    this.context.error = error;
+                });
         }
     }
 

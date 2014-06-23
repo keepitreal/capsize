@@ -2,7 +2,6 @@ module platynem.repositories {
     'use strict';
 
     export class UsersRepository {
-        private users: Array<models.IUser>;
         private _currentUser: models.IUser;
 
         constructor(private userFactory: models.IUserFactory,
@@ -15,17 +14,6 @@ module platynem.repositories {
             return this.usersService.create(u, user.password);
         }
 
-        getAll(): plat.async.IThenable<Array<models.IUser>> {
-            if (!this.utils.isArray(this.users)) {
-                return this.usersService.findAll().then((users) => {
-                    this.users = users;
-                    return this.utils.clone(users, true);
-                });
-            }
-
-            return this.Promise.cast(this.users);
-        }
-
         getUser() {
             return this.usersService.loggedInUser().then((user) => {
                 return this.userFactory.createUser(user);
@@ -34,7 +22,9 @@ module platynem.repositories {
 
         login(user: any): plat.async.IThenable<void> {
             var u = this.userFactory.createUser(user);
-            return this.usersService.login(u, user.password);
+            return this.usersService.login(u, user.password).then((user) => {
+                this._currentUser = this.userFactory.createUser(user);
+            });
         }
 
         logout(): plat.async.IThenable<void> {
