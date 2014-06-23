@@ -1,87 +1,42 @@
 module platynem.services {
     'use strict';
 
-    export class PostsService implements IPostsService {
-        constructor(private http: plat.async.IHttp) { }
-
-        create(post: models.IPost) {
-            return this.__http({
+    export class PostsService extends BaseService implements IPostsService {
+        create(post: models.IPost): plat.async.IThenable<models.IPost> {
+            return this._http({
                 url: '/posts',
                 method: 'POST',
                 data: post
-            })
-                .then<models.IPost>((result) => {
-                    return result.response.data;
-                }, (error) => {
-                    this.__handleError(error.response);
-                });
+            });
         }
 
-        getOne(id: string) {
-            return this.__http({
+        getOne(id: string): plat.async.IThenable<models.IPost> {
+            return this._http({
                 url: '/posts/' + id,
                 method: 'GET'
-            })
-                .then<models.IPost>((result) => {
-                    return result.response.data;
-                }, (error) => {
-                    this.__handleError(error.response);
-                });
+            });
         }
 
-        getAll() {
-            return this.__http({
+        getAll(): plat.async.IThenable<Array<models.IPost>> {
+            return this._http({
                 url: '/posts',
                 method: 'GET'
-            })
-                .then<Array<models.IPost>>((result) => {
-                    return result.response.data;
-                }, (error) => {
-                    this.__handleError(error.response);
-                });
+            });
         }
 
-        destroy(postid: string) {
-            return this.__http({
+        destroy(postid: string): plat.async.IThenable<void> {
+            return this._http({
                 url: '/posts/' + postid,
                 method: 'DELETE'
-            })
-                .then((result) => {
-                    return result.response.data;
-                }, (error) => {
-                    this.__handleError(error.response);
-                });
+            });
         }
 
-        update(post: models.IPost) {
-            return this.__http({
+        update(post: models.IPost): plat.async.IThenable<void> {
+            return this._http({
                 url: '/posts/' + post._id + '/edit',
                 method: 'PUT',
                 data: post
-            })
-                .then(() => { }, (error) => {
-                    this.__handleError(error.response);
-                });
-        }
-
-        private __handleError(response: any) {
-            switch (response.status) {
-                case 'fail':
-                    throw response.data;
-                    break;
-                case 'error':
-                    console.log(response);
-                    break;
-            }
-        }
-
-        /*
-         * http
-         * Private wrapper method on the http.json method
-         * @param {object} options: configuration for the http request
-         */
-        private __http(options: plat.async.IHttpConfig) {
-            return this.http.json<any>(options);
+            });
         }
     }
 
@@ -124,7 +79,5 @@ module platynem.services {
         update(post: models.IPost): plat.async.IThenable<void>;
     }
 
-    plat.register.injectable('postsService', PostsService, [
-        plat.async.IHttp
-    ]);
+    plat.register.injectable('postsService', PostsService);
 }
