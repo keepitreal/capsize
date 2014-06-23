@@ -11,7 +11,9 @@ module platynem.services {
                 data: post
             })
                 .then<models.IPost>((result) => {
-                    return result.response;
+                    return result.response.data;
+                }, (error) => {
+                    this.__handleError(error.response);
                 });
         }
 
@@ -21,7 +23,9 @@ module platynem.services {
                 method: 'GET'
             })
                 .then<models.IPost>((result) => {
-                    return result.response;
+                    return result.response.data;
+                }, (error) => {
+                    this.__handleError(error.response);
                 });
         }
 
@@ -31,7 +35,9 @@ module platynem.services {
                 method: 'GET'
             })
                 .then<Array<models.IPost>>((result) => {
-                    return result.response;
+                    return result.response.data;
+                }, (error) => {
+                    this.__handleError(error.response);
                 });
         }
 
@@ -41,7 +47,9 @@ module platynem.services {
                 method: 'DELETE'
             })
                 .then((result) => {
-                    return result.response;
+                    return result.response.data;
+                }, (error) => {
+                    this.__handleError(error.response);
                 });
         }
 
@@ -51,7 +59,20 @@ module platynem.services {
                 method: 'PUT',
                 data: post
             })
-                .then(() => { });
+                .then(() => { }, (error) => {
+                    this.__handleError(error.response);
+                });
+        }
+
+        private __handleError(response: any) {
+            switch (response.status) {
+                case 'fail':
+                    throw response.data;
+                    break;
+                case 'error':
+                    console.log(response);
+                    break;
+            }
         }
 
         /*

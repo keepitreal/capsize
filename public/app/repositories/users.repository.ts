@@ -44,12 +44,13 @@ module platynem.repositories {
         }
 
         currentUser(): plat.async.IThenable<models.IUser> {
-            if (this._currentUser) {
+            if (this.utils.isObject(this._currentUser)) {
                 return this.Promise.resolve(this.utils.clone(this._currentUser, true));
             }
             return this.usersService.loggedInUser()
                 .then((user) => {
                     this._currentUser = user;
+
                     return this.utils.clone(this._currentUser, true);
                 });
         }

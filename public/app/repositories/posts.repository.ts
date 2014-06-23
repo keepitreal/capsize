@@ -22,13 +22,17 @@ module platynem.repositories {
         getAll(): plat.async.IThenable<Array<models.IPost>> {
             return this.postsService
                 .getAll()
-                .then((posts) => this.postFactory.getAll(posts));
+                .then((posts) => {
+                    return this.postFactory.getAll(posts);
+                });
         }
 
         getPost(id: string): plat.async.IThenable<models.IPost> {
             return this.postsService
                 .getOne(id)
-                .then((post) => this.postFactory.createPost(post));
+                .then((post) => {
+                    return this.postFactory.createPost(post);
+                });
         }
     }
 

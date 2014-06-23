@@ -2,8 +2,12 @@ module platynem.models {
     'use strict';
 
     export class User {
+        private static utils: plat.IUtils;
+
         static createUser(user: any): IUser {
-            return new User(user._id, user.name, user.email);
+            if (User.utils.isObject(user)) {
+                return new User(user._id, user.name, user.email);
+            }
         }
 
         constructor(public _id: string,
@@ -21,9 +25,12 @@ module platynem.models {
         email: string;
     }
 
-    export function UserFactory() {
+    export function UserFactory(utils?: plat.IUtils) {
+        (<any>User).utils = utils;
         return User;
     }
 
-    plat.register.injectable('userFactory', UserFactory, undefined, plat.register.injectable.FACTORY);
+    plat.register.injectable('userFactory', UserFactory, [
+        plat.IUtils
+    ], plat.register.injectable.FACTORY);
 }

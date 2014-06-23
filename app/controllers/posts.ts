@@ -3,6 +3,7 @@ import express = require('express');
 import mongoose = require('mongoose');
 import models = require('../models/post');
 import _ = require('underscore');
+import format = require('../tools/format');
 
 // TODO: When mongoose type definitions are updated, we can remove the type casting.
 var Post: models.IPostModel = (<any>mongoose).model('Post');
@@ -27,14 +28,9 @@ export var create = (req: express.Request, res: express.Response) => {
     postDoc.user = req.user;
 
     postDoc.save<models.IPost>((err, post) => {
-        if (err) {
-            // TODO: When express declarations are updated we can remove this.
-            return (<any>res).send('users/signup', {
-                errors: err.errors,
-                post: post
-            });
-        }
-        res.json(post);
+        var response = format.response(err, post);
+
+        res.json(response.status, response.body);
     });
 };
 
@@ -47,7 +43,8 @@ export var update = (req: express.Request, res: express.Response) => {
     /* tslint:enable:ban */
 
     postDoc.save<models.IPost>((err, post) => {
-        res.json(200, post);
+        var response = format.response(err, post);
+        res.json(response.status, response.body);
     });
 };
 
@@ -55,26 +52,21 @@ export var update = (req: express.Request, res: express.Response) => {
 export var destroy = (req: express.Request, res: express.Response) => {
     var postDoc: models.IPostDocument = (<any>req).post;
     postDoc.remove((err: any) => {
-        if (err) {
-            res.json(500, err);
-        } else {
-            res.json(200, postDoc);
-        }
+        var response = format.response(err, postDoc);
+        res.json(response.status, response.body);
     });
 };
 
 // Show a post
 export var show = (req: express.Request, res: express.Response) => {
-    res.json(200, (<any>req).post);
+    var response = format.response(null, (<any>req).post);
+    res.json(response.status, response.body);
 };
 
 // List all articles
 export var all = (req: express.Request, res: express.Response) => {
     Post.find(null).sort('-created').populate('user').exec((err, posts) => {
-        if (err) {
-            res.json(500, err);
-        } else {
-            res.json(200, posts);
-        }
+        var response = format.response(err, posts);
+        res.json(response.status, response.body);
     });
 };
