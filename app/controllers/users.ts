@@ -47,7 +47,6 @@ export var create = (req: express.Request, res: express.Response, next: Function
 
     userDoc.save<userModels.IUser>((err, user) => {
         var response = format.response(err, req.user);
-        console.log(response);
         if (_.isObject(err)) {
             res.json(response.status, response.body);
         } else {
