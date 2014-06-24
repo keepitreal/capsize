@@ -3,7 +3,7 @@
 import _ = require('underscore');
 import userModels = require('../models/user');
 
-export var response = (err?: any, data?: any): { status: number; body: IResponseBody; } => {
+export var response = (err?: any, data?: any): IFormattedResponse => {
     if (_.isObject(err)) {
         if (err instanceof Error && !_.isObject(err.errors)) {
             return {
@@ -25,13 +25,8 @@ export var response = (err?: any, data?: any): { status: number; body: IResponse
         };
     }
 
-    if (_.isObject(data)) {
-        if (_.isObject(data.user)) {
-            data.user = filterUser(data.user, ['hashed_password', 'salt']);
-        } else if (_.isString(data.hashed_password) || _.isString(data.salt)) {
-            data = filterUser(data, ['hashed_password', 'salt']);
-        }
-    }
+
+    data = filterUser(data, ['hashed_password', 'salt']);
 
     return {
         status: 200,
@@ -42,15 +37,38 @@ export var response = (err?: any, data?: any): { status: number; body: IResponse
     };
 };
 
-export var filterUser = (user: userModels.IUserDocument, properties: Array<string>) => {
-    if (_.isFunction(user.toObject)) {
-        return _.omit(user.toObject(), properties);
+var filterUser = (obj: { user?: userModels.IUserDocument }, properties: Array<string>) => {
+    var user: userModels.IUserDocument;
+
+    if (!_.isObject(obj)) {
+        return obj;
+    } else if (_.isArray(obj)) {
+        (<Array<typeof obj>><any>obj).map((value, index) => {
+            obj[index] = filterUser(value, properties);
+        });
+        return obj;
+    } else if (!_.isObject(obj.user)) {
+        return filterUser({ user: <any>obj }, properties).user;
     }
-    return _.omit(user, properties);
+
+    user = obj.user;
+
+    if (_.isFunction(user.toObject)) {
+        user = <any>user.toObject();
+    }
+
+    obj.user = _.omit(user, properties);
+
+    return obj;
 };
 
 export interface IResponseBody {
     status: string;
     data?: any;
     message?: string;
+}
+
+export interface IFormattedResponse {
+    status: number;
+    body: IResponseBody;
 }
