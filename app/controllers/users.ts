@@ -4,7 +4,7 @@ import express = require('express');
 import passport = require('passport');
 import _ = require('underscore');
 import userModels = require('../models/user');
-import format = require('../tools/format');
+import format = require('../utils/format');
 
 // TODO: When mongoose type definitions are updated, we can remove the type casting.
 var User: userModels.IUserModel = (<any>mongoose).model('User');

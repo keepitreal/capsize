@@ -3,7 +3,7 @@ import express = require('express');
 import mongoose = require('mongoose');
 import models = require('../models/post');
 import _ = require('underscore');
-import format = require('../tools/format');
+import format = require('../utils/format');
 
 // TODO: When mongoose type definitions are updated, we can remove the type casting.
 var Post: models.IPostModel = (<any>mongoose).model('Post');
