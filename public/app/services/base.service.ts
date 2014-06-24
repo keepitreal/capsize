@@ -5,8 +5,8 @@
         private __http = plat.acquire(plat.async.IHttp);
 
         _http(options: plat.async.IHttpConfig) {
-            return this.__http.json<any>(options).then((result) => {
-                return (<IResponse>result.response).data;
+            return this.__http.json<IResponse>(options).then((result) => {
+                return result.response.data;
             }, (result) => {
                 this._handleError(result.response);
             });
