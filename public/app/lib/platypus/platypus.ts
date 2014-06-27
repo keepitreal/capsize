@@ -1450,7 +1450,7 @@ module plat {
                 if (index > -1) {
                     var dependency = dependencies[index];
 
-                    if(isNull(dependency)) {
+                    if (isNull(dependency)) {
                         throw new TypeError('The dependency for ' +
                             name + ' at index ' +
                             index + ' is undefined, did you forgot to include a file?');
@@ -1486,9 +1486,7 @@ module plat {
                 var toInject: any = [],
                     type = this.type;
 
-                this.__dependencies = Injector.getDependencies(this.__dependencies);
-
-                var dependencies: Array<IInjector<any>> = this.__dependencies || [],
+                var dependencies = Injector.getDependencies(this.__dependencies) || [],
                     length = dependencies.length,
                     injectable: any;
 
@@ -4093,7 +4091,8 @@ module plat {
                     identifiers = this.__identifiers,
                     tempIdentifiers = this.__tempIdentifiers,
                     codeArray = this.__codeArray,
-                    nextChar = this._peek(index);
+                    nextChar = this._peek(index),
+                    lastIndex: number;
 
                 if (this._isValEqual(nextChar, '()')) {
                     return true;
@@ -4103,7 +4102,8 @@ module plat {
                     previousToken = tokens[index - 1],
                     identifierIndexer = tempIdentifiers.pop(),
                     hasIdentifierIndexer = !isNull(identifierIndexer),
-                    context = codeArray.pop();
+                    context = codeArray.pop(),
+                    token = tokens[index];
             
                 if (hasIdentifierIndexer && identifierIndexer[0] === '@') {
                     codeStr = '(' + this.__indexIntoContext.toString() + ')(' + context + ',' + codeStr + ')';
@@ -4111,15 +4111,26 @@ module plat {
                 } else if (this._isValEqual(previousToken, '++--()[]*/%?:>=<=&&||!===')) {
                     codeStr = '(' + this.__indexIntoContext.toString() + ')(' + context + ',' + codeStr + ')';
                     tempIdentifiers.push('.');
+                } else if (previousToken.args < 0 && this._isValEqual(token, '[]')) {
+                    codeStr = '(' + this.__indexIntoContext.toString() + ')(' + context + ',' + codeStr + ')';
+
+                    lastIndex = tempIdentifiers.length - 1;
+                    if (lastIndex >= 0) {
+                        if (tempIdentifiers[lastIndex] !== '.') {
+                            identifiers.push(tempIdentifiers.pop());
+                        }
+                    }
+
+                    identifiers.push(identifierIndexer);
                 } else {
                     codeStr = '(' + this.__indexIntoContext.toString() + ')(' + context + ',"' + codeStr + '")';
 
-                    var lastIndex = tempIdentifiers.length - 1;
+                    lastIndex = tempIdentifiers.length - 1;
                     if (lastIndex >= 0) {
                         if (tempIdentifiers[lastIndex] !== '.') {
                             tempIdentifiers[lastIndex] += '.' + identifierIndexer;
                         }
-                    } else if (hasIdentifierIndexer && identifierIndexer !== '.') {
+                    } else if (hasIdentifierIndexer && identifierIndexer !== '.' && this._isValUnequal(token, '.')) {
                         identifiers.push(identifierIndexer);
                     }
                 }
@@ -4679,19 +4690,18 @@ module plat {
             private static __urlUtilsElement: HTMLAnchorElement;
             private static __getQuery(search: string): IObject<string> {
                 if (isEmpty(search)) {
-                    return <IObject<string>>{};
+                    return;
                 }
 
                 var split = search.split('&'),
                     query: IObject<string> = {},
                     length = split.length,
-                    item: Array<string>,
-                    define = (<observable.IContextManagerStatic>acquire(__ContextManagerStatic)).defineGetter;
+                    item: Array<string>;
 
                 for (var i = 0; i < length; ++i) {
                     item = split[i].split('=');
 
-                    define(query, item[0], item[1]);
+                    query[item[0]] = item[1];
                 }
 
                 return query;
@@ -4939,7 +4949,8 @@ module plat {
                 var ContextManager: observable.IContextManagerStatic = acquire(__ContextManagerStatic);
                 ContextManager.defineGetter(this, 'uid', uniqueId('plat_'));
 
-                this._removeListener = this.$EventManagerStatic.on(this.uid, 'urlChanged', (ev: events.IDispatchEventInstance, utils: web.IUrlUtilsInstance) => {
+                this._removeListener = this.$EventManagerStatic.on(this.uid, 'urlChanged',
+                    (ev: events.IDispatchEventInstance, utils: web.IUrlUtilsInstance) => {
                     postpone(() => {
                         this._routeChanged(ev, utils);
                     });
@@ -8395,7 +8406,7 @@ module plat {
                 var join = split.join('.'),
                     context = this.__contextObjects[join];
 
-                if (isNull(this.__contextObjects[join])) {
+                if (isNull(context)) {
                     context = this.__contextObjects[join] = ContextManager.getContext(this.context, split);
                 }
 
@@ -8417,7 +8428,7 @@ module plat {
                 if (split.length > 0) {
                     join = split.join('.');
                     context = this.__contextObjects[join];
-                    if (isNull(this.__contextObjects[join])) {
+                    if (isNull(context)) {
                         context = this.__contextObjects[join] = this._getImmediateContext(join);
                     }
                 }
@@ -8730,16 +8741,14 @@ module plat {
              * @param observableListener The function and associated uid to be fired 
              * for this identifier.
              */
-            _addObservableListener(absoluteIdentifier: string,
-                observableListener: IListener): IRemoveListener {
-                var uid = observableListener.uid;
+            _addObservableListener(absoluteIdentifier: string, observableListener: IListener): IRemoveListener {
+                var uid = observableListener.uid,
+                    remove = () => {
+                        ContextManager.removeIdentifier([uid], absoluteIdentifier);
+                        this._removeCallback(absoluteIdentifier, observableListener);
+                    };
 
                 this.__add(absoluteIdentifier, observableListener);
-
-                var remove = () => {
-                    ContextManager.removeIdentifier([uid], absoluteIdentifier);
-                    this._removeCallback(absoluteIdentifier, uid);
-                };
 
                 ContextManager.pushRemoveListener(absoluteIdentifier, uid, remove);
 
@@ -8819,27 +8828,19 @@ module plat {
             }
 
             /**
-             * Removes listener callbacks based on control uid.
+             * Removes a single listener callback
              * 
              * @param identifier The identifier attached to the callbacks.
-             * @param uid The uid to remove the callback from.
+             * @param listener The observable listener to remove.
              */
-            _removeCallback(identifier: string, uid: string): void {
+            _removeCallback(identifier: string, listener: IListener): void {
                 var callbacks = this.__identifiers[identifier];
                 if (isNull(callbacks)) {
                     return;
                 }
 
-                // filter out callback objects that have matching uids
-                var length = callbacks.length - 1,
-                    callback: IListener;
-
-                for (var i = length; i >= 0; --i) {
-                    callback = callbacks[i];
-                    if (callback.uid === uid) {
-                        callbacks.splice(i, 1);
-                    }
-                }
+                // splice the observed listener
+                callbacks.splice(callbacks.indexOf(listener), 1);
 
                 if (isEmpty(this.__identifiers[identifier])) {
                     deleteProperty(this.__identifierHash, identifier);
@@ -10402,6 +10403,23 @@ module plat {
         static load(control: IControl): void {
             if (isNull(control)) {
                 return;
+            }
+
+            var ctrl = <ui.ITemplateControl>control;
+            if (isString(ctrl.absoluteContextPath) && isFunction(ctrl.contextChanged)) {
+                var contextManager = Control.$ContextManagerStatic.getManager(ctrl.root);
+
+                contextManager.observe(ctrl.absoluteContextPath, {
+                    uid: control.uid,
+                    listener: (newValue, oldValue) => {
+                        ui.TemplateControl.contextChanged(control, newValue, oldValue);
+                    }
+                });
+
+                if (isFunction((<any>ctrl).zCC__plat)) {
+                    (<any>ctrl).zCC__plat();
+                    deleteProperty(ctrl, 'zCC__plat');
+                }
             }
 
             if (isFunction(control.loaded)) {
@@ -15095,13 +15113,7 @@ module plat {
                 var $TemplateControlFactory = this.$TemplateControlFactory,
                     control = $TemplateControlFactory.getInstance(),
                     $ResourcesFactory = this.$ResourcesFactory,
-                    parent = this.control,
-                    hasRelativeIdentifier = !isEmpty(relativeIdentifier),
-                    absoluteContextPath: string = hasRelativeIdentifier ?
-                    parent.absoluteContextPath + '.' + relativeIdentifier :
-                    absoluteContextPath = parent.absoluteContextPath;
-
-                $TemplateControlFactory.setAbsoluteContextPath(control, absoluteContextPath);
+                    parent = this.control;
 
                 var _resources = $ResourcesFactory.getInstance();
 
@@ -15113,7 +15125,7 @@ module plat {
                 control.parent = parent;
                 control.controls = [];
                 control.element = <HTMLElement>template;
-                control.type = this.control.type + '-@' + key;
+                control.type = parent.type + '-@' + key;
 
                 return control;
             }
@@ -16245,6 +16257,9 @@ module plat {
                     return;
                 }
 
+                // set any captured target back to null
+                this.__capturedTarget = null;
+
                 this.__standardizeEventObject(ev);
 
                 if ((this.__touchCount = ev.touches.length) > 1) {
@@ -16397,14 +16412,14 @@ module plat {
 
                 // clear hold event
                 this.__clearHold();
-                // set any captured target back to null
-                this.__capturedTarget = null;
 
                 // if we were detecting move events, unregister them
                 if (this.__detectMove) {
                     this.__unregisterType(this.__MOVE);
                     this.__detectMove = false;
                 }
+
+                this.__standardizeEventObject(ev);
 
                 // check for cancel event,
                 if (this.__cancelRegex.test(eventType)) {
@@ -16413,8 +16428,6 @@ module plat {
                     this.__hasSwiped = false;
                     return;
                 }
-
-                this.__standardizeEventObject(ev);
 
                 // return if the touch count was greater than 0, 
                 // or handle release
@@ -17028,28 +17041,34 @@ module plat {
             private __handleInput(target: HTMLInputElement) {
                 var nodeName = target.nodeName;
 
-                if (isString(nodeName)) {
-                    nodeName = nodeName.toLowerCase();
+                if (!isString(nodeName)) {
+                    return;
                 }
 
-                if (nodeName === 'input') {
-                    switch (target.type) {
-                        case 'button':
-                        case 'range':
-                            break;
-                        case 'checkbox':
-                        case 'radio':
-                        case 'file':
-                            target.click();
-                            break;
-                        default:
-                            target.focus();
-                            break;
-                    }
-                } else if (nodeName === 'textarea') {
-                    target.focus();
-                } else if (nodeName === 'label') {
-                    target.click();
+                switch (nodeName.toLowerCase()) {
+                    case 'input':
+                        switch (target.type) {
+                            case 'range':
+                                break;
+                            case 'button':
+                            case 'submit':
+                            case 'checkbox':
+                            case 'radio':
+                            case 'file':
+                                target.click();
+                                break;
+                            default:
+                                target.focus();
+                                break;
+                        }
+                        break;
+                    case 'button':
+                    case 'label':
+                        target.click();
+                        break;
+                    default:
+                        target.focus();
+                        break;
                 }
             }
             private __removeSelections(element: Node): void {
@@ -18853,7 +18872,6 @@ module plat {
                  */
                 setTemplate(): void {
                     var childNodes: Array<Node> = Array.prototype.slice.call(this.element.childNodes);
-                    this._blockLength = childNodes.length + 2;
                     this.bindableTemplates.add('item', childNodes);
                 }
 
@@ -18931,6 +18949,8 @@ module plat {
 
                     if (!animate) {
                         return;
+                    } else if (this._blockLength === 0) {
+                        this._blockLength = childNodes.length;
                     }
 
                     var currentAnimations = this.__currentAnimations;
@@ -19080,8 +19100,14 @@ module plat {
                  * @param ev The IArrayMethodInfo
                  */
                 _pop(ev: observable.IArrayMethodInfo<any>): void {
-                    var startNode = this._blockLength * ev.newArray.length,
+                    var blockLength = this._blockLength,
+                        startNode: number,
+                        animationPromise: plat.ui.IAnimationThenable<void>;
+
+                    if (blockLength > 0) {
+                        startNode = blockLength * ev.newArray.length;
                         animationPromise = this._animateItems(startNode, undefined, __Leave);
+                    }
 
                     if (isNull(animationPromise)) {
                         this._removeItems(1);
@@ -19261,18 +19287,11 @@ module plat {
                  * template if necessary.
                  */
                 setTemplate(): void {
-                    var element = this.element,
-                        firstElementChild = element.firstElementChild,
-                        $document = this.$Document;
-
-                    if (!isNull(firstElementChild) && firstElementChild.nodeName.toLowerCase() === 'option') {
-                        this.__defaultOption = <HTMLOptionElement>firstElementChild.cloneNode(true);
-                    }
-
-                    var platOptions = this.options.value,
+                    var $document = this.$Document,
+                        platOptions = this.options.value,
                         option = $document.createElement('option');
 
-                    if (this.__isGrouped = !isNull(platOptions.group)) {
+                    if (!isNull(platOptions.group)) {
                         var group = this.__group = platOptions.group,
                             optionGroup = $document.createElement('optgroup');
 
@@ -19306,8 +19325,8 @@ module plat {
                  * @param oldValue The old array context.
                  */
                 contextChanged(newValue?: Array<any>, oldValue?: Array<any>): void {
-                    var newLength = isNull(newValue) ? 0 : newValue.length,
-                        oldLength = isNull(oldValue) ? 0 : oldValue.length;
+                    var newLength = isArray(newValue) ? newValue.length : 0,
+                        oldLength = isArray(oldValue) ? oldValue.length : 0;
 
                     if (isNull(this.__removeListener)) {
                         this.__removeListener = this.observeArray(this, 'context',
@@ -19330,7 +19349,17 @@ module plat {
                  * the options accordingly.
                  */
                 loaded(): void {
-                    var context = this.context;
+                    var context = this.context,
+                        element = this.element,
+                        firstElementChild = element.firstElementChild,
+                        group = this.options.value.group;
+
+                    if (isNode(firstElementChild) && firstElementChild.nodeName.toLowerCase() === 'option') {
+                        this.__defaultOption = <HTMLOptionElement>firstElementChild.cloneNode(true);
+                    }
+
+                    this.__isGrouped = !isNull(group);
+                    this.__group = group;
 
                     if (isNull(context)) {
                         return;
@@ -21072,16 +21101,16 @@ module plat {
                         absoluteContextPath = 'context';
                     }
 
+                    (<any>uiControl).zCC__plat = contextManager.observe(absoluteContextPath, {
+                        uid: uiControl.uid,
+                        listener: (newValue, oldValue) => {
+                            uiControl.context = newValue;
+                        }
+                    });
+
                     $TemplateControlFactory.setAbsoluteContextPath(uiControl, absoluteContextPath);
                     $TemplateControlFactory.setContextResources(uiControl);
                     ElementManager.$ResourcesFactory.bindResources(uiControl.resources);
-
-                    contextManager.observe(uiControl.absoluteContextPath, {
-                        uid: uiControl.uid,
-                        listener: (newValue, oldValue) => {
-                            $TemplateControlFactory.contextChanged(uiControl, newValue, oldValue);
-                        }
-                    });
 
                     if (!replace) {
                         var element = uiControl.element;
@@ -22095,6 +22124,8 @@ module plat {
             navigate(Constructor?: new (...args: any[]) => ui.IViewControl, options?: INavigationOptions): void;
             navigate(injector?: dependency.IInjector<ui.IViewControl>, options?: INavigationOptions): void;
             navigate(Constructor?: any, options?: INavigationOptions) {
+                options = options || <IBaseNavigationOptions>{};
+
                 var state = this.currentState || <IBaseNavigationState>{},
                     viewControl = state.control,
                     injector: dependency.IInjector<ui.IViewControl>,
@@ -22102,7 +22133,6 @@ module plat {
                     parameter = options.parameter,
                     event: events.INavigationEvent<any>;
 
-                options = options || <IBaseNavigationOptions>{};
                 event = this._sendEvent('beforeNavigate', Constructor, null, parameter, options, true);
 
                 if (event.canceled) {

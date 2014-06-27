@@ -29,7 +29,7 @@ var expressConfig = (app: express.Application) => {
         .use(bodyParser.json())
         .use(bodyParser.urlencoded())
         .use(cookieParser())
-        .use(express.static(path.join(__dirname, '../public')));
+        .use(express.static(path.join(__dirname, '../../public')));
 
     // express/mongo session storage
     app.use(session({

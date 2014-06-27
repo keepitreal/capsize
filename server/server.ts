@@ -3,12 +3,9 @@ import express = require('express');
 import fs = require('fs');
 import mongoose = require('mongoose');
 import passport = require('passport');
+import config = require('./config/config');
 
 require('./config/middleware/auth');
-
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-import config = require('./config/config');
 
 // bootstrap db connection
 mongoose.connect(config.db);

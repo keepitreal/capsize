@@ -1,11 +1,13 @@
 /// <reference path="../typings/tsd.d.ts" />
-import all = require('./env/all');
+import path = require('path');
+
+process.env.NODE_ENV = 'development';
 
 var cfg = require('./env/' + process.env.NODE_ENV + '.json') || {};
 
-export var root = all.root;
-export var port = all.port;
-export var db = all.db || cfg.db;
+export var root = path.normalize(__dirname + '/../..');
+export var port = process.env.PORT || 3000;
+export var db = process.env.MONGOHQ_URL || cfg.db;
 export var app = cfg.app;
 export var email = cfg.email;
 export var facebook = cfg.facebook;

@@ -20,7 +20,11 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         nodemon: {
             dev: {
-                script: 'server.js'
+                script: 'server/server.js',
+                options: {
+                    ignore: ['node_modules/**'],
+                    watch: ['server']
+                }
             }
         },
         typescript: {
