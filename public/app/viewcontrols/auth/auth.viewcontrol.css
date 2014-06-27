@@ -11,9 +11,14 @@
     border-bottom: 3px solid #dddddd;
     color: #888888;
 }
+
+    .auth .auth-local .alert {
+      padding: 0.5em;
+    }
+
     .auth .auth-local ul > li {
         text-align: left;
-        list-style-type: none;
+        list-style-type: square;
     }
 
     .auth .auth-actions a {

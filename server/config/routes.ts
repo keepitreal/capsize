@@ -29,42 +29,29 @@ router
 router
     .get('/auth/facebook', passport.authenticate('facebook', {
         scope: ['email', 'user_about_me'],
-        failureRedirect: '#!/login'
+        failureRedirect: '/#!/login'
     }), users.login)
     .get('/auth/facebook/callback', passport.authenticate('facebook', {
-        failureRedirect: '#!/login'
+        failureRedirect: '/#!/login'
     }), users.authCallback);
 
 // linkedin
 router
     .get('/auth/linkedin', passport.authenticate('linkedin', {
         scope: ['r_emailaddress'],
-        failureRedirect: '#!/login'
+        failureRedirect: '/#!/login'
     }), users.login)
     .get('/auth/linkedin/callback', passport.authenticate('linkedin', {
-        failureRedirect: '#!/login'
+        failureRedirect: '/#!/login'
     }), users.authCallback);
 
 // twitter
 router
     .get('/auth/twitter', passport.authenticate('twitter', {
-        failureRedirect: '#!/login'
+        failureRedirect: '/#!/login'
     }), users.login)
     .get('/auth/twitter/callback', passport.authenticate('twitter', {
-        failureRedirect: '#!/login'
-    }), users.authCallback);
-
-// google
-router
-    .get('/auth/google', passport.authenticate('google', {
-        failureRedirect: '#!/login',
-        scope: [
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email'
-        ]
-    }), users.login)
-    .get('/auth/google/callback', passport.authenticate('google', {
-        failureRedirect: '#!/login'
+        failureRedirect: '/#!/login'
     }), users.authCallback);
 
 // :userId route param matcher
