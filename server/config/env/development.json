@@ -4,18 +4,18 @@
         "name": "PlatyNEM - A TypeScript MVC Stack for Node"
     },
     "facebook": {
-        "clientID": "886299374720277",
-        "clientSecret": "286d57f3fa0d7b28f2b07d96f651a7b3",
+        "clientID": "APP_ID",
+        "clientSecret": "APP_SECRET",
         "callbackURL": "http://localhost:3000/auth/facebook/callback/"
     },
     "twitter": {
-        "clientID": "OhQp2lVfGV2VQ1okK10VOCkdt",
-        "clientSecret": "gdxFq99OwKCmzmdfKoLShXyAiEVE5LfYhp0OsBFn70RtT1glmR",
+        "clientID": "CONSUMER_KEY",
+        "clientSecret": "CONSUMER_SECRET",
         "callbackURL": "http://localhost:3000/auth/twitter/callback"
     },
     "linkedin": {
-        "clientID": "75bix668h6r530",
-        "clientSecret": "5IsH4smhox29fl9u",
+        "clientID": "APP_ID",
+        "clientSecret": "APP_SECRET",
         "callbackURL": "http://localhost:3000/auth/linkedin/callback"
     }
 }
