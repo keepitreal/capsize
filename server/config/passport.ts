@@ -25,8 +25,8 @@ var out = (passport: passport.Passport) => {
         User.findOne({
             _id: id
         }, (err, user) => {
-            done(err, user);
-        });
+                done(err, user);
+            });
     });
 
     // local strategy (username/password)
@@ -40,11 +40,13 @@ var out = (passport: passport.Passport) => {
                     if (_.isObject(err)) {
                         return done(err);
                     } else if (!_.isObject(user)) {
-                        return done(null, null, {
+                        // XXX: Is it right to put false here?
+                        return done(null, <any>false, {
                             message: 'User not recognized'
                         });
                     } else if (!_.isFunction(user.authenticate) || !user.authenticate(password)) {
-                        return done(null, null, {
+                        // XXX: Is it right to put false here?
+                        return done(null, <any>false, {
                             message: 'Incorrect password'
                         });
                     }
@@ -56,28 +58,40 @@ var out = (passport: passport.Passport) => {
     passport.use(new TwitterStrategy({
         consumerKey: config.twitter.clientID,
         consumerSecret: config.twitter.clientSecret,
-        callbackURL: config.twitter.callbackURL,
-        profileFields: ['id', 'displayName', 'profile_image_url', 'emails', 'username']
+        callbackURL: config.twitter.callbackURL
     }, (accessToken: string, tokenSecret: string, profile: any, done: (err: any, user?: userModels.IUser) => void) => {
             User.findOne({
-                'twitter.id': Number(profile.id)
+                'twitter.id_str': profile.id
             }, (err, userDoc) => {
-                userFound(err, userDoc, 'twitter', profile, done);
-            });
+                    userFound(err, userDoc, 'twitter', profile, done);
+                });
         }));
 
     // facebook strategy
     passport.use(new FacebookStrategy({
         clientID: config.facebook.clientID,
         clientSecret: config.facebook.clientSecret,
-        callbackURL: config.facebook.callbackURL,
-        profileFields: ['id', 'displayName', 'photos', 'emails', 'username']
+        callbackURL: config.facebook.callbackURL
     }, (accessToken, refreshToken, profile, done) => {
             User.findOne({
                 'facebook.id': profile.id
             }, (err, userDoc) => {
-                userFound(err, userDoc, 'facebook', profile, done);
-            });
+                    userFound(err, userDoc, 'facebook', profile, done);
+
+                });
+        }));
+
+    // google strategy
+    passport.use(new GoogleStrategy({
+        consumerKey: config.google.clientID,
+        consumerSecret: config.google.clientSecret,
+        callbackURL: config.google.callbackURL
+    }, (accessToken: string, refreshToken: string, profile: any, done: (err: any, user?: userModels.IUser) => void) => {
+            User.findOne({
+                'google.id': profile.id
+            }, (err, userDoc) => {
+                    userFound(err, userDoc, 'google', profile, done);
+                });
         }));
 
     // linkedin strategy
@@ -85,13 +99,13 @@ var out = (passport: passport.Passport) => {
         consumerKey: config.linkedin.clientID,
         consumerSecret: config.linkedin.clientSecret,
         callbackURL: config.linkedin.callbackURL,
-        profileFields: ['id', 'first-name', 'last-name', 'email-address', 'pictureUrl']
+        profileFields: ['id', 'first-name', 'last-name', 'email-address']
     }, (accessToken: string, refreshToken: string, profile: any, done: (err: any, user?: userModels.IUser) => void) => {
             User.findOne({
                 'linkedin.id': profile.id
             }, (err, userDoc) => {
-                userFound(err, userDoc, 'linkedin', profile, done);
-            });
+                    userFound(err, userDoc, 'linkedin', profile, done);
+                });
         }));
 };
 
@@ -104,22 +118,12 @@ var userFound = (err: any,
     if (_.isObject(err)) {
         return done(err);
     } else if (!_.isObject(userDoc)) {
-        var usr = <any>{
+        userDoc = new User({
             name: profile.displayName,
-            username: (<any>profile).username || (<any>profile).emails[0].value.split('@')[0],
+            email: (<any>profile).emails[0].value,
+            username: (<any>profile).emails[0].value,
             provider: provider
-        };
-
-        usr[provider] = {
-            id: (<any>profile)._json.id
-        };
-
-        // twitter does not give us an email
-        if (provider !== 'twitter') {
-            usr.email = (<any>profile).emails[0].value;
-        }
-
-        userDoc = new User(usr);
+        });
         userDoc.save<userModels.IUser>((err, user) => {
             if (err) {
                 console.log(err);
