@@ -12,7 +12,7 @@ module platynem.viewcontrols {
 
         context = {
             user: <models.IUser>{},
-            errors: <Array<string>>[]
+            errors: <Array<{ message: string; }>>[]
         };
 
         create(user: models.IUser) {
@@ -22,10 +22,18 @@ module platynem.viewcontrols {
                 })
                 .catch((response) => {
                     var utils = this.$utils;
-                    this.context.errors = utils.map(response.errors, (err: any) => {
+                    this.context.errors = utils.map(response.errors, (err: { message: string }) => {
                         return err;
                     });
                 });
+        }
+
+        navigatedTo(route: plat.web.IRoute<any>) {
+            if (this.$utils.isObject(route.query)) {
+                this.$utils.forEach(route.query, (error: string) => {
+                    this.context.errors.push({ message: decodeURI(error) });
+                });
+            }
         }
     }
 

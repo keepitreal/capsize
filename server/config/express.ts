@@ -1,8 +1,11 @@
+/// <reference path="../typings/tsd.d.ts" />
+
 import path = require('path');
 import express = require('express');
 import router = require('./routes');
 import config = require('./config');
 import passport = require('passport');
+import _ = require('underscore');
 
 var session = require('express-session'),
     mongoStore = require('connect-mongo')({ session: session }),
@@ -57,11 +60,23 @@ var expressConfig = (app: express.Application) => {
     // production error handler
     // no stacktraces leaked to user
     app.use((err: any, req: express.Request, res: express.Response, next: Function) => {
-        res.status(err.status || 500);
-        // res.render('error', {
-        //     message: err.message,
-        //     error: {}
-        // });
+        if (_.isString(err.message)) {
+            switch (err.name) {
+                case 'ValidationError':
+                    var query = _.map(err.errors, (err: Error, key) => {
+                        return key + '=' + err.message;
+                    });
+                    res.redirect('/#!/register?' + encodeURI(query.join('&')));
+                    break;
+                default:
+                    res.status(err.status || 500);
+                    // res.render('error', {
+                    //     message: err.message,
+                    //     error: {}
+                    // });
+                    break;
+            }
+        }
     });
 };
 

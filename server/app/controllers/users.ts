@@ -11,8 +11,7 @@ var User: userModels.IUserModel = (<any>mongoose).model('User');
 
 // auth callback
 export var authCallback = (req: express.Request, res: express.Response) => {
-    var response = format.response();
-    res.json(response.status, response.body);
+    res.redirect('/');
 };
 
 // login user

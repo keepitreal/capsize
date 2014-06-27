@@ -12,7 +12,10 @@ var UserSchema = new Schema({
     username: String,
     provider: String,
     hashed_password: String,
-    salt: String
+    salt: String,
+    facebook: {},
+    twitter: {},
+    linkedin: {}
 });
 
 // virtuals
