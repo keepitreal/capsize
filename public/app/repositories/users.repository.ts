@@ -9,7 +9,7 @@ module platynem.repositories {
             private Promise: plat.async.IPromise,
             private utils: plat.IUtils) { }
 
-        create(user: any): plat.async.IThenable<any> {
+        create(user: any): plat.async.IThenable<models.IUser> {
             var u = this.userFactory.createUser(user);
             return this.usersService.create(u, user.password);
         }

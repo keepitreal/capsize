@@ -1,7 +1,7 @@
-﻿module platynem.tests {
+﻿module platynem.tests.modelTests {
     var UserFactory = plat.acquire(models.UserFactory);
 
-    describe('UserFactory tests', () => {
+    describe('UserFactory Tests', () => {
         it('should test createUser with null', () => {
             var user = UserFactory.createUser(null);
 

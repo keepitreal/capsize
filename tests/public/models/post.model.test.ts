@@ -1,7 +1,7 @@
-﻿module platynem.tests {
+﻿module platynem.tests.modelTests {
     var PostFactory = plat.acquire(models.PostFactory);
 
-    describe('PostFactory tests', () => {
+    describe('PostFactory Tests', () => {
         it('should test createPost with null', () => {
             var post = PostFactory.createPost(null);
 
