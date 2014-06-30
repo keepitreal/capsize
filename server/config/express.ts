@@ -30,13 +30,17 @@ var expressConfig = (app: express.Application) => {
         .set('view engine', 'jade')
         .use(logger('dev'))
         .use(bodyParser.json())
-        .use(bodyParser.urlencoded())
+        .use(bodyParser.urlencoded({
+            extended: true
+        }))
         .use(cookieParser())
         .use(express.static(path.join(__dirname, '../../public')));
 
     // express/mongo session storage
     app.use(session({
         secret: 'd@s !t m@n#',
+        resave: true,
+        saveUninitialized: true,
         store: new mongoStore({
             url: config.db,
             collection: 'sessions'

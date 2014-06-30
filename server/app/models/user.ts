@@ -154,6 +154,7 @@ UserSchema.method({
         if (!_.isString(password) || password.length === 0) {
             return '';
         }
+
         return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
     }
 });

@@ -2069,9 +2069,10 @@ module plat {
             head.insertBefore(element, null);
 
             var computedStyle = this.$Window.getComputedStyle(element),
-                display = computedStyle.display;
+                display = computedStyle.display,
+                visibility = computedStyle.visibility;
 
-            if (display === 'none') {
+            if (display === 'none' || visibility === 'hidden') {
                 this.platCss = true;
             } else {
                 this.platCss = false;
@@ -16146,6 +16147,7 @@ module plat {
             private __swipeOrigin: ITouchPoint;
             private __lastMoveEvent: IPointerEvent;
             private __capturedTarget: ICustomElement;
+            private __focusedElement: HTMLInputElement;
             private __mappedEventListener = this.__handleMappedEvent.bind(this);
             private __reverseMap = {};
             private __swipeSubscribers: { master: IDomEventInstance; directional: IDomEventInstance };
@@ -16240,6 +16242,7 @@ module plat {
                 this.__lastTouchDown = null;
                 this.__lastTouchUp = null;
                 this.__capturedTarget = null;
+                this.__focusedElement = null;
             }
 
             /**
@@ -17039,7 +17042,12 @@ module plat {
                 return style;
             }
             private __handleInput(target: HTMLInputElement) {
-                var nodeName = target.nodeName;
+                var nodeName = target.nodeName,
+                    focusedElement = this.__focusedElement || <HTMLInputElement>{};
+
+                if (isFunction(focusedElement.blur)) {
+                    focusedElement.blur();
+                }
 
                 if (!isString(nodeName)) {
                     return;
@@ -17063,6 +17071,7 @@ module plat {
                         }
                         break;
                     case 'button':
+                    case 'select':
                     case 'label':
                         target.click();
                         break;
@@ -17070,6 +17079,8 @@ module plat {
                         target.focus();
                         break;
                 }
+
+                this.__focusedElement = target;
             }
             private __removeSelections(element: Node): void {
                 if (!isNode(element)) {

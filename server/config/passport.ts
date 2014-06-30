@@ -10,7 +10,6 @@ import _ = require('underscore');
 var LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = passportFacebook.Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
-    GoogleStrategy = require('passport-google-oauth').Strategy,
     LinkedInStrategy = require('passport-linkedin').Strategy,
     // TODO: When mongoose type definitions are updated, we can remove the type casting.
     User: userModels.IUserModel = (<any>mongoose).model('User');
