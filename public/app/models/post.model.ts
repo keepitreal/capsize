@@ -14,11 +14,13 @@ module platynem.models {
 
         static update(post: any): IPost {
             if (Post.utils.isObject(post)) {
-                post.updated.push(new Date().getTime());
-
-                return new Post(post._id, post.title, post.content,
+                var newPost = new Post(post._id, post.title, post.content,
                     post.user, post.created, post.published, post.updated,
                     post.tags);
+
+                newPost.updated.push(Date.now());
+
+                return newPost;
             }
         }
 
@@ -34,7 +36,11 @@ module platynem.models {
 
         constructor(public _id: string, public title: string, public content: string,
             public user: any, public created: string, public published: boolean,
-            public updated: Array<Date>, public tags: Array<string>) { }
+            public updated: Array<number>, public tags: Array<string>) {
+            if (!updated) {
+                this.updated = [];
+            }
+        }
     }
 
     export interface IPostFactory {
@@ -50,7 +56,7 @@ module platynem.models {
         user: any;
         created: string;
         published: boolean;
-        updated: Array<Date>;
+        updated: Array<number>;
         tags: Array<string>;
     }
 
