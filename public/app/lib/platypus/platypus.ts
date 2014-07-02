@@ -5,6 +5,9 @@
  * 
  * PlatypusTS is licensed under the GPL-3.0 found at  
  * http://opensource.org/licenses/GPL-3.0 
+ * 
+ * 
+ * 
  */
 module plat {
     /* tslint:disable:no-unused-variable */
@@ -3767,6 +3770,7 @@ module plat {
 
             parse(input: string): IParsedExpression {
                 var parsedObject = this.__cache[input];
+            
                 if (!isNull(parsedObject)) {
                     return parsedObject;
                 }
@@ -8250,14 +8254,14 @@ module plat {
              * the rootContext.
              */
             static getContext(rootContext: any, split: Array<string>): any {
-                split = split.slice(0);
                 if (isNull(rootContext)) {
-                    return null;
+                    return rootContext;
                 }
+                split = split.slice(0);
                 while (split.length > 0) {
                     rootContext = rootContext[split.shift()];
                     if (isNull(rootContext)) {
-                        return null;
+                        return rootContext;
                     }
                 }
 
@@ -8408,7 +8412,7 @@ module plat {
                     context = this.__contextObjects[join];
 
                 if (isNull(context)) {
-                    context = this.__contextObjects[join] = ContextManager.getContext(this.context, split);
+                    context = this.__contextObjects[join] = this._getImmediateContext(join);
                 }
 
                 return context;
@@ -8587,19 +8591,14 @@ module plat {
                 }
 
                 var split = identifier.split('.'),
-                    context = this.context,
-                    key = split.shift(),
-                    partialIdentifier = key;
+                    context = this.context;
 
-                do {
-                    context = context[key];
-                    if (isNull(context) || split.length === 0) {
+                while (split.length > 0) {
+                    context = context[split.shift()];
+                    if (isNull(context)) {
                         break;
                     }
-
-                    key = split.shift();
-                    partialIdentifier += '.' + key;
-                } while (split.length >= 0);
+                }
 
                 return context;
             }

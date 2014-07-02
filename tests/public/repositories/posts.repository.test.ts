@@ -1,4 +1,4 @@
-﻿module platynem.tests.repositoryTests {
+﻿module platynem.repository.tests {
     describe('PostsRepository Tests', () => {
         mock.postsService();
         var repository: repositories.PostsRepository = plat.acquire(repositories.PostsRepository);

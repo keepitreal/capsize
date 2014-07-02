@@ -1,4 +1,4 @@
-﻿module platynem.tests.mock {
+﻿module platynem.mock {
     export class UsersService implements services.IUsersService {
         static user: models.IUser = {
             _id: '123',

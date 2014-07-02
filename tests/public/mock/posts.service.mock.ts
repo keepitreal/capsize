@@ -1,4 +1,4 @@
-﻿module platynem.tests.mock {
+﻿module platynem.mock {
     export class PostsService implements services.IPostsService {
         static post: models.IPost = {
             _id: '123',

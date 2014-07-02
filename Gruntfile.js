@@ -14,13 +14,11 @@ function publicFiles(ext) {
             'public/app/lib/jquery/dist/*.' + ext,
             'public/app/lib/bootstrap/dist/js/*.' + ext,
             'public/app/lib/platypus/*.' + ext,
-            'public/app/injectables/**/*.' + ext,
             'public/app/services/**/*.' + ext,
             'public/app/models/**/*.' + ext,
             'public/app/repositories/**/*.' + ext,
             'public/app/common/templatecontrols/**/*.' + ext,
             'public/app/viewcontrols/**/*.' + ext,
-            'public/admin/viewcontrols/**/*.' + ext,
             'public/app/app.' + ext
     ];
 }
@@ -61,7 +59,7 @@ module.exports = function (grunt) {
                     target: 'es5'
                 }
             },
-            platypus: {
+            public: {
                 src: publicFiles('ts'),
                 options: {
                     module: 'commonjs',
@@ -127,7 +125,10 @@ module.exports = function (grunt) {
                 options: {
                     files: publicTestFiles(),
                     preprocessors: {
-                        'public/**/*.js': 'coverage'
+                        'public/app/common/**/*.js': 'coverage',
+                        'public/app/models/**/*.js': 'coverage',
+                        'public/app/repositories/**/*.js': 'coverage',
+                        'public/app/viewcontrols/**/*.js': 'coverage'
                     }
                 }
             },
@@ -149,7 +150,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-karma');
 
     // Register tasks
-    grunt.registerTask('ts', ['typescript:server', 'typescript:platypus']);
+    grunt.registerTask('ts', ['typescript:server', 'typescript:public']);
     grunt.registerTask('test', ['karma']);
     grunt.registerTask('test-public', ['karma:public']);
     grunt.registerTask('test-server', ['karma:server']);

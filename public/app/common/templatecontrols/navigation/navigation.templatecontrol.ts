@@ -13,12 +13,12 @@ module platynem.templatecontrols {
         }
 
         initialize() {
-            this.getUser();
             this.on('routeChanged', this.getUser);
+            return this.getUser();
         }
 
         getUser() {
-            this.usersRepository.getUser().then((user) => {
+            return this.usersRepository.getUser().then((user) => {
                 this.context.user = user;
             });
         }
@@ -26,7 +26,7 @@ module platynem.templatecontrols {
         logout(ev: Event) {
             ev.preventDefault();
             this.context.user = null;
-            this.usersRepository.logout();
+            return this.usersRepository.logout();
         }
     }
 

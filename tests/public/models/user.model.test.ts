@@ -1,4 +1,4 @@
-﻿module platynem.tests.modelTests {
+﻿module platynem.models.tests {
     var UserFactory = plat.acquire(models.UserFactory);
 
     describe('UserFactory Tests', () => {

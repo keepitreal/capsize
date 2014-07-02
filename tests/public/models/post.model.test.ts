@@ -1,4 +1,4 @@
-﻿module platynem.tests.modelTests {
+﻿module platynem.models.tests {
     var PostFactory = plat.acquire(models.PostFactory);
 
     describe('PostFactory Tests', () => {
