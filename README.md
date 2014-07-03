@@ -39,26 +39,31 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
 
 ## Installation
 
-1. First clone the repository into your desired directory. Then cd into your app's directory and install the dependencies with:
+0. First clone the repository into your desired directory. Then cd into your app's directory and install the dependencies with:
 
     ```
     $ npm install
     ```
 
-2. Install the TypeScript definitions with ```tsd```:
+0. Install the TypeScript definitions with ```tsd```:
 
     ```
     $ tsd update -so
     ```
 
-3. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
+0. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
 
     ```
-    $ grunt tscompile     # only run if your IDE or text editor doesn't have watched TypeScript compilation
+    $ grunt ts
     ```
 
-4. Ensure that you have a MongoDB server running on port 27017.
-5. Start the node server. We recommend using grunt to start the server:
+0. Ensure that you have a MongoDB server running on port 27017. Typically, once Mongo is installed this can be done from the command line with the following command:
+
+    ```
+    $ mongod
+    ```
+
+0. Start the node server. We recommend using grunt to start the server:
 
     ```
     $ grunt
@@ -67,11 +72,18 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
    You may also use the node CLI to start the server.
 
     ```
-    $ node server
+    $ node server/server
     ```
 
-6. Then open your browser and go to:
+0. Then open your browser and go to:
 
     ```
     http://localhost:3000
+    ```
+
+## Testing
+We use Karma/Jasmine for our testing. There are some included tests with code coverage output. You can run these with the following command:
+
+    ```
+    $ grunt test
     ```

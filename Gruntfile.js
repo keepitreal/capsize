@@ -1,25 +1,25 @@
 function serverFiles(ext) {
     ext = ext || 'js';
     return [
-            'server/app/models/**/*.' + ext,
-            'server/app/controllers/**/*.' + ext,
-            'server/config/**/*.' + ext,
-            'server/server.' + ext
+        'server/app/models/**/*.' + ext,
+        'server/app/controllers/**/*.' + ext,
+        'server/config/**/*.' + ext,
+        'server/server.' + ext
     ];
 }
 
 function publicFiles(ext) {
     ext = ext || 'js';
     return [
-            'public/app/lib/jquery/dist/*.' + ext,
-            'public/app/lib/bootstrap/dist/js/*.' + ext,
-            'public/app/lib/platypus/*.' + ext,
-            'public/app/services/**/*.' + ext,
-            'public/app/models/**/*.' + ext,
-            'public/app/repositories/**/*.' + ext,
-            'public/app/common/templatecontrols/**/*.' + ext,
-            'public/app/viewcontrols/**/*.' + ext,
-            'public/app/app.' + ext
+        'public/app/lib/jquery/dist/*.' + ext,
+        'public/app/lib/bootstrap/dist/js/*.' + ext,
+        'public/app/lib/platypus/*.' + ext,
+        'public/app/services/**/*.' + ext,
+        'public/app/models/**/*.' + ext,
+        'public/app/repositories/**/*.' + ext,
+        'public/app/common/templatecontrols/**/*.' + ext,
+        'public/app/viewcontrols/**/*.' + ext,
+        'public/app/app.' + ext
     ];
 }
 
@@ -75,6 +75,14 @@ module.exports = function (grunt) {
                     verbose: true
                 }
             }
+        },
+        clean: {
+            options: {
+                force: true
+            },
+            bootstrap: ['public/app/lib/bootstrap/*', '!public/app/lib/bootstrap/dist'],
+            jquery: ['public/app/lib/jquery/*', '!public/app/lib/jquery/dist'],
+            bower: ['public/app/lib/**/.bower.json']
         },
         karma: {
             options: {
@@ -142,6 +150,7 @@ module.exports = function (grunt) {
     });
 
     // Load tasks
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-bower-task');
@@ -151,5 +160,5 @@ module.exports = function (grunt) {
     grunt.registerTask('ts', ['typescript:server', 'typescript:public']);
     grunt.registerTask('test', ['karma']);
     grunt.registerTask('default', ['nodemon']);
-    grunt.registerTask('install', ['bower']);
+    grunt.registerTask('install', ['bower', 'clean']);
 };

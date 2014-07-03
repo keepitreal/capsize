@@ -8,3 +8,16 @@ typings/
 *.js
 *.js.map
 !Gruntfile.js
+/tests/coverage/IE 11.0.0 (Windows)
+/bin
+/obj/Debug
+/.gitattributes
+/PlatyNEM.csproj
+/PlatyNEM.csproj.user
+/PlatyNEM.sln
+/PlatyNEM.v12.suo
+/web.config
+/web.Debug.config
+/web.Release.config
+/public/app/lib/bootstrap
+/public/app/lib/jquery
