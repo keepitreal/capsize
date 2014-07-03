@@ -45,7 +45,7 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
     $ npm install
     ```
 
-0. Install the TypeScript definitions with ```tsd```:
+0. Install the TypeScript definitions with `tsd`:
 
     ```
     $ tsd update -so
