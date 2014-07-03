@@ -30,7 +30,7 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
 * MongoDB - Download and install [MongoDB](http://www.mongodb.org/downloads). Once its downloaded, start a server and make sure it is listening on port 27017 (which should be the default).
 * TSD - After you install Node, you'll need to global install the TSD package from npm. TSD will download TypeScript definition files for many of the JavaScript libraries used in PlatyNEM:
 
-    ```
+    ```shell
     $ npm install tsd -g
     ```
 
@@ -41,49 +41,49 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
 
 0. First clone the repository into your desired directory. Then cd into your app's directory and install the dependencies with:
 
-    ```
+    ```shell
     $ npm install
     ```
 
 0. Install the TypeScript definitions with `tsd`:
 
-    ```
+    ```shell
     $ tsd update -so
     ```
 
 0. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
 
-    ```
+    ```shell
     $ grunt ts
     ```
 
 0. Ensure that you have a MongoDB server running on port 27017. Typically, once Mongo is installed this can be done from the command line with the following command:
 
-    ```
+    ```shell
     $ mongod
     ```
 
 0. Start the node server. We recommend using grunt to start the server:
 
-    ```
+    ```shell
     $ grunt
     ```
 
    You may also use the node CLI to start the server.
 
-    ```
+    ```shell
     $ node server/server
     ```
 
 0. Then open your browser and go to:
 
-    ```
+    ```shell
     http://localhost:3000
     ```
 
 ## Testing
 We use Karma/Jasmine for our testing. There are some included tests with code coverage output. You can run these with the following command:
 
-    ```
-    $ grunt test
-    ```
+```shell
+$ grunt test
+```
