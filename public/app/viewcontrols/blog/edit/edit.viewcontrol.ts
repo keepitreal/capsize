@@ -7,7 +7,8 @@ module platynem.viewcontrols {
 
         constructor(private postsRepository: repositories.PostsRepository,
                     private usersRepository: repositories.UsersRepository,
-                    private utils: plat.Utils) {
+                    private utils: plat.Utils,
+                    private Promise: plat.async.IPromise) {
             super();
         }
 
@@ -17,14 +18,20 @@ module platynem.viewcontrols {
         };
 
         navigatedTo(route: plat.web.IRoute<{ id: string; }>) {
-            this.postsRepository
+            var promises: Array<plat.async.IThenable<any>> = [];
+
+            promises.push(this.postsRepository
                 .getPost(route.parameters.id)
                 .then((post) => {
                     this.setTitle('Edit - ' + post.title);
                     this.context.post = post;
-                });
+                }));
 
-            this.context.user = this.usersRepository.getUser();
+            promises.push(this.usersRepository.getUser().then((user) => {
+                this.context.user = user;
+            }));
+
+            return this.Promise.all(promises);
         }
 
         goBack() {
@@ -32,7 +39,7 @@ module platynem.viewcontrols {
         }
 
         updatePost(post: models.IPost) {
-            this.postsRepository.update(post).then(() => {
+            return this.postsRepository.update(post).then(() => {
                 this.goBack();
             });
         }
@@ -41,6 +48,7 @@ module platynem.viewcontrols {
     plat.register.viewControl('editViewControl', EditViewControl, [
         platynem.repositories.PostsRepository,
         platynem.repositories.UsersRepository,
-        plat.IUtils
+        plat.IUtils,
+        plat.async.IPromise
     ], ['posts/:id/edit']);
 }

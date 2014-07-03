@@ -16,7 +16,7 @@ module platynem.viewcontrols {
         };
 
         create(user: models.IUser) {
-            this.usersRepository.create(user)
+            return this.usersRepository.create(user)
                 .then(() => {
                     this.navigator.goBack();
                 })

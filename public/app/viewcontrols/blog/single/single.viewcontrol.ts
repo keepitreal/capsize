@@ -16,7 +16,7 @@ module platynem.viewcontrols {
             promises.push(this.usersRepository.getUser());
             promises.push(this.postsRepository.getPost(route.parameters.id));
 
-            this.Promise.all(promises)
+            return this.Promise.all(promises)
                 .then((results) => {
                     var post = results[1],
                         user = results[0];
@@ -34,7 +34,7 @@ module platynem.viewcontrols {
         }
 
         destroyPost(post: models.IPost) {
-            this.postsRepository.destroy(post._id).then(() => {
+            return this.postsRepository.destroy(post._id).then(() => {
                 this.goBack();
             });
         }

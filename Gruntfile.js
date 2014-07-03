@@ -125,10 +125,8 @@ module.exports = function (grunt) {
                 options: {
                     files: publicTestFiles(),
                     preprocessors: {
-                        'public/app/common/**/*.js': 'coverage',
                         'public/app/models/**/*.js': 'coverage',
-                        'public/app/repositories/**/*.js': 'coverage',
-                        'public/app/viewcontrols/**/*.js': 'coverage'
+                        'public/app/repositories/**/*.js': 'coverage'
                     }
                 }
             },
@@ -152,8 +150,6 @@ module.exports = function (grunt) {
     // Register tasks
     grunt.registerTask('ts', ['typescript:server', 'typescript:public']);
     grunt.registerTask('test', ['karma']);
-    grunt.registerTask('test-public', ['karma:public']);
-    grunt.registerTask('test-server', ['karma:server']);
     grunt.registerTask('default', ['nodemon']);
     grunt.registerTask('install', ['bower']);
 };

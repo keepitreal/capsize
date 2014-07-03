@@ -15,7 +15,7 @@
         };
 
         login(user: models.IUser) {
-            this.usersRepository.login(user)
+            return this.usersRepository.login(user)
                 .then(() => {
                     this.navigator.goBack();
                 }).catch((error) => {

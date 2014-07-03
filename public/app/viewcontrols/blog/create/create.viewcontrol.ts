@@ -21,7 +21,7 @@ module platynem.viewcontrols {
         }
 
         createPost(post: models.IPost) {
-            this.postsRepository.create(post).then(() => {
+            return this.postsRepository.create(post).then(() => {
                 this.goBack();
             });
         }
