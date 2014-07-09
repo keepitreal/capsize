@@ -10,7 +10,7 @@
 
         it('should test createUser with a full user', () => {
             var user = UserFactory.createUser({
-                _id: 123,
+                _id: 123
             });
 
             expect(user._id).toBe(123);

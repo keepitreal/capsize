@@ -1,12 +1,11 @@
 /* tslint:disable */
 /**
+ * 
  * PlatypusTS v0.0.1.10 (http://getplatypi.com) 
  * Copyright 2014 Platypi, LLC. All rights reserved. 
  * 
  * PlatypusTS is licensed under the GPL-3.0 found at  
- * http://opensource.org/licenses/GPL-3.0 
- * 
- * 
+ * http://opensource.org/licenses/GPL-3.0
  * 
  */
 module plat {
@@ -139,6 +138,10 @@ module plat {
         __FACTORY = 'factory',
         __CLASS = 'class',
         __CSS = 'css',
+        __COMPILED = '-compiled',
+        __BOUND_PREFIX = '-@',
+        __START_NODE = ': start node',
+        __END_NODE = ': end node',
         __JS = 'js';
     /* tslint:enable:no-unused-variable */
     
@@ -263,7 +266,7 @@ module plat {
     }
     
     function isPromise(obj: any): boolean {
-        return obj.toString() === '[object Promise]' || isObject(obj) && isFunction(obj.then);
+        return isObject(obj) && (obj.toString() === '[object Promise]' || isFunction(obj.then));
     }
     
     function isEmpty(obj: any): boolean {
@@ -512,11 +515,22 @@ module plat {
     function deleteProperty(obj: any, property: number): any;
     function deleteProperty(obj: any, property: string): any;
     function deleteProperty(obj: any, property: any): any {
-        /* tslint:disable:no-unused-expression */
-        delete obj[property];
-        /* tslint:enable:no-unused-expression */
+        if (!isNull(obj)) {
+            /* tslint:disable:no-unused-expression */
+            delete obj[property];
+            /* tslint:enable:no-unused-expression */
+        }
     
         return obj;
+    }
+    
+    function access(obj: any, property: number): any;
+    function access(obj: any, property: string): any;
+    function access(obj: any, property: any): any {
+        if (isNull(obj)) {
+            return obj;
+        }
+        return obj[property];
     }
     /* tslint:enable:no-unused-variable */
     
@@ -8198,17 +8212,13 @@ module plat {
 
                 var keys = Object.keys(identifiers),
                     identifier: string,
-                    listeners: Array<IRemoveListener>,
-                    i: number,
-                    j: number,
-                    jLength: number;
+                    listeners: Array<IRemoveListener>;
 
                 while (keys.length > 0) {
                     identifier = keys.shift();
                     listeners = identifiers[identifier];
-                    jLength = listeners.length;
-                    for (j = 0; j < jLength; ++j) {
-                        listeners[j]();
+                    while (listeners.length > 0) {
+                        listeners.shift()();
                     }
                 }
 
@@ -8218,7 +8228,7 @@ module plat {
                 keys = Object.keys(arrayListeners);
                 length = keys.length;
 
-                for (i = 0; i < length; ++i) {
+                for (var i = 0; i < length; ++i) {
                     remove(keys[i], uid);
                 }
 
@@ -8407,7 +8417,7 @@ module plat {
             private __isArrayFunction: boolean = false;
             private __observedIdentifier: string;
 
-            getContext(split: Array<string>): void {
+            getContext(split: Array<string>): any {
                 var join = split.join('.'),
                     context = this.__contextObjects[join];
 
@@ -8477,17 +8487,29 @@ module plat {
                 // check if value is defined and context manager hasn't seen this identifier
                 if (!hasIdentifier) {
                     if (isArray(context) && key === 'length') {
-                        var removeArrayObserve = this.observe(join, {
-                            uid: observableListener.uid,
+                        var property = split.pop(),
+                            parentContext = this.getContext(split),
+                            uid = observableListener.uid;
+
+                        this.__observedIdentifier = null;
+                        access(parentContext, property);
+
+                        if (isString(this.__observedIdentifier)) {
+                            join = this.__observedIdentifier;
+                        }
+
+                        var removeObservableListener = removeCallback,
+                            removeListener = this.observeArray(uid, noop, join, context, null),
+                            removeArrayObserve = this.observe(join, {
+                            uid: uid,
                             listener: (newValue: Array<any>, oldValue: Array<any>) => {
                                 removeListener();
-                                removeListener = this.observeArray(observableListener.uid, noop, join, newValue, oldValue);
+                                removeListener = this.observeArray(uid, noop, join, newValue, oldValue);
                             }
                         });
 
-                        var removeListener = this.observeArray(observableListener.uid, noop, join, context, null);
-
                         removeCallback = () => {
+                            removeObservableListener();
                             removeArrayObserve();
                             removeListener();
                         };
@@ -8524,7 +8546,18 @@ module plat {
                 }
 
                 if (isNull(array)) {
-                    return;
+                    return noop;
+                }
+
+                var split = absoluteIdentifier.split('.'),
+                    property = split.pop(),
+                    context = this.getContext(split);
+
+                this.__observedIdentifier = null;
+                access(context, property);
+
+                if (isString(this.__observedIdentifier)) {
+                    absoluteIdentifier = this.__observedIdentifier;
                 }
 
                 var observedArrayCallbacks = ContextManager.observedArrayListeners[absoluteIdentifier];
@@ -8539,10 +8572,9 @@ module plat {
                     arrayCallbacks = observedArrayCallbacks[uid] = [];
                 }
 
-                var index = arrayCallbacks.length,
-                    removeListener = () => {
-                        arrayCallbacks.splice(index, 1);
-                    };
+                var removeListener = () => {
+                    arrayCallbacks.splice(arrayCallbacks.indexOf(listener), 1);
+                };
 
                 arrayCallbacks.push(listener);
 
@@ -8744,9 +8776,26 @@ module plat {
             _addObservableListener(absoluteIdentifier: string, observableListener: IListener): IRemoveListener {
                 var uid = observableListener.uid,
                     remove = () => {
-                        ContextManager.removeIdentifier([uid], absoluteIdentifier);
                         this._removeCallback(absoluteIdentifier, observableListener);
-                    };
+                    },
+                    split = absoluteIdentifier.split('.'),
+                    property = split.pop(),
+                    isLength = property === 'length',
+                    context: any;
+
+                if (isLength) {
+                    property = split.pop();
+                    context = this.getContext(split);
+                }
+
+                if (isObject(context)) {
+                    this.__observedIdentifier = null;
+                    access(context, property);
+
+                    if (isString(this.__observedIdentifier)) {
+                        absoluteIdentifier = this.__observedIdentifier + (isLength ? '.length' : '');
+                    }
+                }
 
                 this.__add(absoluteIdentifier, observableListener);
 
@@ -10453,7 +10502,7 @@ module plat {
             Control.removeEventListeners(control);
             Control.$ContextManagerStatic.dispose(control);
             control.dispose();
-
+            control.element = null;
             Control.removeParent(control);
         }
 
@@ -10817,18 +10866,18 @@ module plat {
                 return noop;
             }
 
-            var control = isFunction((<ui.ITemplateControl>(<any>this)).getAbsoluteIdentifier) ? this : <IControl>this.parent;
+            var control = isFunction((<ui.ITemplateControl>this).getAbsoluteIdentifier) ? this : <IControl>this.parent;
 
-            if (isNull(control) || !isFunction((<ui.ITemplateControl>(<any>control)).getAbsoluteIdentifier)) {
+            if (isNull(control) || !isFunction((<ui.ITemplateControl>control).getAbsoluteIdentifier)) {
                 return noop;
             }
 
-            var absoluteIdentifier = (<ui.ITemplateControl>(<any>control)).getAbsoluteIdentifier(context),
+            var absoluteIdentifier = (<ui.ITemplateControl>control).getAbsoluteIdentifier(context),
                 ContextManager = Control.$ContextManagerStatic;
 
             if (isNull(absoluteIdentifier)) {
                 if (property === 'context') {
-                    absoluteIdentifier = (<ui.ITemplateControl>(<any>control)).absoluteContextPath;
+                    absoluteIdentifier = (<ui.ITemplateControl>control).absoluteContextPath;
                 } else {
                     return noop;
                 }
@@ -10841,11 +10890,11 @@ module plat {
                 removeCallback = contextManager.observe(absoluteIdentifier, {
                     listener: (newValue: Array<any>, oldValue: Array<any>) => {
                         removeListener();
-                        removeListener = contextManager.observeArray(this.uid, callback, absoluteIdentifier, newValue, oldValue);
+                        removeListener = contextManager.observeArray(uid, callback, absoluteIdentifier, newValue, oldValue);
                     },
                     uid: uid
                 }),
-                removeListener = contextManager.observeArray(this.uid, callback, absoluteIdentifier, array, null);
+                removeListener = contextManager.observeArray(uid, callback, absoluteIdentifier, array, null);
 
             // need to call callback if 
             return () => {
@@ -11509,13 +11558,6 @@ module plat {
         }
 
         export class Name extends AttributeControl {
-            $ContextManagerStatic: observable.IContextManagerStatic = acquire(__ContextManagerStatic);
-
-            /**
-             * The root control that will have the INamedElement set as a property.
-             */
-            _rootControl: ui.ITemplateControl;
-
             /**
              * The property name on the root control to set as the INamedElement.
              */
@@ -11529,38 +11571,69 @@ module plat {
                 var attr = camelCase(this.type),
                     name = (<any>this.attributes)[attr];
 
-                if (isEmpty(name)) {
+                if (isEmpty(name) || this._isPrecompiled()) {
                     return;
                 }
 
                 this._label = name;
-
-                var templateControl = this.templateControl,
-                    rootControl = this._rootControl = Control.getRootControl(this.parent),
-                    define = this.$ContextManagerStatic.defineGetter;
-
-                if (!isNull(templateControl)) {
-                    define(templateControl, 'name', name, true, true);
-                }
-
-                if (!isNull(rootControl)) {
-                    define(rootControl, name, {
-                        element: this.element,
-                        control: templateControl
-                    }, true, true);
-                }
+                this._define(name);
             }
 
             /**
              * Removes the INamedElement from the root control.
              */
             dispose(): void {
-                var rootControl = this._rootControl,
-                    name = this._label;
+                var name = this._label,
+                    control: any = this.parent;
 
-                if (!isNull(rootControl)) {
-                    deleteProperty(rootControl, name);
+                while (!isUndefined(name) && isObject(control)) {
+                    if (isObject(control[name]) &&
+                        isNode(control[name].element) &&
+                        control[name].element === this.element) {
+                        deleteProperty(control, name);
+                    }
+
+                    control = control.parent;
                 }
+            }
+
+            /**
+             * Defines an INamedElement on every control up the control tree.
+             */
+            _define(name: string) {
+                var templateControl = this.templateControl;
+
+                if (!isNull(templateControl)) {
+                    templateControl.name = name;
+                }
+
+                var control: any = this.parent,
+                    namedElement = {
+                        element: this.element,
+                        control: templateControl
+                    };
+
+                while (isObject(control)) {
+                    var obj = control[name];
+
+                    if (!isObject(obj)) {
+                        control[name] = namedElement;
+                    }
+
+                    control = control.parent;
+                }
+            }
+
+            _isPrecompiled() {
+                var control = this.parent;
+
+                while (!isNull(control)) {
+                    if (control.type.indexOf(__COMPILED) !== -1) {
+                        return true;
+                    }
+                    control = control.parent;
+                }
+                return false;
             }
         }
 
@@ -12445,12 +12518,12 @@ module plat {
             /**
              * The function used to get the bound value.
              */
-            _getter: any;
+            _getter: () => any;
 
             /**
              * The function used to set the bound value.
              */
-            _setter: any;
+            _setter: (value: any, firstTime?: boolean) => void;
 
             /**
              * The event listener attached to this element.
@@ -12739,17 +12812,20 @@ module plat {
              * and input[type=button], and select
              * 
              * @param newValue The new value to set
+             * @param oldValue The previously bound value
              */
-            _setText(newValue: any): void {
+            _setText(newValue: any, oldValue?: any): void {
                 if (this.__isSelf) {
                     return;
                 }
 
                 if (isNull(newValue)) {
-                    var element = <HTMLInputElement>this.element;
-                    if (isNull(element.value)) {
-                        newValue = '';
-                    } else {
+                    newValue = '';
+
+                    if (isUndefined(oldValue)) {
+                        if (isNull((<HTMLInputElement>this.element).value)) {
+                            this.__setValue(newValue);
+                        }
                         this._propertyChanged();
                         return;
                     }
@@ -12762,17 +12838,20 @@ module plat {
              * Setter for input[type=range]
              * 
              * @param newValue The new value to set
+             * @param oldValue The previously bound value
              */
-            _setRange(newValue: any): void {
+            _setRange(newValue: any, oldValue?: any): void {
                 if (this.__isSelf) {
                     return;
                 }
 
                 if (isEmpty(newValue)) {
-                    var element = <HTMLInputElement>this.element;
-                    if (isEmpty(element.value)) {
-                        newValue = 0;
-                    } else {
+                    newValue = 0;
+
+                    if (isUndefined(oldValue)) {
+                        if (isEmpty((<HTMLInputElement>this.element).value)) {
+                            this.__setValue(newValue);
+                        }
                         this._propertyChanged();
                         return;
                     }
@@ -12782,60 +12861,77 @@ module plat {
             }
 
             /**
-             * Setter for input[type=checkbox] and input[type=radio]
+             * Setter for input[type=checkbox]
              * 
              * @param newValue The new value to set
+             * @param oldValue The previously bound value
              */
-            _setChecked(newValue: any): void {
+            _setChecked(newValue: any, oldValue?: any): void {
                 if (this.__isSelf) {
                     return;
                 } else if (!isBoolean(newValue)) {
-                    this._propertyChanged();
-                    return;
+                    if (isUndefined(oldValue)) {
+                        this._propertyChanged();
+                        return;
+                    }
+                    newValue = !!newValue;
                 }
 
                 (<HTMLInputElement>this.element).checked = newValue;
             }
 
             /**
+             * Setter for input[type=radio]
+             * 
+             * @param newValue The new value to set
+             * @param oldValue The previously bound value
+             */
+            _setRadio(newValue: any, oldValue?: any): void {
+                var element = (<HTMLInputElement>this.element);
+                if (this.__isSelf) {
+                    return;
+                } else if (isNull(newValue) && element.checked) {
+                    this._propertyChanged();
+                    return;
+                }
+
+                element.checked = (element.value === newValue);
+            }
+
+            /**
              * Setter for select
              * 
              * @param newValue The new value to set
+             * @param oldValue The previously bound value
              */
-            _setSelectedIndex(newValue: any): void {
+            _setSelectedIndex(newValue: any, oldValue?: any): void {
                 if (this.__isSelf) {
                     return;
                 }
 
                 var element = <HTMLSelectElement>this.element;
                 if (isNull(newValue)) {
-                    if (isEmpty(element.value)) {
-                        element.selectedIndex = -1;
+                    element.selectedIndex = -1;
+                    if (isUndefined(oldValue)) {
+                        this.__checkAsynchronousSelect(newValue);
+                        this._propertyChanged();
                     }
-
-                    this._propertyChanged();
                     return;
                 } else if (element.value === newValue) {
-                    return;
-                } else if (newValue === '') {
-                    element.selectedIndex = -1;
+                    if (isUndefined(oldValue)) {
+                        this.__checkAsynchronousSelect(newValue);
+                    }
                     return;
                 }
 
                 element.value = newValue;
                 // check to make sure the user changed to a valid value
                 if (element.value !== newValue) {
-                    var select = <ui.controls.Select>this.templateControl;
-                    if (!isNull(select) && select.type === __Select && isPromise(select.itemsLoaded)) {
-                        select.itemsLoaded.then(() => {
-                            element.value = newValue;
-
-                            if (element.value !== newValue) {
-                                element.selectedIndex = -1;
-                            }
-                        });
+                    if (isUndefined(oldValue)) {
+                        this.__checkAsynchronousSelect(newValue);
                     }
-
+                    element.selectedIndex = -1;
+                } else if (element.selectedIndex === -1) {
                     element.selectedIndex = -1;
                 }
             }
@@ -12844,22 +12940,34 @@ module plat {
              * Setter for select-multiple
              * 
              * @param newValue The new value to set
+             * @param oldValue The previously bound value
              */
-            _setSelectedIndices(newValue: any): void {
+            _setSelectedIndices(newValue: any, oldValue?: any): void {
                 if (this.__isSelf) {
                     return;
                 }
 
                 var options = (<HTMLSelectElement>this.element).options,
-                    length = options.length,
-                    option: HTMLOptionElement;
+                    length = isNull(options) ? 0 : options.length,
+                    option: HTMLOptionElement,
+                    nullValue = isNull(newValue);
 
-                if (isNull(newValue) || !isArray(newValue)) {
+                if (length === 0) {
+                    this.__checkAsynchronousSelect(newValue);
+                    if (isUndefined(oldValue)) {
+                        this._propertyChanged();
+                    }
+                    return;
+                }
+
+                if (nullValue || !isArray(newValue)) {
+                    if (isUndefined(oldValue)) {
+                        this._propertyChanged();
+                    }
                     // unselects the options unless a match is found
                     while (length-- > 0) {
                         option = options[length];
-                        // purposely doing a soft equality match
-                        if (option.value === '' + newValue) {
+                        if (!nullValue && option.value === '' + newValue) {
                             option.selected = true;
                             return;
                         }
@@ -12909,10 +13017,12 @@ module plat {
                                 this._setter = this._setText;
                                 break;
                             case 'checkbox':
-                            case 'radio':
                                 this._addEventType = this._addChangeEventListener;
                                 this._getter = this._getChecked;
                                 this._setter = this._setChecked;
+                                break;
+                            case 'radio':
+                                this.__initializeRadio();
                                 break;
                             case 'range':
                                 this._addEventType = this._addChangeEventListener;
@@ -12932,26 +13042,7 @@ module plat {
                         }
                         break;
                     case 'select':
-                        var multiple = (<HTMLSelectElement>element).multiple,
-                            options = (<HTMLSelectElement>element).options,
-                            length = options.length,
-                            option: HTMLSelectElement;
-
-                        this._addEventType = this._addChangeEventListener;
-                        if (multiple) {
-                            this._getter = this._getSelectedValues;
-                            this._setter = this._setSelectedIndices;
-                        } else {
-                            this._getter = this._getValue;
-                            this._setter = this._setSelectedIndex;
-                        }
-
-                        for (var i = 0; i < length; ++i) {
-                            option = options[i];
-                            if (!option.hasAttribute('value')) {
-                                option.setAttribute('value', option.textContent);
-                            }
-                        }
+                        this.__initializeSelect();
                         break;
                 }
             }
@@ -12968,10 +13059,11 @@ module plat {
                         contextExpression.identifiers[0]);
                 }
 
+                var property: string;
                 if (!isFunction(this._setter)) {
                     return;
                 } else if (this._setter === this._setSelectedIndices) {
-                    var property = this._property;
+                    property = this._property;
                     if (isNull(context[property])) {
                         context[property] = [];
                     }
@@ -12990,7 +13082,7 @@ module plat {
              * Sets the context property being bound to when the 
              * element's property is changed.
              */
-            _propertyChanged(): void {
+            _propertyChanged(): any {
                 if (isNull(this._contextExpression)) {
                     return;
                 }
@@ -13001,13 +13093,15 @@ module plat {
                 var newValue = this._getter();
 
                 if (isNull(context) || context[property] === newValue) {
-                    return;
+                    return newValue;
                 }
 
                 // set flag to let setter functions know we changed the property
                 this.__isSelf = true;
                 context[property] = newValue;
                 this.__isSelf = false;
+
+                return newValue;
             }
 
             private __setValue(newValue: any): void {
@@ -13017,6 +13111,71 @@ module plat {
                 }
 
                 element.value = newValue;
+            }
+
+            private __initializeRadio() {
+                var element = this.element;
+
+                this._addEventType = this._addChangeEventListener;
+                this._getter = this._getValue;
+                this._setter = this._setRadio;
+
+                if (!element.hasAttribute('name')) {
+                    var attr = camelCase(this.type),
+                        expression = (<any>this.attributes)[attr];
+
+                    element.setAttribute('name', expression);
+                }
+
+                if (element.hasAttribute('value')) {
+                    return;
+                }
+
+                element.setAttribute('value', '');
+            }
+
+            private __initializeSelect() {
+                var element = this.element,
+                    multiple = (<HTMLSelectElement>element).multiple,
+                    options = (<HTMLSelectElement>element).options,
+                    length = options.length,
+                    option: HTMLSelectElement;
+
+                this._addEventType = this._addChangeEventListener;
+                if (multiple) {
+                    this._getter = this._getSelectedValues;
+                    this._setter = this._setSelectedIndices;
+                } else {
+                    this._getter = this._getValue;
+                    this._setter = this._setSelectedIndex;
+                }
+
+                for (var i = 0; i < length; ++i) {
+                    option = options[i];
+                    if (!option.hasAttribute('value')) {
+                        option.setAttribute('value', option.textContent);
+                    }
+                }
+            }
+
+            private __checkAsynchronousSelect(newValue: any): void {
+                var select = <ui.controls.Select>this.templateControl;
+                if (!isNull(select) && select.type === __Select && isPromise(select.itemsLoaded)) {
+                    var element = <HTMLSelectElement>this.element,
+                        split = select.absoluteContextPath.split('.'),
+                        key = split.pop();
+
+                    this.observeArray(this.$ContextManagerStatic.getContext(this.parent, split), key,
+                        (ev: observable.IArrayMethodInfo<any>) => {
+                        select.itemsLoaded.then(() => {
+                            this._setSelectedIndex(this.evaluateExpression(this._expression), null);
+                        });
+                    });
+
+                    select.itemsLoaded.then(() => {
+                        this._setSelectedIndex(newValue, null);
+                    });
+                }
             }
         }
 
@@ -15010,9 +15169,9 @@ module plat {
                     nodeMap = this._createNodeMap(control, template, context);
 
                 return this._bindNodeMap(nodeMap, key).then(() => {
-                    control.startNode = template.insertBefore(this.$Document.createComment(control.type + ': start node'),
+                    control.startNode = template.insertBefore(this.$Document.createComment(control.type + __START_NODE),
                         template.firstChild);
-                    control.endNode = template.insertBefore(this.$Document.createComment(control.type + ': end node'),
+                    control.endNode = template.insertBefore(this.$Document.createComment(control.type + __END_NODE),
                         null);
 
                     return template;
@@ -15047,7 +15206,7 @@ module plat {
              * the compilation of the template.
              */
             _compile(key: string, template: DocumentFragment): void {
-                var control = this._createBoundControl(key, template),
+                var control = this._createBoundControl(key + __COMPILED, template),
                     nodeMap = this._createNodeMap(control, template);
 
                 this.__compiledControls.push(control);
@@ -15078,8 +15237,8 @@ module plat {
 
                     var clone = <DocumentFragment>nodeMap.element.cloneNode(true);
 
-                    startNode = control.startNode = this.$Document.createComment(control.type + ': start node');
-                    endNode = control.endNode = this.$Document.createComment(control.type + ': end node');
+                    startNode = control.startNode = this.$Document.createComment(control.type + __START_NODE);
+                    endNode = control.endNode = this.$Document.createComment(control.type + __END_NODE);
                     element.insertBefore(startNode, element.firstChild);
                     element.insertBefore(endNode, null);
 
@@ -15125,7 +15284,7 @@ module plat {
                 control.parent = parent;
                 control.controls = [];
                 control.element = <HTMLElement>template;
-                control.type = parent.type + '-@' + key;
+                control.type = parent.type + __BOUND_PREFIX + key;
 
                 return control;
             }
@@ -16367,10 +16526,6 @@ module plat {
                 // if minimum distance moved
                 if (minMove) {
                     this.__hasMoved = true;
-                } else {
-                    // cannot call ev.preventDefault up top due to Chrome canceling touch based scrolling
-                    // call prevent default here to try and avoid mouse events when min move hasnt occurred
-                    ev.preventDefault();
                 }
 
                 // if no move events or no tracking events and the user hasn't moved the minimum swipe distance
@@ -16404,10 +16559,9 @@ module plat {
              */
             _onTouchEnd(ev: IPointerEvent): void {
                 var eventType = ev.type;
-                // call prevent default to try and avoid mouse events
+
                 if (eventType !== 'mouseup') {
                     this._inTouch = false;
-                    ev.preventDefault();
                 } else if (!isUndefined(this._inTouch)) {
                     return;
                 }
@@ -17069,6 +17223,7 @@ module plat {
                                 break;
                         }
                         break;
+                    case 'a':
                     case 'button':
                     case 'select':
                     case 'label':
@@ -17080,6 +17235,15 @@ module plat {
                 }
 
                 this.__focusedElement = target;
+                this.__preventClick(target);
+            }
+            private __preventClick(target: EventTarget): void {
+                var preventDefault = (ev: Event) => {
+                    ev.preventDefault();
+                    target.removeEventListener('click', preventDefault, false);
+                    return false;
+                };
+                target.addEventListener('click', preventDefault, false);
             }
             private __removeSelections(element: Node): void {
                 if (!isNode(element)) {
@@ -18398,6 +18562,7 @@ module plat {
                  */
                 setTemplate(): void {
                     this.dom.clearNode(this.element);
+                    this._load();
                 }
 
                 /**
@@ -18409,7 +18574,7 @@ module plat {
                  * needed on load for the inherited form of 
                  * navigation.
                  */
-                loaded(navigationParameter?: any, options?: navigation.IBaseNavigationOptions): void {
+                _load(navigationParameter?: any, options?: navigation.IBaseNavigationOptions): void {
                     var navigator = this.navigator;
                     navigator.initialize(this);
                     navigator.navigate(navigationParameter, options);
@@ -18567,7 +18732,7 @@ module plat {
                  * Checks for a defaultView, finds the ViewControl's injector, 
                  * and initializes the loading of the view.
                  */
-                loaded(): void {
+                _load(): void {
                     var $exception: IExceptionStatic;
                     if (isNull(this.options)) {
                         $exception = acquire(__ExceptionStatic);
@@ -18587,7 +18752,7 @@ module plat {
                         return;
                     }
 
-                    super.loaded(injector);
+                    super._load(injector);
                 }
             }
 
@@ -18620,7 +18785,7 @@ module plat {
                  * Looks for a defaultRoute and initializes the loading 
                  * of the view.
                  */
-                loaded(): void {
+                _load(): void {
                     var path = '',
                         options = this.options;
 
@@ -18628,7 +18793,7 @@ module plat {
                         path = options.value.defaultRoute || '';
                     }
 
-                    super.loaded(path, {
+                    super._load(path, {
                         replace: true
                     });
                 }
@@ -18866,7 +19031,7 @@ module plat {
                 /**
                  * Will fulfill whenever all items are loaded.
                  */
-                itemsLoaded: async.IThenable<Array<void>>;
+                itemsLoaded: async.IThenable<void>;
 
                 /**
                  * The node length of the element's childNodes (innerHTML)
@@ -18875,6 +19040,7 @@ module plat {
 
                 private __removeListener: IRemoveListener;
                 private __currentAnimations: Array<IAnimationThenable<void>> = [];
+                private __resolveFn: () => void;
 
                 /**
                  * Creates a bindable template with the element's childNodes (innerHTML) 
@@ -18938,6 +19104,8 @@ module plat {
                         this.__removeListener();
                         this.__removeListener = null;
                     }
+
+                    this.__resolveFn = null;
                 }
         
                 /**
@@ -18952,16 +19120,23 @@ module plat {
                     }
 
                     var $animator = this.$Animator,
-                        childNodes: Array<Element> = animate === true ? Array.prototype.slice.call(item.childNodes) : null,
+                        childNodes: Array<Element>,
                         childNode: Element;
 
-                    this.dom.insertBefore(this.element, item);
-
-                    if (!animate) {
+                    if (animate === true) {
+                        childNodes = Array.prototype.slice.call(item.childNodes);
+                        if (this._blockLength === 0) {
+                            this._blockLength = childNodes.length;
+                        }
+                    } else {
+                        if (this._blockLength === 0) {
+                            this._blockLength = item.childNodes.length;
+                        }
+                        this.dom.insertBefore(this.element, item);
                         return;
-                    } else if (this._blockLength === 0) {
-                        this._blockLength = childNodes.length;
                     }
+
+                    this.dom.insertBefore(this.element, item);
 
                     var currentAnimations = this.__currentAnimations;
                     while (childNodes.length > 0) {
@@ -19032,7 +19207,7 @@ module plat {
                  * @param index The point in the array to start adding items.
                  * @param animate whether to animate the new items
                  */
-                _addItems(numberOfItems: number, index: number, animate?: boolean): async.IThenable<Array<void>> {
+                _addItems(numberOfItems: number, index: number, animate?: boolean): async.IThenable<void> {
                     var bindableTemplates = this.bindableTemplates,
                         promises: Array<async.IThenable<void>> = [];
             
@@ -19047,7 +19222,22 @@ module plat {
                         }));
                     }
 
-                    this.itemsLoaded = this.$Promise.all(promises);
+                    if (promises.length > 0) {
+                        if (isFunction(this.__resolveFn)) {
+                            this.__resolveFn();
+                            this.__resolveFn = null;
+                        }
+
+                        var Promise = this.$Promise;
+                        this.itemsLoaded = Promise.all(promises).then<void>(() => {
+                            return Promise.resolve(undefined);
+                        });
+                    } else {
+                        this.itemsLoaded = new this.$Promise<void>((resolve) => {
+                            this.__resolveFn = resolve;
+                        });
+                    }
+
                     return this.itemsLoaded;
                 }
 
@@ -19286,12 +19476,14 @@ module plat {
                 /**
                  * Will fulfill whenever all items are loaded.
                  */
-                itemsLoaded: async.IThenable<Array<void>>;
+                itemsLoaded: async.IThenable<void>;
 
                 private __removeListener: IRemoveListener;
                 private __isGrouped: boolean = false;
                 private __group: string;
                 private __defaultOption: HTMLOptionElement;
+                private __resolveFn: () => void;
+
                 /**
                  * Creates the bindable option template and grouping 
                  * template if necessary.
@@ -19335,6 +19527,10 @@ module plat {
                  * @param oldValue The old array context.
                  */
                 contextChanged(newValue?: Array<any>, oldValue?: Array<any>): void {
+                    if (!isArray(newValue)) {
+                        return;
+                    }
+
                     var newLength = isArray(newValue) ? newValue.length : 0,
                         oldLength = isArray(oldValue) ? oldValue.length : 0;
 
@@ -19371,7 +19567,7 @@ module plat {
                     this.__isGrouped = !isNull(group);
                     this.__group = group;
 
-                    if (isNull(context)) {
+                    if (!isArray(context)) {
                         return;
                     }
 
@@ -19392,6 +19588,9 @@ module plat {
                         this.__removeListener();
                         this.__removeListener = null;
                     }
+
+                    this.__resolveFn = null;
+                    this.__defaultOption = null;
                 }
 
                 /**
@@ -19402,18 +19601,33 @@ module plat {
                  * @param length The current index of the next 
                  * set of items to add.
                  */
-                _addItems(numberOfItems: number, length: number): async.IThenable<Array<void>> {
+                _addItems(numberOfItems: number, length: number): async.IThenable<void> {
                     var index = length,
                         item: any,
+                        bindableTemplates = this.bindableTemplates,
                         promises: Array<async.IThenable<void>> = [];
 
                     for (var i = 0; i < numberOfItems; ++i, ++index) {
                         item = this.context[index];
 
-                        promises.push(this.bindableTemplates.bind('option', index).then<void>(this._insertOptions.bind(this, index, item)));
+                        promises.push(bindableTemplates.bind('option', index).then<void>(this._insertOptions.bind(this, index, item)));
                     }
 
-                    this.itemsLoaded = this.$Promise.all(promises);
+                    if (promises.length > 0) {
+                        if (isFunction(this.__resolveFn)) {
+                            this.__resolveFn();
+                            this.__resolveFn = null;
+                        }
+
+                        var Promise = this.$Promise;
+                        this.itemsLoaded = Promise.all(promises).then(() => {
+                            return Promise.resolve(undefined);
+                        });
+                    } else {
+                        this.itemsLoaded = new this.$Promise<void>((resolve) => {
+                            this.__resolveFn = resolve;
+                        });
+                    }
 
                     return this.itemsLoaded;
                 }
@@ -19427,47 +19641,46 @@ module plat {
                  * @param optionClone The bound DocumentFragment to be 
                  * inserted into the DOM.
                  */
-                _insertOptions(index: number, item: any, optionClone: DocumentFragment): void {
+                _insertOptions(index: number, item: any, optionClone: DocumentFragment): async.IThenable<any> {
                     var element = this.element;
-
                     if (this.__isGrouped) {
                         var groups = this.groups,
                             newGroup = item[this.__group],
                             optgroup: any = groups[newGroup];
 
                         if (isNull(optgroup)) {
-                            groups[newGroup] = <any>this.bindableTemplates.bind('group', '' + index)
+                            return (groups[newGroup] = <any>this.bindableTemplates.bind('group', index)
                                 .then((groupClone: DocumentFragment) => {
                                     optgroup = groups[newGroup] = <Element>groupClone.childNodes[1];
 
                                     optgroup.appendChild(optionClone);
                                     element.appendChild(groupClone);
                                     return optgroup;
-                                });
-                            return;
+                                }));
                         } else if (isPromise(optgroup)) {
-                            optgroup.then((group: Element) => {
+                            return optgroup.then((group: Element) => {
                                 group.appendChild(optionClone);
                                 return group;
                             });
-                            return;
                         }
 
                         optgroup.appendChild(optionClone);
-                        return;
+                        return this.$Promise.resolve(null);
                     }
 
                     element.appendChild(optionClone);
+                    return this.$Promise.resolve(null);
                 }
 
                 /**
-                 * Removes an item from the DOM.
-                 * 
-                 * @param parent The element whose child 
-                 * will be removed.
+                 * Removes the last option item from the DOM.
                  */
-                _removeItem(parent: Element): void {
-                    parent.removeChild(parent.lastElementChild);
+                _removeItem(index: number): void {
+                    if (index < 0) {
+                        return;
+                    }
+
+                    TemplateControl.dispose(this.controls[index]);
                 }
 
                 /**
@@ -19478,9 +19691,11 @@ module plat {
                  */
                 _removeItems(numberOfItems: number): void {
                     var element = this.element,
-                        removeItem = this._removeItem;
+                        controls = this.controls,
+                        length = controls.length - 1;
+
                     while (numberOfItems-- > 0) {
-                        removeItem(element);
+                        this._removeItem(length--);
                     }
                 }
 
@@ -19493,15 +19708,8 @@ module plat {
                 _itemRemoved(ev: observable.IArrayMethodInfo<any>): void {
                     if (ev.oldArray.length === 0) {
                         return;
-                    }
-
-                    if (this.__isGrouped) {
-                        var removed = ev.returnValue,
-                            group = removed[this.__group],
-                            optgroup = this.groups[group];
-
-                        this._removeItem(optgroup);
-
+                    } else if (this.__isGrouped) {
+                        this._resetSelect();
                         return;
                     }
 
@@ -19514,12 +19722,13 @@ module plat {
                  */
                 _resetSelect(): void {
                     var itemLength = this.context.length,
-                        nodeLength = this.element.childNodes.length;
+                        element = this.element,
+                        nodeLength = element.childNodes.length;
 
                     this._removeItems(nodeLength);
                     this.groups = {};
                     if (!isNull(this.__defaultOption)) {
-                        this.element.appendChild(this.__defaultOption);
+                        element.appendChild(this.__defaultOption.cloneNode(true));
                     }
 
                     this._addItems(itemLength, 0);
@@ -19552,11 +19761,6 @@ module plat {
                  * @param ev The array mutation object
                  */
                 _shift(ev: observable.IArrayMethodInfo<any>): void {
-                    if (this.__isGrouped) {
-                        this._resetSelect();
-                        return;
-                    }
-
                     this._itemRemoved(ev);
                 }
 
@@ -19676,7 +19880,7 @@ module plat {
                 constructor() {
                     super();
                     var $document: Document = acquire(__Document);
-                    this.commentNode = $document.createComment('plat-if-@placeholder');
+                    this.commentNode = $document.createComment('plat-if' + __BOUND_PREFIX + 'placeholder');
                     this.fragmentStore = $document.createDocumentFragment();
                 }
 
@@ -21401,8 +21605,8 @@ module plat {
                     $document = ElementManager.$Document,
                     controlType = control.type,
                     controlUid = control.uid,
-                    startNode = control.startNode = $document.createComment(controlType + ' ' + controlUid + ': start node'),
-                    endNode = control.endNode = $document.createComment(controlType + ' ' + controlUid + ': end node'),
+                    startNode = control.startNode = $document.createComment(controlType + ' ' + controlUid + __START_NODE),
+                    endNode = control.endNode = $document.createComment(controlType + ' ' + controlUid + __END_NODE),
                     create = this.$CommentManagerFactory.create;
 
                 create(startNode, this);
@@ -22486,6 +22690,11 @@ module plat {
                 this.baseport.navigateFrom(viewControl).then(() => {
                     this.$BaseViewControlFactory.dispose(viewControl);
                     this.baseport.navigateTo(ev);
+                }).catch((error) => {
+                    postpone(() => {
+                        var Exception: IExceptionStatic = acquire(__ExceptionStatic);
+                        Exception.fatal(error, Exception.NAVIGATION);
+                    });
                 });
             }
         }
