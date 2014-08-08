@@ -4,7 +4,7 @@ import mongoose = require('mongoose');
 import passport = require('passport');
 import passportFacebook = require('passport-facebook');
 import config = require('./config');
-import userModels = require('../app/models/user');
+import userModels = require('../models/user');
 import _ = require('underscore');
 
 var LocalStrategy = require('passport-local').Strategy,

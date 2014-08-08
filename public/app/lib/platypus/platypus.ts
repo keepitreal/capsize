@@ -1,11 +1,12 @@
 /* tslint:disable */
 /**
- * 
- * PlatypusTS v0.0.1.10 (http://getplatypi.com) 
+ * PlatypusTS v0.9.0 (http://getplatypi.com) 
  * Copyright 2014 Platypi, LLC. All rights reserved. 
  * 
  * PlatypusTS is licensed under the GPL-3.0 found at  
- * http://opensource.org/licenses/GPL-3.0
+ * http://opensource.org/licenses/GPL-3.0 
+ * 
+ * 
  * 
  */
 module plat {
@@ -692,7 +693,7 @@ module plat {
     }
     
     function insertBefore(parent: Node, nodes: any, endNode?: Node): Array<Node> {
-        if (isNull(parent)) {
+        if (isNull(parent) || !isObject(nodes)) {
             return;
         } else if (isUndefined(endNode)) {
             endNode = null;
@@ -1252,22 +1253,28 @@ module plat {
                 }
 
                 var deps: Array<IInjector<any>> = [],
-                    length = dependencies.length,
-                    dependency: any;
+                    length = dependencies.length;
 
                 for (var i = 0; i < length; ++i) {
-                    dependency = dependencies[i];
-                    if (isNull(dependency) || dependency === 'noop') {
-                        deps.push(Injector.__noop());
-                        continue;
-                    } else if (Injector.__isInjector(dependency)) {
-                        return dependencies;
-                    }
-
-                    deps.push(Injector.__locateInjector(dependency));
+                    deps.push(Injector.getDependency(dependencies[i]));
                 }
 
                 return deps;
+            }
+
+            /**
+             * Finds and returns the dependency.
+             * 
+             * @param dependency an object/string used to find the dependency.
+             */
+            static getDependency(dependency: any): IInjector<any> {
+                if (isNull(dependency) || dependency === 'noop') {
+                    return Injector.__noop();
+                } else if (Injector.isInjector(dependency)) {
+                    return dependency;
+                }
+
+                return Injector.__locateInjector(dependency);
             }
 
             /**
@@ -1301,6 +1308,18 @@ module plat {
                 }
 
                 return deps;
+            }
+
+            /**
+             * Checks if the object being passed in fulfills the requirements for being an Injector.
+             * 
+             * @param dependency The object to check.
+             */
+            static isInjector(dependency: Injector<any>): boolean {
+                return isFunction(dependency.inject) &&
+                    !isUndefined(dependency.type) &&
+                    !isUndefined(dependency.name) &&
+                    !isUndefined(dependency.Constructor);
             }
 
             private static __getInjectorName(dependency: any): string {
@@ -1395,13 +1414,6 @@ module plat {
                 };
             }
 
-            private static __isInjector(dependency: Injector<any>): boolean {
-                return isFunction(dependency.inject) &&
-                    !isUndefined(dependency.type) &&
-                    !isUndefined(dependency.name) &&
-                    !isUndefined(dependency.Constructor);
-            }
-
             private static __findCircularReferences(injector: Injector<any>) {
                 if (!(isObject(injector) && isArray(injector.__dependencies))) {
                     return;
@@ -1448,7 +1460,7 @@ module plat {
                 }
             }
 
-            private __dependencies: Array<any>;
+            private __dependencies: Array<string>;
 
             /**
              * @param name The name of the injected type.
@@ -1459,7 +1471,7 @@ module plat {
              * @param type The type of injector, used for injectables specifying a injectableType of 
              * STATIC, SINGLETON, FACTORY, INSTANCE, or CLASS. The default is SINGLETON.
              */
-            constructor(public name: string, public Constructor: new () => T, dependencies?: Array<any>, public type?: string) {
+            constructor(public name: string, public Constructor: new () => T, dependencies?: Array<any>, public type: string = null) {
                 var deps = this.__dependencies = Injector.convertDependencies(dependencies),
                     index = deps.indexOf('noop'),
                     circularReference: string;
@@ -1503,12 +1515,14 @@ module plat {
                 var toInject: any = [],
                     type = this.type;
 
-                var dependencies = Injector.getDependencies(this.__dependencies) || [],
+                var dependencies = this.__dependencies,
                     length = dependencies.length,
+                    dependency: IInjector<any>,
                     injectable: any;
 
                 for (var i = 0; i < length; ++i) {
-                    toInject.push(dependencies[i].inject());
+                    dependency = Injector.getDependency(dependencies[i]);
+                    toInject.push(dependency.inject());
                 }
 
                 injectable = <T>Injector.__construct(this.Constructor, toInject, type);
@@ -1952,7 +1966,8 @@ module plat {
     }
 
     /**
-     * A class for checking browser compatibility issues.
+     * A class containing boolean values signifying browser 
+     * and/or platform compatibilities.
      */
     export class Compat implements ICompat {
         $Window: Window = acquire(__Window);
@@ -1975,6 +1990,7 @@ module plat {
         platCss: boolean;
         mappedEvents: IMappedEvents;
         animationEvents: IAnimationEvents;
+        vendorPrefix: IVendorPrefix;
 
         /**
          * Define everything
@@ -2041,40 +2057,68 @@ module plat {
         }
 
         private __defineAnimationEvents(): void {
-            var div = this.$Document.createElement('div'),
-                animations: IObject<string> = {
-                    WebkitAnimation: 'webkit',
-                    animation: ''
-                },
-                keys = Object.keys(animations),
-                index = keys.length,
-                prefix = '',
-                key: any;
+            var documentElement = this.$Document.documentElement,
+                styles = this.$Window.getComputedStyle(documentElement, ''),
+                prefix: string;
 
-            while (index-- > 0) {
-                key = keys[index];
-                if (!isUndefined(div.style[key])) {
-                    prefix = animations[key];
-                    break;
-                }
+            if (!isUndefined((<any>styles).OLink)) {
+                prefix = 'o';
+            } else {
+                var matches = Array.prototype.slice.call(styles).join('').match(/-(moz|webkit|ms)-/);
+                prefix = (isArray(matches) && matches.length > 1) ? matches[1] : '';
             }
 
-            this.animationSupported = index > -1;
-            this.animationEvents = prefix === '' ? {
-                $animation: 'animation',
-                $animationStart: 'animationstart',
-                $animationEnd: 'animationend',
-                $transition: 'transition',
-                $transitionStart: 'transitionstart',
-                $transitionEnd: 'transitionend'
-            } : {
-                $animation: prefix + 'Animation',
-                $animationStart: prefix + 'AnimationStart',
-                $animationEnd: prefix + 'AnimationEnd',
-                $transition: prefix + 'Transition',
-                $transitionStart: prefix + 'TransitionStart',
-                $transitionEnd: prefix + 'TransitionEnd'
+            this.vendorPrefix = {
+                lowerCase: prefix,
+                css: prefix === '' ? '' : '-' + prefix + '-',
+                js: prefix[0].toUpperCase() + prefix.substr(1)
             };
+
+            if (prefix === 'webkit') {
+                this.animationSupported = !isUndefined((<any>documentElement.style).WebkitAnimation);
+                if (!this.animationSupported) {
+                    this.animationEvents = {
+                        $animation: '',
+                        $animationStart: '',
+                        $animationEnd: '',
+                        $transition: '',
+                        $transitionStart: '',
+                        $transitionEnd: ''
+                    };
+                    return;
+                }
+
+                this.animationEvents = {
+                    $animation: 'webkitAnimation',
+                    $animationStart: 'webkitAnimationStart',
+                    $animationEnd: 'webkitAnimationEnd',
+                    $transition: 'webkitTransition',
+                    $transitionStart: 'webkitTransitionStart',
+                    $transitionEnd: 'webkitTransitionEnd'
+                };
+            } else {
+                this.animationSupported = !isUndefined((<any>documentElement.style).animation);
+                if (!this.animationSupported) {
+                    this.animationEvents = {
+                        $animation: '',
+                        $animationStart: '',
+                        $animationEnd: '',
+                        $transition: '',
+                        $transitionStart: '',
+                        $transitionEnd: ''
+                    };
+                    return;
+                }
+
+                this.animationEvents = {
+                    $animation: 'animation',
+                    $animationStart: 'animationstart',
+                    $animationEnd: 'animationend',
+                    $transition: 'transition',
+                    $transitionStart: 'transitionstart',
+                    $transitionEnd: 'transitionend'
+                };
+            }
         }
 
         private __determineCss(): void {
@@ -2204,6 +2248,11 @@ module plat {
          * An object containing the properly prefixed animation events.
          */
         animationEvents: IAnimationEvents;
+
+        /**
+         * An object containing information regarding any potential vendor prefix.
+         */
+        vendorPrefix: IVendorPrefix;
     }
 
     /**
@@ -2264,6 +2313,29 @@ module plat {
          * The transition end event.
          */
         $transitionEnd: string;
+    }
+
+    /**
+     * Describes an object that contains information regarding the browser's 
+     * vendor prefix.
+     */
+    export interface IVendorPrefix extends IObject<string> {
+        /**
+         * The lowercase representation of the browser's vendor prefix.
+         */
+        lowerCase: string;
+
+        /**
+         * The css representation of the browser's vendor prefix 
+         * denoted by -{prefix}-.
+         */
+        css: string;
+
+        /**
+         * The JavaScript representation of the browser's vendor prefix 
+         * denoted by it beginning with a capital letter.
+         */
+        js: string;
     }
 
     /**
@@ -2753,9 +2825,9 @@ module plat {
          * @param args The arguments to apply to the method.
          * @param context An optional context to bind to the method.
          * 
-         * @return {() => void} A function that will clear the timeout when called.
+         * @return {plat.IRemoveListener} A function that will clear the timeout when called.
          */
-        postpone(method: (...args: any[]) => void, args?: Array<any>, context?: any): () => void;
+        postpone(method: (...args: any[]) => void, args?: Array<any>, context?: any): IRemoveListener;
 
         /**
          * Takes in a method and array of arguments to pass to that method. Delays calling the method until 
@@ -2766,9 +2838,9 @@ module plat {
          * @param args The arguments to apply to the method.
          * @param context An optional context to bind to the method.
          * 
-         * @return {() => void} A function that will clear the timeout when called.
+         * @return {plat.IRemoveListener} A function that will clear the timeout when called.
          */
-        defer(method: (...args: any[]) => void, timeout: number, args?: Array<any>, context?: any): () => void;
+        defer(method: (...args: any[]) => void, timeout: number, args?: Array<any>, context?: any): IRemoveListener;
 
         /**
          * Takes in a prefix and returns a unique identifier string with the prefix preprended. If no prefix
@@ -3578,8 +3650,10 @@ module plat {
              * @param char The char to compare with
              */
             _isValEqual(obj: any, char: string): boolean {
-                if (isNull(obj)) {
+                if (isNull(obj) || isNull(obj.val)) {
                     return isNull(char);
+                } else if (obj.val === '') {
+                    return char === '';
                 }
                 return char.indexOf(obj.val) !== -1;
             }
@@ -3591,8 +3665,10 @@ module plat {
              * @param char The char to compare with
              */
             _isValUnequal(obj: any, char: string): boolean {
-                if (isNull(obj)) {
+                if (isNull(obj) || isNull(obj.val)) {
                     return !isNull(char);
+                } else if (obj.val === '') {
+                    return char !== '';
                 }
                 return char.indexOf(obj.val) === -1;
             }
@@ -4127,6 +4203,9 @@ module plat {
                 if (hasIdentifierIndexer && identifierIndexer[0] === '@') {
                     codeStr = '(' + this.__indexIntoContext.toString() + ')(' + context + ',' + codeStr + ')';
                     identifiers.push(identifierIndexer);
+                    if (tempIdentifiers.length > 0) {
+                        identifiers.push(tempIdentifiers.pop());
+                    }
                 } else if (this._isValEqual(previousToken, '++--()[]*/%?:>=<=&&||!===')) {
                     codeStr = '(' + this.__indexIntoContext.toString() + ')(' + context + ',' + codeStr + ')';
                     tempIdentifiers.push('.');
@@ -4234,13 +4313,13 @@ module plat {
                 } else if (context !== null && typeof context === 'object') {
                     return context[token];
                 }
-                return context === null ? null : undefined;
+                return undefined;
             }
             private __indexIntoContext(context: any, token: string, undefined?: any): any {
                 if (context !== null && typeof context === 'object') {
                     return context[token];
                 }
-                return context === null ? null : undefined;
+                return undefined;
             }
 
             // protected helper functions
@@ -4296,8 +4375,10 @@ module plat {
              * @param char The char to compare with
              */
             _isValEqual(obj: any, char: string): boolean {
-                if (isNull(obj)) {
+                if (isNull(obj) || isNull(obj.val)) {
                     return isNull(char);
+                } else if (obj.val === '') {
+                    return char === '';
                 }
                 return char.indexOf(obj.val) !== -1;
             }
@@ -4309,8 +4390,10 @@ module plat {
              * @param char The char to compare with
              */
             _isValUnequal(obj: any, char: string): boolean {
-                if (isNull(obj)) {
+                if (isNull(obj) || isNull(obj.val)) {
                     return !isNull(char);
+                } else if (obj.val === '') {
+                    return char !== '';
                 }
                 return char.indexOf(obj.val) === -1;
             }
@@ -5052,9 +5135,9 @@ module plat {
             goBack(length?: number): void {
                 this.$Window.history.go(-length);
 
-                if (this.__history && this.__history.length > 1) {
-                    var historyLength = this.__history.length;
-                    this.__history = this.__history.slice(0, historyLength - length);
+                var history = this.__history;
+                if (isArray(history) && history.length > 1) {
+                    this.__history = history.slice(0, history.length - length);
                     this.$Browser.url(this.__history.pop() || '');
                 }
             }
@@ -5610,8 +5693,8 @@ module plat {
              * 
              * @param value The value to reject.
              */
-            static reject(error?: any): IThenable<void> {
-                return new Promise<void>((resolve: (value: any) => any, reject: (error: any) => any) => {
+            static reject(error?: any): IThenable<any> {
+                return new Promise<any>((resolve: (value: any) => any, reject: (error: any) => any) => {
                     reject(error);
                 });
             }
@@ -6069,7 +6152,7 @@ module plat {
              * 
              * @param value The value to reject.
              */
-            reject(error: any): IThenable<void>;
+            reject(error: any): IThenable<any>;
         }
 
         /**
@@ -7340,6 +7423,7 @@ module plat {
             constructor(id: string, options?: ICacheOptions) {
                 this.__id = id;
                 this.__options = options;
+                this.__size = 0;
 
                 if (isNull(options)) {
                     this.__options = {
@@ -8381,8 +8465,15 @@ module plat {
                     temp: any,
                     context = control.context;
 
-                if (isNull(context)) {
-                    context = control.context = {};
+                if (!isObject(context)) {
+                    if (isNull(context)) {
+                        context = control.context = {};
+                    } else {
+                        var Exception: IExceptionStatic = acquire(__ExceptionStatic);
+                        Exception.warn('A child control is trying to create a child context that has ' +
+                            'a parent control with a primitive type context', Exception.BIND);
+                        return {};
+                    }
                 }
 
                 while (split.length > 0) {
@@ -8413,6 +8504,7 @@ module plat {
 
             private __identifiers: IObject<Array<IListener>> = {};
             private __identifierHash: IObject<Array<string>> = {};
+            private __lengthListeners: IObject<IListener> = {};
             private __contextObjects: IObject<any> = {};
             private __isArrayFunction: boolean = false;
             private __observedIdentifier: string;
@@ -8430,7 +8522,7 @@ module plat {
 
             observe(absoluteIdentifier: string, observableListener: IListener): IRemoveListener {
                 if (isEmpty(absoluteIdentifier)) {
-                    return;
+                    return noop;
                 }
 
                 var split = absoluteIdentifier.split('.'),
@@ -8438,7 +8530,7 @@ module plat {
                     context = this.context,
                     hasIdentifier = this._hasIdentifier(absoluteIdentifier),
                     hasObservableListener = !isNull(observableListener),
-                    join: string;
+                    join = key;
 
                 if (split.length > 0) {
                     join = split.join('.');
@@ -8450,10 +8542,16 @@ module plat {
 
                 if (!isObject(context)) {
                     if (hasObservableListener) {
+                        if (key === 'length') {
+                            this.__lengthListeners[absoluteIdentifier] = observableListener;
+                            ContextManager.pushRemoveListener(absoluteIdentifier, uid, () => {
+                                deleteProperty(this.__lengthListeners, absoluteIdentifier);
+                            });
+                        }
                         return this._addObservableListener(absoluteIdentifier, observableListener);
                     }
 
-                    return;
+                    return noop;
                 }
 
                 // set observedIdentifier to null
@@ -8463,12 +8561,11 @@ module plat {
 
                 // if observedIdentifier is not null, the primitive is already being watched
                 var observedIdentifier = this.__observedIdentifier,
-                    isObserved = !isNull(observedIdentifier);
+                    isObserved = !isNull(observedIdentifier),
+                    removeCallback = noop;
                 if (isObserved) {
                     hasIdentifier = true;
                 }
-
-                var removeCallback = noop;
 
                 if (hasObservableListener) {
                     var removeObservedCallback = noop,
@@ -8486,7 +8583,7 @@ module plat {
 
                 // check if value is defined and context manager hasn't seen this identifier
                 if (!hasIdentifier) {
-                    if (isArray(context) && key === 'length') {
+                    if (key === 'length' && isArray(context)) {
                         var property = split.pop(),
                             parentContext = this.getContext(split),
                             uid = observableListener.uid;
@@ -8501,12 +8598,12 @@ module plat {
                         var removeObservableListener = removeCallback,
                             removeListener = this.observeArray(uid, noop, join, context, null),
                             removeArrayObserve = this.observe(join, {
-                            uid: uid,
-                            listener: (newValue: Array<any>, oldValue: Array<any>) => {
-                                removeListener();
-                                removeListener = this.observeArray(uid, noop, join, newValue, oldValue);
-                            }
-                        });
+                                uid: uid,
+                                listener: (newValue: Array<any>, oldValue: Array<any>) => {
+                                    removeListener();
+                                    removeListener = this.observeArray(uid, noop, join, newValue, oldValue);
+                                }
+                            });
 
                         removeCallback = () => {
                             removeObservableListener();
@@ -8731,8 +8828,34 @@ module plat {
                     if (isEmpty(parentProperty)) {
                         newParent = newValue;
                         oldParent = oldValue;
-                        newChild = isNull(newParent) ? newParent : newParent[key];
-                        oldChild = isNull(oldParent) ? oldParent : oldParent[key];
+                        newChild = isNull(newParent) ? undefined : newParent[key];
+                        oldChild = isNull(oldParent) ? undefined : oldParent[key];
+
+                        if (key === 'length' && !isArray(oldParent) && isArray(newParent)) {
+                            var lengthListener = this.__lengthListeners[binding];
+                            if (!isNull(lengthListener)) {
+                                var uid = lengthListener.uid,
+                                    arraySplit = identifier.split('.'),
+                                    arrayKey = arraySplit.pop(),
+                                    arrayParent = this.getContext(arraySplit),
+                                    join: string;
+
+                                this.__observedIdentifier = null;
+                                access(arrayParent, arrayKey);
+
+                                join = isString(this.__observedIdentifier) ? this.__observedIdentifier : arraySplit.join('.');
+                                var removeListener = this.observeArray(uid, noop, join, newParent, null);
+                                this.observe(join, {
+                                    uid: uid,
+                                    listener: (nValue: Array<any>, oValue: Array<any>) => {
+                                        removeListener();
+                                        removeListener = this.observeArray(uid, noop, join, nValue, oValue);
+                                    }
+                                });
+
+                                deleteProperty(this.__lengthListeners, binding);
+                            }
+                        }
                     } else {
                         value = values[parentProperty];
 
@@ -8747,8 +8870,8 @@ module plat {
 
                         newParent = value.newValue;
                         oldParent = value.oldValue;
-                        newChild = isNull(newParent) ? null : newParent[key];
-                        oldChild = isNull(oldParent) ? null : oldParent[key];
+                        newChild = isNull(newParent) ? undefined : newParent[key];
+                        oldChild = isNull(oldParent) ? undefined : oldParent[key];
                     }
 
                     values[property] = {
@@ -8756,7 +8879,7 @@ module plat {
                         oldValue: oldChild
                     };
 
-                    if (!(isNull(newParent) || isUndefined(newChild))) {
+                    if (isObject(newParent) && (!isArray(newParent) || newParent.length > key)) {
                         this._define(binding, newParent, key);
                     }
 
@@ -8920,10 +9043,10 @@ module plat {
             _execute(identifier: string, value: any, oldValue: any): void {
                 var observableListeners = this.__identifiers[identifier];
 
-                this.__contextObjects[identifier] = value;
-
                 if (isUndefined(value)) {
                     deleteProperty(this.__contextObjects, identifier);
+                } else {
+                    this.__contextObjects[identifier] = value;
                 }
 
                 if (isNull(observableListeners)) {
@@ -9023,17 +9146,12 @@ module plat {
 
                 callbacks.push(observableListener);
 
-                if (isNull(this.__identifierHash[identifier])) {
-                    this.__addHashValues(identifier);
-                }
+                this.__addHashValues(identifier);
             }
             private __addHashValues(identifier: string) {
                 var split = identifier.split('.'),
-                    ident = '',
-                    hashValue: Array<string>;
-
-                ident = split.shift();
-                hashValue = this.__identifierHash[ident];
+                    ident = split.shift(),
+                    hashValue = this.__identifierHash[ident];
 
                 if (isNull(hashValue)) {
                     hashValue = this.__identifierHash[ident] = [];
@@ -9042,7 +9160,9 @@ module plat {
                     }
                 }
 
-                hashValue.push(identifier);
+                if (ident !== identifier && hashValue.indexOf(identifier) === -1) {
+                    hashValue.push(identifier);
+                }
 
                 while (split.length > 0) {
                     ident += '.' + split.shift();
@@ -9050,8 +9170,10 @@ module plat {
 
                     if (isNull(hashValue)) {
                         hashValue = this.__identifierHash[ident] = [];
-                    }
-                    if (ident !== identifier) {
+                        if (ident !== identifier) {
+                            hashValue.push(identifier);
+                        }
+                    } else if (ident !== identifier && hashValue.indexOf(identifier) === -1) {
                         hashValue.push(identifier);
                     }
                 }
@@ -12502,6 +12624,7 @@ module plat {
         export class Bind extends AttributeControl {
             $Parser: expressions.IParser = acquire(__Parser);
             $ContextManagerStatic: observable.IContextManagerStatic = acquire(__ContextManagerStatic);
+            $document: Document = acquire(__Document);
 
             /**
              * The priority of Bind is set high to take precede 
@@ -12523,7 +12646,7 @@ module plat {
             /**
              * The function used to set the bound value.
              */
-            _setter: (value: any, firstTime?: boolean) => void;
+            _setter: (newValue: any, oldValue?: any, firstTime?: boolean) => void;
 
             /**
              * The event listener attached to this element.
@@ -12660,7 +12783,7 @@ module plat {
                 };
 
                 this._postponedEventListener = () => {
-                    if (!!timeout) {
+                    if (isFunction(timeout)) {
                         return;
                     }
 
@@ -12710,7 +12833,7 @@ module plat {
              */
             _addEventListener(event: string, listener?: () => void, postpone?: boolean): void {
                 listener = listener ||
-                    (!!postpone ? this._postponedEventListener : this._eventListener);
+                    (postpone === true ? this._postponedEventListener : this._eventListener);
 
                 this.addEventListener(this.element, event, listener, false);
             }
@@ -12813,8 +12936,10 @@ module plat {
              * 
              * @param newValue The new value to set
              * @param oldValue The previously bound value
+             * @param firstTime The context is being evaluated for the first time and 
+             * should thus change the property if null
              */
-            _setText(newValue: any, oldValue?: any): void {
+            _setText(newValue: any, oldValue?: any, firstTime?: boolean): void {
                 if (this.__isSelf) {
                     return;
                 }
@@ -12822,7 +12947,7 @@ module plat {
                 if (isNull(newValue)) {
                     newValue = '';
 
-                    if (isUndefined(oldValue)) {
+                    if (firstTime === true) {
                         if (isNull((<HTMLInputElement>this.element).value)) {
                             this.__setValue(newValue);
                         }
@@ -12839,8 +12964,10 @@ module plat {
              * 
              * @param newValue The new value to set
              * @param oldValue The previously bound value
+             * @param firstTime The context is being evaluated for the first time and 
+             * should thus change the property if null
              */
-            _setRange(newValue: any, oldValue?: any): void {
+            _setRange(newValue: any, oldValue?: any, firstTime?: boolean): void {
                 if (this.__isSelf) {
                     return;
                 }
@@ -12848,7 +12975,7 @@ module plat {
                 if (isEmpty(newValue)) {
                     newValue = 0;
 
-                    if (isUndefined(oldValue)) {
+                    if (firstTime === true) {
                         if (isEmpty((<HTMLInputElement>this.element).value)) {
                             this.__setValue(newValue);
                         }
@@ -12865,12 +12992,14 @@ module plat {
              * 
              * @param newValue The new value to set
              * @param oldValue The previously bound value
+             * @param firstTime The context is being evaluated for the first time and 
+             * should thus change the property if null
              */
-            _setChecked(newValue: any, oldValue?: any): void {
+            _setChecked(newValue: any, oldValue?: any, firstTime?: boolean): void {
                 if (this.__isSelf) {
                     return;
                 } else if (!isBoolean(newValue)) {
-                    if (isUndefined(oldValue)) {
+                    if (firstTime === true) {
                         this._propertyChanged();
                         return;
                     }
@@ -12884,9 +13013,8 @@ module plat {
              * Setter for input[type=radio]
              * 
              * @param newValue The new value to set
-             * @param oldValue The previously bound value
              */
-            _setRadio(newValue: any, oldValue?: any): void {
+            _setRadio(newValue: any): void {
                 var element = (<HTMLInputElement>this.element);
                 if (this.__isSelf) {
                     return;
@@ -12903,35 +13031,56 @@ module plat {
              * 
              * @param newValue The new value to set
              * @param oldValue The previously bound value
+             * @param firstTime The context is being evaluated for the first time and 
+             * should thus change the property if null
              */
-            _setSelectedIndex(newValue: any, oldValue?: any): void {
+            _setSelectedIndex(newValue: any, oldValue?: any, firstTime?: boolean): void {
                 if (this.__isSelf) {
                     return;
-                }
-
-                var element = <HTMLSelectElement>this.element;
-                if (isNull(newValue)) {
-                    element.selectedIndex = -1;
-                    if (isUndefined(oldValue)) {
-                        this.__checkAsynchronousSelect(newValue);
+                } else if (firstTime === true && this.__checkAsynchronousSelect()) {
+                    if (isNull(newValue)) {
                         this._propertyChanged();
                     }
                     return;
-                } else if (element.value === newValue) {
-                    if (isUndefined(oldValue)) {
-                        this.__checkAsynchronousSelect(newValue);
+                }
+
+                var element = <HTMLSelectElement>this.element,
+                    value = element.value;
+                if (isNull(newValue)) {
+                    if (firstTime === true || !this.$document.body.contains(element)) {
+                        this._propertyChanged();
+                        return;
+                    }
+                    element.selectedIndex = -1;
+                    return;
+                } else if (!isString(newValue)) {
+                    var Exception: IExceptionStatic = acquire(__ExceptionStatic),
+                        message: string;
+                    if (isNumber(newValue)) {
+                        newValue = newValue.toString();
+                        message = 'Trying to bind a value of type number to a select element. ' +
+                            'The value will implicitly be converted to type string.';
+                    } else {
+                        message = 'Trying to bind a value that is not a string to a select element. ' +
+                            'The element\'s selected index will be set to -1.';
+                    }
+
+                    Exception.warn(message, Exception.BIND);
+                } else if (value === newValue) {
+                    return;
+                } else if (!this.$document.body.contains(element)) {
+                    element.value = newValue;
+                    if (element.value !== newValue) {
+                        element.value = value;
+                        this._propertyChanged();
                     }
                     return;
                 }
 
                 element.value = newValue;
                 // check to make sure the user changed to a valid value
-                if (element.value !== newValue) {
-                    if (isUndefined(oldValue)) {
-                        this.__checkAsynchronousSelect(newValue);
-                    }
-                    element.selectedIndex = -1;
-                } else if (element.selectedIndex === -1) {
+                // second boolean argument is an ie fix for inconsistency
+                if (element.value !== newValue || element.selectedIndex === -1) {
                     element.selectedIndex = -1;
                 }
             }
@@ -12941,9 +13090,13 @@ module plat {
              * 
              * @param newValue The new value to set
              * @param oldValue The previously bound value
+             * @param firstTime The context is being evaluated for the first time and 
+             * should thus change the property if null
              */
-            _setSelectedIndices(newValue: any, oldValue?: any): void {
+            _setSelectedIndices(newValue: any, oldValue?: any, firstTime?: boolean): void {
                 if (this.__isSelf) {
+                    return;
+                } else if (firstTime === true && this.__checkAsynchronousSelect()) {
                     return;
                 }
 
@@ -12952,16 +13105,8 @@ module plat {
                     option: HTMLOptionElement,
                     nullValue = isNull(newValue);
 
-                if (length === 0) {
-                    this.__checkAsynchronousSelect(newValue);
-                    if (isUndefined(oldValue)) {
-                        this._propertyChanged();
-                    }
-                    return;
-                }
-
                 if (nullValue || !isArray(newValue)) {
-                    if (isUndefined(oldValue)) {
+                    if (firstTime === true) {
                         this._propertyChanged();
                     }
                     // unselects the options unless a match is found
@@ -13044,6 +13189,13 @@ module plat {
                     case 'select':
                         this.__initializeSelect();
                         break;
+                    default:
+                        if (isNull(this.templateControl)) {
+                            return;
+                        }
+
+                        this._observeBindableProperty();
+                        break;
                 }
             }
 
@@ -13054,9 +13206,17 @@ module plat {
                 var contextExpression = this._contextExpression,
                     context = this.evaluateExpression(contextExpression);
 
-                if (isNull(context) && contextExpression.identifiers.length > 0) {
-                    context = this.$ContextManagerStatic.createContext(this.parent,
-                        contextExpression.identifiers[0]);
+                if (!isObject(context)) {
+                    if (isNull(context) && contextExpression.identifiers.length > 0) {
+                        context = this.$ContextManagerStatic.createContext(this.parent,
+                            contextExpression.identifiers[0]);
+                    } else {
+                        var Exception: IExceptionStatic = acquire(__ExceptionStatic);
+                        Exception.warn('plat-bind is trying to index into a primitive type. ' +
+                            this._contextExpression.expression + ' is already defined and not ' +
+                            'an object when trying to evaluate plat-bind="' +
+                            this._expression.expression + '"', Exception.BIND);
+                    }
                 }
 
                 var property: string;
@@ -13068,21 +13228,21 @@ module plat {
                         context[property] = [];
                     }
                     this.observeArray(context, property, (arrayInfo: observable.IArrayMethodInfo<string>) => {
-                        this._setter(arrayInfo.newArray);
+                        this._setter(arrayInfo.newArray, arrayInfo.oldArray, true);
                     });
                 }
 
                 var expression = this._expression;
 
                 this.observeExpression(expression, this._setter);
-                this._setter(this.evaluateExpression(expression));
+                this._setter(this.evaluateExpression(expression), undefined, true);
             }
 
             /**
              * Sets the context property being bound to when the 
              * element's property is changed.
              */
-            _propertyChanged(): any {
+            _propertyChanged(): void {
                 if (isNull(this._contextExpression)) {
                     return;
                 }
@@ -13093,15 +13253,39 @@ module plat {
                 var newValue = this._getter();
 
                 if (isNull(context) || context[property] === newValue) {
-                    return newValue;
+                    return;
                 }
 
                 // set flag to let setter functions know we changed the property
                 this.__isSelf = true;
                 context[property] = newValue;
                 this.__isSelf = false;
+            }
 
-                return newValue;
+            /**
+             * Checks if the associated Template Control is a BindablePropertyControl and 
+             * initializes all listeners accordingly.
+             */
+            _observeBindableProperty(): void {
+                var templateControl = <ui.IBindablePropertyControl>this.templateControl;
+
+                if (isFunction(templateControl.observeProperty) &&
+                    isFunction(templateControl.setProperty)) {
+                    templateControl.observeProperty((newValue: any) => {
+                        this._getter = () => newValue;
+                        this._propertyChanged();
+                    });
+
+                    this._setter = this.__setBindableProperty;
+                }
+            }
+
+            private __setBindableProperty(newValue: any, oldValue?: any, firstTime?: boolean): void {
+                if (this.__isSelf) {
+                    return;
+                }
+
+                (<ui.IBindablePropertyControl>this.templateControl).setProperty(newValue, oldValue, firstTime);
             }
 
             private __setValue(newValue: any): void {
@@ -13135,9 +13319,9 @@ module plat {
             }
 
             private __initializeSelect() {
-                var element = this.element,
-                    multiple = (<HTMLSelectElement>element).multiple,
-                    options = (<HTMLSelectElement>element).options,
+                var element = <HTMLSelectElement>this.element,
+                    multiple = element.multiple,
+                    options = element.options,
                     length = options.length,
                     option: HTMLSelectElement;
 
@@ -13158,24 +13342,27 @@ module plat {
                 }
             }
 
-            private __checkAsynchronousSelect(newValue: any): void {
+            private __checkAsynchronousSelect(): boolean {
                 var select = <ui.controls.Select>this.templateControl;
-                if (!isNull(select) && select.type === __Select && isPromise(select.itemsLoaded)) {
-                    var element = <HTMLSelectElement>this.element,
-                        split = select.absoluteContextPath.split('.'),
+                if (!isNull(select) && (select.type === __Select || select.type === __ForEach) && isPromise(select.itemsLoaded)) {
+                    var split = select.absoluteContextPath.split('.'),
                         key = split.pop();
 
                     this.observeArray(this.$ContextManagerStatic.getContext(this.parent, split), key,
                         (ev: observable.IArrayMethodInfo<any>) => {
-                        select.itemsLoaded.then(() => {
-                            this._setSelectedIndex(this.evaluateExpression(this._expression), null);
+                            select.itemsLoaded.then(() => {
+                                this._setter(this.evaluateExpression(this._expression));
+                            });
                         });
-                    });
 
                     select.itemsLoaded.then(() => {
-                        this._setSelectedIndex(newValue, null);
+                        this._setter(this.evaluateExpression(this._expression));
                     });
+
+                    return true;
                 }
+
+                return false;
             }
         }
 
@@ -13218,7 +13405,7 @@ module plat {
              * The set of functions added by the Template Control that listens 
              * for property changes.
              */
-            _listeners: Array<(newValue: any, oldValue: any) => void> = [];
+            _listeners: Array<(newValue: any, oldValue?: any) => void> = [];
 
             /**
              * The function to stop listening for property changes.
@@ -13281,7 +13468,7 @@ module plat {
              * @param value The new value of the evaluated expression.
              * @param oldValue The old value of the evaluated expression.
              */
-            _callListeners(newValue: any, oldValue: any): void {
+            _callListeners(newValue: any, oldValue?: any): void {
                 var listeners = this._listeners,
                     length = listeners.length,
                     templateControl = this.templateControl;
@@ -13296,13 +13483,13 @@ module plat {
              * 
              * @param listener The listener added by the Template Control.
              */
-            _addListener(listener: (newValue: any, oldValue: any) => void): IRemoveListener {
+            _addListener(listener: (newValue: any, oldValue?: any) => void): IRemoveListener {
                 var listeners = this._listeners,
                     index = listeners.length;
 
                 listeners.push(listener);
 
-                return function removeListener() {
+                return () => {
                     listeners.splice(index, 1);
                 };
             }
@@ -14475,6 +14662,94 @@ module plat {
             evaluateExpression? (expression: expressions.IParsedExpression, context?: any): any;
         }
 
+        export class BindablePropertyControl extends TemplateControl implements IBindablePropertyControl {
+            /**
+             * The set of functions added externally that listens 
+             * for property changes.
+             */
+            _listeners: Array<(newValue: any, oldValue?: any) => void> = [];
+
+            /**
+             * Adds a listener to be called when the bindable property changes.
+             * 
+             * @param listener The function that acts as a listener.
+             */
+            observeProperty(listener: (newValue: any, oldValue?: any) => void): IRemoveListener {
+                var listeners = this._listeners,
+                    length = listener.length;
+
+                listeners.push(listener);
+
+                return () => {
+                    listeners.splice(length, 1);
+                };
+            }
+
+            /**
+             * A function that lets the BindablePropertyControl know when the context's value of the bindable 
+             * property has changed.
+             * 
+             * @param newValue The new value of the bindable property.
+             * @param oldValue The old value of the bindable property.
+             * @param firstTime A boolean signifying whether this is the first set of the property.
+             */
+            setProperty(newValue: any, oldValue?: any, firstTime?: boolean): void { }
+
+            /**
+             * A function that signifies when BindablePropertyControl's bindable property has changed.
+             * 
+             * @param newValue The new value of the property after the change.
+             * @param oldValue The old value of the property prior to the change.
+             */
+            propertyChanged(newValue: any, oldValue?: any): void {
+                if (newValue === oldValue) {
+                    return;
+                }
+
+                var listeners = this._listeners,
+                    length = listeners.length;
+
+                for (var i = 0; i < length; ++i) {
+                    listeners[i](newValue, oldValue);
+                }
+            }
+        
+            /**
+             * Removes references to the listeners 
+             * defined externally.
+             */
+            dispose(): void {
+                this._listeners = [];
+            }
+        }
+
+        export interface IBindablePropertyControl extends ITemplateControl {
+            /**
+             * Adds a listener to be called when the bindable property changes.
+             * 
+             * @param listener The function that acts as a listener.
+             */
+            observeProperty(listener: (newValue: any, oldValue?: any) => void): IRemoveListener;
+
+            /**
+             * A function that lets the BindablePropertyControl know when the context's value of the bindable 
+             * property has changed.
+             * 
+             * @param newValue The new value of the bindable property.
+             * @param oldValue The old value of the bindable property.
+             * @param firstTime A boolean signifying whether this is the first set of the property.
+             */
+            setProperty(newValue: any, oldValue?: any, firstTime?: boolean): void;
+
+            /**
+             * A function that signifies when BindablePropertyControl's bindable property has changed.
+             * 
+             * @param newValue The new value of the property after the change.
+             * @param oldValue The old value of the property prior to the change.
+             */
+            propertyChanged(newValue: any, oldValue?: any): void;
+        }
+
         /**
          * A control used in a controls.Viewport for simulated page navigation. The 
          * control has navigation events that are called when navigating to and from the control.
@@ -14699,9 +14974,11 @@ module plat {
                 return this.$DomEvents.addEventListener(element, type, listener, useCapture);
             }
 
+            appendChildren(nodeList: Array<Node>): DocumentFragment;
+            appendChildren(nodeList: NodeList): DocumentFragment;
             appendChildren(nodeList: Array<Node>, root?: Node): Node;
             appendChildren(nodeList: NodeList, root?: Node): Node;
-            appendChildren(nodeList: any, root?: Node) {
+            appendChildren(nodeList: any, root?: Node): any {
                 return appendChildren(nodeList, root);
             }
 
@@ -14792,6 +15069,27 @@ module plat {
             addEventListener(element: Node, type: string, listener: ui.IGestureListener, useCapture?: boolean): IRemoveListener;
             addEventListener(element: Window, type: string, listener: ui.IGestureListener, useCapture?: boolean): IRemoveListener;
 
+            /**
+             * Takes a Node Array and either adds it to the passed in Node,
+             * or creates a DocumentFragment and adds the NodeList to the
+             * Fragment.
+             * 
+             * @param nodeList A Node Array to be appended to the root/DocumentFragment
+             * 
+             * @return {Node} The root Node or a DocumentFragment.
+             */
+            appendChildren(nodeList: Array<Node>): DocumentFragment;
+            /**
+             * Takes a Node Array and either adds it to the passed in Node,
+             * or creates a DocumentFragment and adds the NodeList to the
+             * Fragment.
+             * 
+             * @param nodeList A Node Array to be appended to the root/DocumentFragment
+             * @param root An optional Node to append the nodeList.
+             * 
+             * @return {Node} The root Node or a DocumentFragment.
+             */
+            appendChildren(nodeList: NodeList): DocumentFragment;
             /**
              * Takes a Node Array and either adds it to the passed in Node,
              * or creates a DocumentFragment and adds the NodeList to the
@@ -15166,12 +15464,24 @@ module plat {
             _bindTemplate(key: string, template: DocumentFragment, context: string,
                 resources: IObject<IResource>): async.IThenable<DocumentFragment> {
                 var control = this._createBoundControl(key, template, context, resources),
-                    nodeMap = this._createNodeMap(control, template, context);
+                    nodeMap = this._createNodeMap(control, template, context),
+                    disposed = false,
+                    dispose = control.dispose;
+
+                control.dispose = () => {
+                    disposed = true;
+                    dispose.call(control);
+                    control.dispose = dispose;
+                };
 
                 return this._bindNodeMap(nodeMap, key).then(() => {
-                    control.startNode = template.insertBefore(this.$Document.createComment(control.type + __START_NODE),
+                    var $document = this.$Document;
+                    if (disposed) {
+                        return $document.createDocumentFragment();
+                    }
+                    control.startNode = template.insertBefore($document.createComment(control.type + __START_NODE),
                         template.firstChild);
-                    control.endNode = template.insertBefore(this.$Document.createComment(control.type + __END_NODE),
+                    control.endNode = template.insertBefore($document.createComment(control.type + __END_NODE),
                         null);
 
                     return template;
@@ -15428,7 +15738,7 @@ module plat {
          * Attributes for this object are converted from dash-notation to camelCase notation.
          */
         export class Attributes implements IAttributesInstance {
-            private __listeners: IObject<Array<(newValue: any, oldValue: any) => void>> = {};
+            private __listeners: IObject<Array<(newValue: any, oldValue?: any) => void>> = {};
             private __control: IControl;
 
             initialize(control: IControl, attributes: IObject<string>): void {
@@ -15446,7 +15756,7 @@ module plat {
                 }
             }
 
-            observe(key: string, listener: (newValue: any, oldValue: any) => void): IRemoveListener {
+            observe(key: string, listener: (newValue: any, oldValue?: any) => void): IRemoveListener {
                 var listeners = this.__listeners[camelCase(key)];
 
                 if (isNull(listeners)) {
@@ -16290,19 +16600,19 @@ module plat {
             private __START = 'start';
             private __MOVE = 'move';
             private __END = 'end';
-            private __detectMove = false;
             private __hasMoved = false;
             private __hasSwiped = false;
             private __hasRelease = false;
+            private __detectingMove = false;
             private __tapCount = 0;
             private __touchCount = 0;
             private __tapTimeout: number;
             private __holdTimeout: number;
             private __cancelRegex = /cancel/i;
             private __pointerEndRegex = /up|cancel/i;
-            private __lastTouchDown: ITouchPoint;
-            private __lastTouchUp: ITouchPoint;
-            private __swipeOrigin: ITouchPoint;
+            private __lastTouchDown: IPointerEvent;
+            private __lastTouchUp: IPointerEvent;
+            private __swipeOrigin: IPointerEvent;
             private __lastMoveEvent: IPointerEvent;
             private __capturedTarget: ICustomElement;
             private __focusedElement: HTMLInputElement;
@@ -16395,6 +16705,10 @@ module plat {
                 this.__reverseMap = {};
                 this.__tapCount = 0;
                 this.__touchCount = 0;
+                this.__detectingMove = false;
+                this.__hasMoved = false;
+                this.__hasRelease = false;
+                this.__hasSwiped = false;
                 this.__swipeOrigin = null;
                 this.__lastMoveEvent = null;
                 this.__lastTouchDown = null;
@@ -16408,14 +16722,15 @@ module plat {
              * 
              * @param ev The touch start event object.
              */
-            _onTouchStart(ev: IPointerEvent): void {
+            _onTouchStart(ev: IPointerEvent): boolean {
                 var isTouch = ev.type !== 'mousedown';
 
                 if (isTouch) {
                     this._inTouch = true;
                 } else if (this._inTouch === true) {
                     // return immediately if mouse event and currently in a touch
-                    return;
+                    ev.preventDefault();
+                    return false;
                 }
 
                 // set any captured target back to null
@@ -16423,34 +16738,25 @@ module plat {
 
                 this.__standardizeEventObject(ev);
 
-                if ((this.__touchCount = ev.touches.length) > 1) {
-                    return;
-                }
-
+                this.__lastTouchDown = this.__swipeOrigin = ev;
+                this.__lastMoveEvent = null;
                 this.__hasMoved = false;
 
-                this.__lastTouchDown = this.__swipeOrigin = {
-                    x: ev.clientX,
-                    y: ev.clientY,
-                    target: ev.target,
-                    timeStamp: ev.timeStamp
-                };
+                if ((this.__touchCount = ev.touches.length) > 1) {
+                    ev.preventDefault();
+                    return false;
+                }
+
+                this.__registerType(this.__MOVE);
+                this.__detectingMove = true;
 
                 var gestureCount = this._gestureCount,
                     noHolds = gestureCount.$hold <= 0,
                     noRelease = gestureCount.$release <= 0;
 
-                // check to see if we need to detect movement
-                if (gestureCount.$tap > 0 || gestureCount.$dbltap > 0 ||
-                    gestureCount.$track > 0 || gestureCount.$swipe > 0) {
-                    this.__lastMoveEvent = null;
-                    this.__detectMove = true;
-                    this.__registerType(this.__MOVE);
-                }
-
                 // return if no hold or release events are registered
                 if (noHolds && noRelease) {
-                    return;
+                    return true;
                 }
 
                 var holdInterval = DomEvents.config.intervals.holdInterval,
@@ -16484,6 +16790,8 @@ module plat {
                 if (!isNull(domEvent)) {
                     this.__holdTimeout = setTimeout(subscribeFn, holdInterval);
                 }
+
+                return true;
             }
 
             /**
@@ -16491,36 +16799,27 @@ module plat {
              * 
              * @param ev The touch start event object.
              */
-            _onMove(ev: IPointerEvent): void {
+            _onMove(ev: IPointerEvent): boolean {
                 // clear hold event
                 this.__clearHold();
 
-                // return immediately if we should not be detecting move, 
-                // if there are multiple touches present, or 
+                // return immediately if there are multiple touches present, or 
                 // if it is a mouse event and currently in a touch
-                if (!this.__detectMove ||
-                    this.__touchCount > 1 ||
-                    (this._inTouch === true && ev.type === 'mousemove')) {
-                    return;
-                }
-
-                var gestureCount = this._gestureCount,
-                    noTracking = gestureCount.$track <= 0,
-                    noMoveEvents = gestureCount.$swipe <= 0 && noTracking;
-
-                // return if no move events and no tap events are registered
-                if (noMoveEvents && gestureCount.$dbltap <= 0 && gestureCount.$tap <= 0) {
-                    return;
+                if (this.__touchCount > 1 || (this._inTouch === true && ev.type === 'mousemove')) {
+                    ev.preventDefault();
+                    return false;
                 }
 
                 this.__standardizeEventObject(ev);
 
-                var config = DomEvents.config,
+                var gestureCount = this._gestureCount,
+                    noTracking = gestureCount.$track <= 0,
+                    config = DomEvents.config,
                     swipeOrigin = this.__swipeOrigin,
                     x = ev.clientX,
                     y = ev.clientY,
-                    lastX = swipeOrigin.x,
-                    lastY = swipeOrigin.y,
+                    lastX = swipeOrigin.clientX,
+                    lastY = swipeOrigin.clientY,
                     minMove = this.__getDistance(lastX, x, lastY, y) >= config.distances.minScrollDistance;
 
                 // if minimum distance moved
@@ -16529,8 +16828,8 @@ module plat {
                 }
 
                 // if no move events or no tracking events and the user hasn't moved the minimum swipe distance
-                if (noMoveEvents || (noTracking && !minMove)) {
-                    return;
+                if ((gestureCount.$swipe <= 0 && noTracking) || (noTracking && !minMove)) {
+                    return true;
                 }
 
                 var lastMove = this.__lastMoveEvent,
@@ -16541,7 +16840,8 @@ module plat {
                     ev.preventDefault();
                 }
 
-                var velocity = ev.velocity = this.__getVelocity(x - swipeOrigin.x, y - swipeOrigin.y, ev.timeStamp - swipeOrigin.timeStamp);
+                var velocity = ev.velocity = this.__getVelocity(x - swipeOrigin.clientX, y - swipeOrigin.clientY,
+                    ev.timeStamp - swipeOrigin.timeStamp);
                 this.__hasSwiped = (this.__isHorizontal(direction) ? velocity.x : velocity.y) >= config.velocities.minSwipeVelocity;
 
                 // if tracking events exist
@@ -16550,6 +16850,8 @@ module plat {
                 }
 
                 this.__lastMoveEvent = ev;
+
+                return true;
             }
 
             /**
@@ -16557,22 +16859,47 @@ module plat {
              * 
              * @param ev The touch start event object.
              */
-            _onTouchEnd(ev: IPointerEvent): void {
-                var eventType = ev.type;
+            _onTouchEnd(ev: IPointerEvent): boolean {
+                var eventType = ev.type,
+                    hasMoved = this.__hasMoved,
+                    inTouch = this._inTouch;
+
+                // return immediately if there were multiple touches present
+                if (this.__touchCount > 1) {
+                    ev.preventDefault();
+                    if (eventType === 'touchend') {
+                        this.__preventClickFromTouch();
+                    }
+                    return false;
+                }
 
                 if (eventType !== 'mouseup') {
-                    this._inTouch = false;
-                } else if (!isUndefined(this._inTouch)) {
-                    return;
+                    if (eventType === 'touchend') {
+                        var target = <HTMLInputElement>ev.target;
+                        if (hasMoved) {
+                            ev.preventDefault();
+                            this.__preventClickFromTouch();
+                        } else if (this.__isFocused(target)) {
+                            this.__preventClickFromTouch();
+                        } else {
+                            ev.preventDefault();
+                            if (inTouch === true) {
+                                this.__handleInput(target);
+                            }
+                        }
+                        this._inTouch = false;
+                    }
+                } else if (!isUndefined(inTouch)) {
+                    ev.preventDefault();
+                    return false;
                 }
 
                 // clear hold event
                 this.__clearHold();
 
-                // if we were detecting move events, unregister them
-                if (this.__detectMove) {
+                if (this.__detectingMove) {
                     this.__unregisterType(this.__MOVE);
-                    this.__detectMove = false;
+                    this.__detectingMove = false;
                 }
 
                 this.__standardizeEventObject(ev);
@@ -16582,13 +16909,14 @@ module plat {
                     this.__tapCount = 0;
                     this.__hasRelease = false;
                     this.__hasSwiped = false;
-                    return;
+                    return true;
                 }
 
                 // return if the touch count was greater than 0, 
                 // or handle release
                 if (ev.touches.length > 0) {
-                    return;
+                    ev.preventDefault();
+                    return false;
                 } else if (this.__hasRelease) {
                     this.__handleRelease(ev);
                 }
@@ -16603,25 +16931,11 @@ module plat {
                     touchEnd = ev.timeStamp,
                     touchDown = this.__lastTouchDown;
 
-                if (isNull(touchDown)) {
-                    this.__tapCount = 0;
-                    return;
-                }
-
                 // if the user moved their finger (for scroll) we do not want default or custom behaviour, 
-                // else if they had their finger down too long to be considered a tap, we do not want default or 
-                // custom behaviour, but if the event type is 'touchend' we may need to implement the default behaviour.
-                if (this.__hasMoved) {
+                // else if they had their finger down too long to be considered a tap, we want to return
+                if (hasMoved || isNull(touchDown) || ((touchEnd - touchDown.timeStamp) > intervals.tapInterval)) {
                     this.__tapCount = 0;
-                    return;
-                } else if ((touchEnd - touchDown.timeStamp) > intervals.tapInterval) {
-                    if (eventType === 'touchend') {
-                        this.__handleInput(<HTMLInputElement>ev.target);
-                    }
-                    this.__tapCount = 0;
-                    return;
-                } else if (eventType === 'touchend') {
-                    this.__handleInput(<HTMLInputElement>ev.target);
+                    return !hasMoved;
                 }
 
                 var lastTouchUp = this.__lastTouchUp,
@@ -16631,7 +16945,7 @@ module plat {
                 // check if can be a double tap event by checking number of taps, distance between taps, 
                 // and time between taps
                 if (this.__tapCount > 0 &&
-                    this.__getDistance(x, lastTouchUp.x, y, lastTouchUp.y) <= config.distances.maxDblTapDistance &&
+                    this.__getDistance(x, lastTouchUp.clientX, y, lastTouchUp.clientY) <= config.distances.maxDblTapDistance &&
                     ((touchEnd - lastTouchUp.timeStamp) <= intervals.dblTapInterval)) {
                     // handle dbltap events
                     this.__handleDbltap(ev);
@@ -16642,12 +16956,9 @@ module plat {
                 // handle tap events
                 this.__handleTap(ev);
 
-                this.__lastTouchUp = {
-                    x: x,
-                    y: y,
-                    target: ev.target,
-                    timeStamp: touchEnd
-                };
+                this.__lastTouchUp = ev;
+
+                return true;
             }
 
             // gesture handling methods
@@ -16772,7 +17083,12 @@ module plat {
                 var $compat = this.$Compat,
                     touchEvents = $compat.mappedEvents;
 
-                if ($compat.hasTouchEvents) {
+                if ($compat.hasPointerEvents) {
+                    this._startEvents = [touchEvents.$touchstart];
+                    this._moveEvents = [touchEvents.$touchmove];
+                    this._endEvents = [touchEvents.$touchend, touchEvents.$touchcancel];
+                    return;
+                } else if ($compat.hasTouchEvents) {
                     this._startEvents = [touchEvents.$touchstart, 'mousedown'];
                     this._moveEvents = [touchEvents.$touchmove, 'mousemove'];
                     this._endEvents = [touchEvents.$touchend, touchEvents.$touchcancel, 'mouseup'];
@@ -16869,8 +17185,7 @@ module plat {
                 if (isNull(id)) {
                     var subscriber = this._subscribers[plat.domEvent];
                     if (isUndefined((<any>subscriber)[type])) {
-                        $domEvent = acquire(__DomEventInstance);
-                        $domEvent.initialize(element, type);
+                        $domEvent = new CustomDomEvent(element, type);
                         (<any>subscriber)[type] = $domEvent;
                     } else {
                         (<any>subscriber)[type].count++;
@@ -16878,8 +17193,7 @@ module plat {
                     subscriber.gestureCount++;
                 } else {
                     var newSubscriber = { gestureCount: 1 };
-                    $domEvent = acquire(__DomEventInstance);
-                    $domEvent.initialize(element, type);
+                    $domEvent = new CustomDomEvent(element, type);
                     (<any>newSubscriber)[type] = $domEvent;
                     this._subscribers[id] = newSubscriber;
 
@@ -16897,7 +17211,7 @@ module plat {
 
                 var domEventId = plat.domEvent,
                     eventSubscriber = this._subscribers[domEventId],
-                    domEvent: IDomEventInstance = (<any>eventSubscriber)[type];
+                    domEvent: ICustomDomEventInstance = (<any>eventSubscriber)[type];
 
                 if (isNull(domEvent)) {
                     return;
@@ -17121,12 +17435,7 @@ module plat {
                     return false;
                 }
 
-                this.__swipeOrigin = {
-                    x: lastMove.clientX,
-                    y: lastMove.clientY,
-                    target: lastMove.target,
-                    timeStamp: lastMove.timeStamp
-                };
+                this.__swipeOrigin = lastMove;
 
                 this.__hasSwiped = false;
                 return this.__checkForRegisteredSwipe(direction);
@@ -17194,56 +17503,120 @@ module plat {
 
                 return style;
             }
-            private __handleInput(target: HTMLInputElement) {
+            private __isFocused(target: EventTarget): boolean {
+                return target === this.__focusedElement;
+            }
+            private __handleInput(target: HTMLInputElement): void {
                 var nodeName = target.nodeName,
                     focusedElement = this.__focusedElement || <HTMLInputElement>{};
 
-                if (isFunction(focusedElement.blur)) {
-                    focusedElement.blur();
-                }
-
                 if (!isString(nodeName)) {
+                    this.__focusedElement = null;
+                    if (isFunction(focusedElement.blur)) {
+                        focusedElement.blur();
+                    }
                     return;
                 }
 
+                var remover: IRemoveListener,
+                    $document: Document;
                 switch (nodeName.toLowerCase()) {
                     case 'input':
                         switch (target.type) {
                             case 'range':
+                                if (isFunction(focusedElement.blur)) {
+                                    focusedElement.blur();
+                                }
                                 break;
                             case 'button':
                             case 'submit':
                             case 'checkbox':
                             case 'radio':
                             case 'file':
-                                target.click();
+                                if (isFunction(focusedElement.blur)) {
+                                    focusedElement.blur();
+                                }
+                                $document = this.$Document;
+                                postpone(() => {
+                                    if ($document.body.contains(target)) {
+                                        target.click();
+                                    }
+                                });
                                 break;
                             default:
+                                this.__focusedElement = target;
                                 target.focus();
-                                break;
+                                remover = this.addEventListener(target, 'blur', () => {
+                                    if (this.__isFocused(target)) {
+                                        this.__focusedElement = null;
+                                    }
+                                    remover();
+                                });
+                                return;
                         }
                         break;
                     case 'a':
                     case 'button':
                     case 'select':
                     case 'label':
-                        target.click();
+                        if (isFunction(focusedElement.blur)) {
+                            focusedElement.blur();
+                        }
+                        $document = this.$Document;
+                        postpone(() => {
+                            if ($document.body.contains(target)) {
+                                target.click();
+                            }
+                        });
                         break;
-                    default:
+                    case 'textarea':
+                        this.__focusedElement = target;
                         target.focus();
+                        remover = this.addEventListener(target, 'blur', () => {
+                            if (this.__isFocused(target)) {
+                                this.__focusedElement = null;
+                            }
+                            remover();
+                        });
+                        return;
+                    default:
+                        if (isFunction(focusedElement.blur)) {
+                            focusedElement.blur();
+                        }
                         break;
                 }
 
-                this.__focusedElement = target;
-                this.__preventClick(target);
+                this.__focusedElement = null;
+                return;
             }
-            private __preventClick(target: EventTarget): void {
-                var preventDefault = (ev: Event) => {
-                    ev.preventDefault();
-                    target.removeEventListener('click', preventDefault, false);
-                    return false;
-                };
-                target.addEventListener('click', preventDefault, false);
+            private __preventClickFromTouch(): void {
+                var $document = this.$Document,
+                    delayedClickRemover = defer(() => {
+                        $document.removeEventListener('click', preventDefault, true);
+                        $document.removeEventListener('mousedown', preventDefault, true);
+                        $document.removeEventListener('mouseup', preventDefault, true);
+                    }, 400),
+                    preventDefault = (ev: Event) => {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        $document.removeEventListener(ev.type, preventDefault, true);
+                        if (delayedClickRemover === noop) {
+                            return false;
+                        }
+                        delayedClickRemover();
+                        delayedClickRemover = noop;
+
+                        var touchDown = this.__lastTouchDown;
+                        if (isNull(touchDown) || this.__isFocused(touchDown.target)) {
+                            return false;
+                        }
+                        this.__handleInput(<HTMLInputElement>touchDown.target);
+                        return false;
+                    };
+
+                $document.addEventListener('click', preventDefault, true);
+                $document.addEventListener('mousedown', preventDefault, true);
+                $document.addEventListener('mouseup', preventDefault, true);
             }
             private __removeSelections(element: Node): void {
                 if (!isNode(element)) {
@@ -17336,18 +17709,50 @@ module plat {
         register.injectable(__DomEventsConfig, IDomEventsConfig);
 
         /**
-         * A class for managing of a single custom event.
+         * A class for managing a single custom event.
          */
         export class DomEvent implements IDomEventInstance {
             $Document: Document = acquire(__Document);
 
             element: any;
             event: string;
-            count = 0;
 
             initialize(element: Node, event: string): void;
             initialize(element: Window, event: string): void;
-            initialize(element: any, event: string) {
+            initialize(element: any, event: string): void {
+                this.element = element;
+                this.event = event;
+            }
+
+            trigger(eventExtension?: Object): void {
+                var customEv = <CustomEvent>this.$Document.createEvent('CustomEvent');
+                if (isObject(eventExtension)) {
+                    extend(customEv, eventExtension);
+                }
+                customEv.initCustomEvent(this.event, true, true, 0);
+                this.element.dispatchEvent(customEv);
+            }
+        }
+
+        /**
+         * The Type for referencing the '$DomEventInstance' injectable as a dependency.
+         */
+        export function IDomEventInstance(): IDomEventInstance {
+            return new DomEvent();
+        }
+
+        register.injectable(__DomEventInstance, IDomEventInstance, null, __INSTANCE);
+
+        /**
+         * A specialized class for managing a single custom touch event in DomEvents.
+         */
+        class CustomDomEvent extends DomEvent {
+            count = 0;
+
+            constructor(element: Node, event: string);
+            constructor(element: Window, event: string);
+            constructor(element: any, event: string) {
+                super();
                 this.element = element;
                 this.event = event;
                 this.count++;
@@ -17360,7 +17765,7 @@ module plat {
                 this.element.dispatchEvent(customEv);
             }
 
-            private __extendEventObject(customEv: IGestureEvent, ev: IPointerEvent) {
+            private __extendEventObject(customEv: IGestureEvent, ev: IPointerEvent): void {
                 // not using extend function because this gets called so often for certain events.
                 var pointerType = ev.pointerType;
 
@@ -17379,7 +17784,7 @@ module plat {
                 customEv.pageY = ev.pageY;
             }
 
-            private __convertPointerType(pointerType: any, eventType: string) {
+            private __convertPointerType(pointerType: any, eventType: string): string {
                 switch (<any>pointerType) {
                     case MSPointerEvent.MSPOINTER_TYPE_MOUSE:
                         return 'mouse';
@@ -17393,14 +17798,19 @@ module plat {
             }
         }
 
-        /**
-         * The Type for referencing the '$DomEventInstance' injectable as a dependency.
-         */
-        export function IDomEventInstance(): IDomEventInstance {
-            return new DomEvent();
-        }
+        interface ICustomDomEventInstance extends IDomEventInstance {
+            /**
+             * The number of events registered to this IDomEventInstance.
+             */
+            count: number;
 
-        register.injectable(__DomEventInstance, IDomEventInstance, null, __INSTANCE);
+            /**
+             * Triggers a custom event to bubble up to all elements in this branch of the DOM tree.
+             * 
+             * @param ev The event object used to extend the custom touch event.
+             */
+            trigger(ev: IPointerEvent): void;
+        }
 
         /**
          * Describes an object used for managing a single custom event.
@@ -17415,11 +17825,6 @@ module plat {
              * The event type associated with this IDomEventInstance.
              */
             event: string;
-
-            /**
-             * The number of events registered to this IDomEventInstance.
-             */
-            count: number;
 
             /**
              * Initializes the element and event of the IDomEventInstance object
@@ -17439,9 +17844,9 @@ module plat {
             /**
              * Triggers a custom event to bubble up to all elements in this branch of the DOM tree.
              * 
-             * @param ev The event object to pass in as the custom event object's detail property.
+             * @param eventExtension object containing properties to extend the custom DOM event.
              */
-            trigger(ev: IPointerEvent): void;
+            trigger(eventExtension?: Object): void;
         }
 
         /**
@@ -17751,6 +18156,11 @@ module plat {
              * The time of the touch.
              */
             timeStamp: number;
+
+            /**
+             * Prevents the default action of the browser
+             */
+            preventDefault?: () => void;
         }
 
         /**
@@ -18601,9 +19011,8 @@ module plat {
                         options = ev.options,
                         element = this.element,
                         controlType = ev.type,
-                        newControl = isFunction(control.inject);
-
-                    var injectedControl = newControl ? control.inject() : control,
+                        newControl = dependency.Injector.isInjector(control),
+                        injectedControl = newControl ? control.inject() : control,
                         replaceType = injectedControl.replaceWith,
                         node = (isEmpty(replaceType) || replaceType === 'any') ? this.$Document.createElement('div') :
                             <HTMLElement>this.$Document.createElement(replaceType),
@@ -18626,18 +19035,18 @@ module plat {
 
                     this.$Animator.animate(this.element, __Enter);
 
-                    var viewportManager = this.$ManagerCache.read(this.uid);
-                    viewportManager.children = [];
+                    var viewportManager = this.$ManagerCache.read(this.uid),
+                        manager = this.$ElementManagerFactory.getInstance(),
+                        navigator = this.navigator;
 
-                    var manager = this.$ElementManagerFactory.getInstance();
-            
+                    viewportManager.children = [];
                     manager.initialize(nodeMap, viewportManager, !newControl);
 
                     control = this.controls[0];
-                    control.navigator = this.navigator;
-                    this.navigator.navigated(control, parameter, options);
+                    control.navigator = navigator;
+                    navigator.navigated(control, parameter, options);
 
-                    if (this.navigator.navigating) {
+                    if (navigator.navigating) {
                         return;
                     }
 
@@ -19001,7 +19410,7 @@ module plat {
                  * Removes the innerHTML from the DOM and saves it.
                  */
                 setTemplate(): void {
-                    this.innerTemplate = <DocumentFragment>this.dom.appendChildren(this.element.childNodes);
+                    this.innerTemplate = this.dom.appendChildren(this.element.childNodes);
                 }
 
                 /**
@@ -19024,6 +19433,11 @@ module plat {
                 context: Array<any>;
 
                 /**
+                 * This control needs to load before plat-bind.
+                 */
+                priority = 120;
+
+                /**
                  * The child controls
                  */
                 controls: Array<ITemplateControl>;
@@ -19041,6 +19455,13 @@ module plat {
                 private __removeListener: IRemoveListener;
                 private __currentAnimations: Array<IAnimationThenable<void>> = [];
                 private __resolveFn: () => void;
+
+                constructor() {
+                    super();
+                    this.itemsLoaded = new this.$Promise<void>((resolve) => {
+                        this.__resolveFn = resolve;
+                    });
+                }
 
                 /**
                  * Creates a bindable template with the element's childNodes (innerHTML) 
@@ -19115,7 +19536,10 @@ module plat {
                  * @param animate Whether to animate the entering item
                  */
                 _addItem(item: DocumentFragment, animate?: boolean): void {
-                    if (!isNode(item)) {
+                    if (!isNode(item) ||
+                        !isArray(this.context) ||
+                        this.context.length === 0 ||
+                        this.controls.length === 0) {
                         return;
                     }
 
@@ -19223,16 +19647,18 @@ module plat {
                     }
 
                     if (promises.length > 0) {
+                        this.itemsLoaded = this.$Promise.all(promises).then<void>(() => {
+                            if (isFunction(this.__resolveFn)) {
+                                this.__resolveFn();
+                                this.__resolveFn = null;
+                            }
+                            return;
+                        });
+                    } else {
                         if (isFunction(this.__resolveFn)) {
                             this.__resolveFn();
                             this.__resolveFn = null;
                         }
-
-                        var Promise = this.$Promise;
-                        this.itemsLoaded = Promise.all(promises).then<void>(() => {
-                            return Promise.resolve(undefined);
-                        });
-                    } else {
                         this.itemsLoaded = new this.$Promise<void>((resolve) => {
                             this.__resolveFn = resolve;
                         });
@@ -19281,6 +19707,10 @@ module plat {
                         first: {
                             value: index === 0,
                             type: 'observable'
+                        },
+                        last: {
+                            value: index === (this.context.length - 1),
+                            type: 'observable'
                         }
                     };
                 }
@@ -19314,7 +19744,7 @@ module plat {
                         return;
                     }
 
-                    animationPromise.then(() => {
+                    this.itemsLoaded = animationPromise.then(() => {
                         this._removeItems(1);
                     });
                 }
@@ -19484,6 +19914,13 @@ module plat {
                 private __defaultOption: HTMLOptionElement;
                 private __resolveFn: () => void;
 
+                constructor() {
+                    super();
+                    this.itemsLoaded = new this.$Promise<void>((resolve) => {
+                        this.__resolveFn = resolve;
+                    });
+                }
+
                 /**
                  * Creates the bindable option template and grouping 
                  * template if necessary.
@@ -19614,16 +20051,18 @@ module plat {
                     }
 
                     if (promises.length > 0) {
+                        this.itemsLoaded = this.$Promise.all(promises).then(() => {
+                            if (isFunction(this.__resolveFn)) {
+                                this.__resolveFn();
+                                this.__resolveFn = null;
+                            }
+                            return;
+                        });
+                    } else {
                         if (isFunction(this.__resolveFn)) {
                             this.__resolveFn();
                             this.__resolveFn = null;
                         }
-
-                        var Promise = this.$Promise;
-                        this.itemsLoaded = Promise.all(promises).then(() => {
-                            return Promise.resolve(undefined);
-                        });
-                    } else {
                         this.itemsLoaded = new this.$Promise<void>((resolve) => {
                             this.__resolveFn = resolve;
                         });
@@ -19690,8 +20129,7 @@ module plat {
                  * to remove.
                  */
                 _removeItems(numberOfItems: number): void {
-                    var element = this.element,
-                        controls = this.controls,
+                    var controls = this.controls,
                         length = controls.length - 1;
 
                     while (numberOfItems-- > 0) {
@@ -19876,6 +20314,7 @@ module plat {
                 private __removeListener: IRemoveListener;
                 private __leaveAnimation: IAnimationThenable<void>;
                 private __enterAnimation: IAnimationThenable<void>;
+                private __firstTime: boolean = true;
 
                 constructor() {
                     super();
@@ -19917,6 +20356,7 @@ module plat {
                     }
 
                     this.contextChanged();
+                    this.__firstTime = false;
                     this.__removeListener = this.options.observe(this._setter);
                 }
 
@@ -19991,6 +20431,13 @@ module plat {
                  */
                 _removeItem(): void {
                     var element = this.element;
+
+                    if (this.__firstTime) {
+                        element.parentNode.insertBefore(this.commentNode, element);
+                        insertBefore(this.fragmentStore, element);
+                        return;
+                    }
+
                     this.__leaveAnimation = this.$Animator.animate(element, __Leave).then(() => {
                         this.__leaveAnimation = null;
                         element.parentNode.insertBefore(this.commentNode, element);
@@ -22345,7 +22792,9 @@ module plat {
                     injector: dependency.IInjector<ui.IViewControl>,
                     key: string,
                     parameter = options.parameter,
-                    event: events.INavigationEvent<any>;
+                    event: events.INavigationEvent<any>,
+                    baseport = this.baseport,
+                    BaseViewControlFactory = this.$BaseViewControlFactory;
 
                 event = this._sendEvent('beforeNavigate', Constructor, null, parameter, options, true);
 
@@ -22354,14 +22803,13 @@ module plat {
                 }
 
                 this.navigating = true;
-
-                this.$BaseViewControlFactory.detach(viewControl);
+                BaseViewControlFactory.detach(viewControl);
 
                 if (isObject(parameter)) {
                     parameter = _clone(parameter, true);
                 }
 
-                this.baseport.controls = [];
+                baseport.controls = [];
 
                 if (isFunction(Constructor.inject)) {
                     injector = Constructor;
@@ -22389,35 +22837,42 @@ module plat {
                 event.type = key;
 
                 if (!isNull(viewControl)) {
-                    this.baseport.navigateFrom(viewControl).then(() => {
-                        this.$BaseViewControlFactory.detach(viewControl);
+                    baseport.navigateFrom(viewControl).then(() => {
+                        BaseViewControlFactory.detach(viewControl);
 
-                    if (!options.replace) {
-                        this.history.push({ control: viewControl });
-                    }
+                        if (!options.replace) {
+                            this.history.push({ control: viewControl });
+                        }
 
-                        this.baseport.navigateTo(event);
+                        baseport.navigateTo(event);
+                    }).catch((error) => {
+                        postpone(() => {
+                            var Exception: IExceptionStatic = acquire(__ExceptionStatic);
+                            Exception.fatal(error, Exception.NAVIGATION);
+                        });
                     });
 
                     return;
                 }
 
-                this.baseport.navigateTo(event);
+                // need to postpone so that the viewport can compile before the first navigation
+                postpone(() => {
+                    baseport.navigateTo(event);
+                });
             }
 
             goBack(options?: IBackNavigationOptions): void {
                 options = options || {};
-
-                if (this.history.length === 0) {
-                    this.$EventManagerStatic.dispatch('shutdown', this, this.$EventManagerStatic.DIRECT);
-                }
-
                 var viewControl = this.currentState.control,
                     length = isNumber(options.length) ? options.length : 1,
                     Constructor = options.ViewControl,
-                    parameter = options.parameter;
+                    parameter = options.parameter,
+                    history = this.history,
+                    baseport = this.baseport;
 
-                options = options || {};
+                if (history.length === 0) {
+                    this.$EventManagerStatic.dispatch('shutdown', this, this.$EventManagerStatic.DIRECT);
+                }
 
                 var event = this._sendEvent('beforeNavigate', viewControl, viewControl.type, parameter, options, true);
 
@@ -22430,7 +22885,7 @@ module plat {
                     var index = this._findInHistory(Constructor);
 
                     if (index > -1) {
-                        length = this.history.length - index;
+                        length = history.length - index;
                     } else {
                         $exception = acquire(__ExceptionStatic);
                         $exception.warn('Cannot find ViewControl in navigation history.', $exception.NAVIGATION);
@@ -22438,14 +22893,14 @@ module plat {
                     }
                 }
 
-                if (!isNumber(length) || length > this.history.length) {
+                if (!isNumber(length) || length > history.length) {
                     $exception = acquire(__ExceptionStatic);
                     $exception.warn('Not enough views in the navigation history in order to navigate back.',
                         $exception.NAVIGATION);
                     return;
                 }
 
-                this.baseport.navigateFrom(viewControl).then(() => {
+                baseport.navigateFrom(viewControl).then(() => {
                     this.$BaseViewControlFactory.dispose(viewControl);
 
                     var last: IBaseNavigationState = this._goBackLength(length);
@@ -22461,7 +22916,12 @@ module plat {
                     event.target = viewControl;
                     event.type = viewControl.type;
 
-                    this.baseport.navigateTo(event);
+                    baseport.navigateTo(event);
+                }).catch((error) => {
+                    postpone(() => {
+                        var Exception: IExceptionStatic = acquire(__ExceptionStatic);
+                        Exception.fatal(error, Exception.NAVIGATION);
+                    });
                 });
             }
 
@@ -22511,14 +22971,15 @@ module plat {
                 length = isNumber(length) ? length : 1;
 
                 var last: IBaseNavigationState,
-                    dispose = this.$BaseViewControlFactory.dispose;
+                    dispose = this.$BaseViewControlFactory.dispose,
+                    history = this.history;
 
                 while (length-- > 0) {
                     if (!isNull(last) && !isNull(last.control)) {
                         dispose(last.control);
                     }
 
-                    last = this.history.pop();
+                    last = history.pop();
                 }
 
                 return last;
@@ -22680,16 +23141,17 @@ module plat {
             _onRouteChanged(ev: events.INavigationEvent<web.IRoute<any>>): void {
                 var state = this.currentState || <IRouteNavigationState>{},
                     viewControl = state.control,
-                    injector = ev.target;
+                    injector = ev.target,
+                    baseport = this.baseport;
 
                 if (isNull(injector)) {
                     return;
                 }
 
                 this.__historyLength++;
-                this.baseport.navigateFrom(viewControl).then(() => {
+                baseport.navigateFrom(viewControl).then(() => {
                     this.$BaseViewControlFactory.dispose(viewControl);
-                    this.baseport.navigateTo(ev);
+                    baseport.navigateTo(ev);
                 }).catch((error) => {
                     postpone(() => {
                         var Exception: IExceptionStatic = acquire(__ExceptionStatic);
@@ -22895,13 +23357,13 @@ module plat {
             if (App.$Compat.platCss) {
                 return;
             } else if (!isNull($document.styleSheets) && $document.styleSheets.length > 0) {
-                (<CSSStyleSheet>$document.styleSheets[0]).insertRule('[plat-hide] { display: none; }', 0);
+                (<CSSStyleSheet>$document.styleSheets[0]).insertRule('[plat-hide] { display: none !important; }', 0);
                 return;
             }
 
             var style = <HTMLStyleElement>document.createElement('style');
 
-            style.textContent = '[plat-hide] { display: none; }';
+            style.textContent = '[plat-hide] { display: none !important; }';
             document.head.appendChild(style);
         }
 

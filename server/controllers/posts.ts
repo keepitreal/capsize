@@ -1,4 +1,4 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 import express = require('express');
 import mongoose = require('mongoose');
 import models = require('../models/post');
@@ -30,7 +30,7 @@ export var create = (req: express.Request, res: express.Response) => {
     postDoc.save<models.IPost>((err, post) => {
         var response = format.response(err, post);
 
-        res.json(response.status, response.body);
+        res.status(response.status).json(response.body);
     });
 };
 
@@ -44,7 +44,7 @@ export var update = (req: express.Request, res: express.Response) => {
 
     postDoc.save<models.IPost>((err, post) => {
         var response = format.response(err, post);
-        res.json(response.status, response.body);
+        res.status(response.status).json(response.body);
     });
 };
 
@@ -53,20 +53,20 @@ export var destroy = (req: express.Request, res: express.Response) => {
     var postDoc: models.IPostDocument = (<any>req).post;
     postDoc.remove((err: any) => {
         var response = format.response(err, postDoc);
-        res.json(response.status, response.body);
+        res.status(response.status).json(response.body);
     });
 };
 
 // Show a post
 export var show = (req: express.Request, res: express.Response) => {
     var response = format.response(null, (<any>req).post);
-    res.json(response.status, response.body);
+    res.status(response.status).json(response.body);
 };
 
 // List all articles
 export var all = (req: express.Request, res: express.Response) => {
     Post.find(null).sort('-created').populate('user').exec((err, posts) => {
         var response = format.response(err, posts);
-        res.json(response.status, response.body);
+        res.status(response.status).json(response.body);
     });
 };

@@ -1,24 +1,25 @@
 /// <reference path="../typings/tsd.d.ts" />
 
 import auth = require('./middleware/auth');
-import posts = require('../app/controllers/posts');
-import users = require('../app/controllers/users');
+import posts = require('../controllers/posts');
+import users = require('../controllers/users');
 import express = require('express');
 import passport = require('passport');
+import populateSession = require('./middleware/session');
 
-var router = new express.Router();
+var router = express.Router();
 
 /*
  * User Routes
  * Order matters!
  */
 router
-    .post('/logout', users.logout)
-    .post('/users', users.create)
-    .post('/login', users.login)
-    .get('/users/me', users.me)
+    .post('/logout', populateSession, users.logout)
+    .post('/users', populateSession, users.create)
+    .post('/login', populateSession, users.login)
+    .get('/users/me', populateSession, users.me)
     .get('/users/:userId', users.show)
-    .get('/app/viewcontrols/admin/*', (req: express.Request, res: express.Response, next: Function) => {
+    .get('/viewcontrols/admin/*', (req: express.Request, res: express.Response, next: Function) => {
         if (req.user && req.user.role === 'admin') {
             return next();
         }
@@ -27,30 +28,30 @@ router
 
 // facebook
 router
-    .get('/auth/facebook', passport.authenticate('facebook', {
+    .get('/auth/facebook', populateSession, passport.authenticate('facebook', {
         scope: ['email', 'user_about_me'],
         failureRedirect: '/#!/login'
     }), users.login)
-    .get('/auth/facebook/callback', passport.authenticate('facebook', {
+    .get('/auth/facebook/callback', populateSession, passport.authenticate('facebook', {
         failureRedirect: '/#!/login'
     }), users.authCallback);
 
 // linkedin
 router
-    .get('/auth/linkedin', passport.authenticate('linkedin', {
+    .get('/auth/linkedin', populateSession, passport.authenticate('linkedin', {
         scope: ['r_emailaddress'],
         failureRedirect: '/#!/login'
     }), users.login)
-    .get('/auth/linkedin/callback', passport.authenticate('linkedin', {
+    .get('/auth/linkedin/callback', populateSession, passport.authenticate('linkedin', {
         failureRedirect: '/#!/login'
     }), users.authCallback);
 
 // twitter
 router
-    .get('/auth/twitter', passport.authenticate('twitter', {
+    .get('/auth/twitter', populateSession, passport.authenticate('twitter', {
         failureRedirect: '/#!/login'
     }), users.login)
-    .get('/auth/twitter/callback', passport.authenticate('twitter', {
+    .get('/auth/twitter/callback', populateSession, passport.authenticate('twitter', {
         failureRedirect: '/#!/login'
     }), users.authCallback);
 
@@ -63,10 +64,10 @@ router.param('userId', users.user);
  */
 (<express.Router>(<any>router
     .get('/posts', posts.all)
-    .post('/posts', auth.requiresLogin, posts.create)
+    .post('/posts', populateSession, auth.requiresLogin, posts.create)
     .get('/posts/:postId', posts.show)
-    .put('/posts/:postId/edit', auth.requiresLogin, auth.post.hasAuthorization, posts.update))
-    .delete('/posts/:postId', auth.requiresLogin, auth.post.hasAuthorization, posts.destroy))
+    .put('/posts/:postId/edit', populateSession, auth.requiresLogin, auth.post.hasAuthorization, posts.update))
+    .delete('/posts/:postId', populateSession, auth.requiresLogin, auth.post.hasAuthorization, posts.destroy))
     // :postId route param matcher
     .param('postId', posts.post);
 

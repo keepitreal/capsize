@@ -19,12 +19,11 @@
     "connect-mongo": "latest",
     "cookie-parser": "latest",
     "crypto": "latest",
-    "express-session": "^1.6.4",
-    "express": "^4.5.1",
+    "express-session": "latest",
+    "express": "latest",
     "grunt": "latest",
     "grunt-cli": "latest",
     "grunt-bower-task": "latest",
-    "jade": "latest",
     "mongoose": "latest",
     "morgan": "latest",
     "passport": "latest",
@@ -32,7 +31,8 @@
     "passport-linkedin": "latest",
     "passport-local": "latest",
     "passport-twitter": "latest",
-    "underscore": "latest"
+    "underscore": "latest",
+    "ejs": "latest"
   },
   "devDependencies": {
     "debug": "^0.8.1",

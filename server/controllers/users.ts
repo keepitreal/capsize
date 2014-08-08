@@ -1,4 +1,4 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 import mongoose = require('mongoose');
 import express = require('express');
 import passport = require('passport');
@@ -22,19 +22,19 @@ export var login = (req: express.Request, res: express.Response) => {
         if (_.isObject(user)) {
             req.logIn(user, (err) => {
                 response = format.response(err, req.user);
-                res.json(response.status, response.body);
+                res.status(response.status).json(response.body);
             });
         } else {
-            res.json(response.status, response.body);
+            res.status(response.status).json(response.body);
         }
-    })(req, res);
+    })(req, res, null);
 };
 
 // log out
 export var logout = (req: express.Request, res: express.Response) => {
     req.session.destroy(() => {
         var response = format.response();
-        res.json(response.status, response.body);
+        res.status(response.status).json(response.body);
     });
 };
 
@@ -47,11 +47,11 @@ export var create = (req: express.Request, res: express.Response, next: Function
     userDoc.save<userModels.IUser>((err, user) => {
         var response = format.response(err, req.user);
         if (_.isObject(err)) {
-            res.json(response.status, response.body);
+            res.status(response.status).json(response.body);
         } else {
             req.logIn(user, (err) => {
                 response = format.response(err, req.user);
-                res.json(response.status, response.body);
+                res.status(response.status).json(response.body);
             });
         }
     });
@@ -62,7 +62,7 @@ export var show = (req: express.Request, res: express.Response) => {
     var user = (<any>req).profile,
         response = format.response(null, user);
 
-    res.json(response.status, response.body);
+    res.status(response.status).json(response.body);
 };
 
 // send user
@@ -70,7 +70,7 @@ export var me = (req: express.Request, res: express.Response) => {
     var user = req.user,
         response = format.response(null, user);
 
-    res.json(response.status, response.body);
+    res.status(response.status).json(response.body);
 };
 
 // find by id

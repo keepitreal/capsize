@@ -1,8 +1,8 @@
 function serverFiles(ext) {
     ext = ext || 'js';
     return [
-        'server/app/models/**/*.' + ext,
-        'server/app/controllers/**/*.' + ext,
+        'server/models/**/*.' + ext,
+        'server/controllers/**/*.' + ext,
         'server/config/**/*.' + ext,
         'server/server.' + ext
     ];

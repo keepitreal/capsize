@@ -11,7 +11,7 @@ require('./config/middleware/auth');
 mongoose.connect(config.db);
 
 // bootstrap models
-var models_path = __dirname + '/app/models',
+var models_path = __dirname + '/models',
     isJSExt = /\.js$/gm; // ensures that only .js files are read (not .ts or .js.map)
 
 // recursively walk through and require models
