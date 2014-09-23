@@ -6,8 +6,7 @@ import _ = require('underscore');
 import userModels = require('../models/user');
 import format = require('../utils/format');
 
-// TODO: When mongoose type definitions are updated, we can remove the type casting.
-var User: userModels.IUserModel = (<any>mongoose).model('User');
+var User = userModels.User;
 
 // auth callback
 export var authCallback = (req: express.Request, res: express.Response) => {

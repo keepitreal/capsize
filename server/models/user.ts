@@ -7,12 +7,12 @@ var Schema = mongoose.Schema,
     authTypes = ['linkedin', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
-    name: String,
-    email: String,
-    username: String,
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    username: { type: String, required: true },
     provider: String,
-    hashed_password: String,
-    salt: String,
+    hashed_password: { type: String, required: true },
+    salt: { type: String, required: true },
     facebook: {},
     twitter: {},
     linkedin: {}
@@ -51,7 +51,7 @@ UserSchema.path('name').validate(function (name) {
 // regexp for validating an email.
 UserSchema.path('email').validate(function (email: string): boolean {
     var _this: IUserDocument = this;
-
+    
     // if you are authenticating by any of the oauth strategies, don't validate
     if (authTypes.indexOf(_this.provider) !== -1) {
         return true;
@@ -159,7 +159,7 @@ UserSchema.method({
     }
 });
 
-mongoose.model('User', UserSchema);
+export var User: IUserModel = <any>mongoose.model('User', UserSchema);
 
 export interface IUser {
     name: string;
