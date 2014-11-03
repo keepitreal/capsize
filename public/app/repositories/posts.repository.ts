@@ -1,3 +1,5 @@
+/// <reference path="../references.d.ts" />
+
 module platynem.repositories {
     'use strict';
 

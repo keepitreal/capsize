@@ -54,6 +54,12 @@ module.exports = function (grunt) {
                     'ts:public'
                 ]
             },
+            watch_build: {
+                tasks: [
+                    'ts:watch_server',
+                    'ts:watch_public'
+                ]
+            },
             install: {
                 tasks: [
                     'tsd',
@@ -62,7 +68,7 @@ module.exports = function (grunt) {
             },
             run: {
                 tasks: [
-                    'build',
+                    'concurrent:watch_build',
                     'nodemon'
                 ]
             },
@@ -86,16 +92,22 @@ module.exports = function (grunt) {
                 module: 'commonjs',
                 target: 'es5'
             },
-            server: {
+            watch_server: {
                 src: serverFiles('ts'),
                 watch: 'server'
             },
-            public: {
-                src: publicFiles('ts'),
+            watch_public: {
+                src: publicFiles('ts').concat(['!public/app/lib/platypus/*.ts']),
                 watch: 'public'
             },
+            server: {
+                src: serverFiles('ts')
+            },
+            public: {
+                src: publicFiles('ts').concat(['!public/app/lib/platypus/*.ts'])
+            },
             test: {
-                src: serverTestFiles('ts').concat(publicTestFiles('ts')),
+                src: serverTestFiles('ts').concat(publicTestFiles('ts').concat(['!public/app/lib/platypus/*.ts'])),
                 watch: 'test'
             }
         },

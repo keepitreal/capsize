@@ -1,4 +1,6 @@
-﻿module platynem.services {
+﻿/// <reference path="../references.d.ts" />
+
+module platynem.services {
     'use strict';
 
     export class BaseService {

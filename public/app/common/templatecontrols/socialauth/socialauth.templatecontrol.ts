@@ -1,4 +1,6 @@
-﻿module platynem.templatecontrols {
+﻿/// <reference path="../../../references.d.ts" />
+
+module platynem.templatecontrols {
     'use strict';
 
     export class SocialAuth extends plat.ui.TemplateControl {

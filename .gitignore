@@ -21,5 +21,7 @@ typings/
 /web.Release.config
 /public/app/lib/bootstrap
 /public/app/lib/jquery
-.tscache
+/public/app/lib/platypus
 tests/coverage
+.tscache
+*.tmp.*

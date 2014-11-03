@@ -1,4 +1,6 @@
-﻿module platynem.viewcontrols {
+﻿/// <reference path="../../../references.d.ts" />
+
+module platynem.viewcontrols {
     'use strict';
 
     export class LoginViewControl extends plat.ui.WebViewControl {
