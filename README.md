@@ -21,7 +21,7 @@ Express is a minimal and flexible server-side web application framework built fo
 MongoDB is an open-source document database, and the leading NoSQL database. It features document-oriented storage, querying, indexing, auto-sharding and much more. PlatyNEM also includes MongooseJS, the most popular object modeling library for Mongo development.
 
 ### Other packages included in PlatyNEM
-* Jade - Jade is server side templating for node.js applications
+* EJS - EJS is server side templating for node.js applications
 * Mongoose - Mongoose is a popular object modeling library for MongoDB development
 * Bootstrap - PlatyNEM comes with the popular Bootstrap 3 CSS framework
 
@@ -45,16 +45,10 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
     $ npm install
     ```
 
-0. Install the TypeScript definitions with `tsd`:
-
-    ```
-    $ tsd update -so
-    ```
-
 0. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
 
     ```
-    $ grunt ts
+    $ grunt build
     ```
 
 0. Ensure that you have a MongoDB server running on port 27017. Typically, once Mongo is installed this can be done from the command line with the following command:

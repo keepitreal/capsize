@@ -1,3 +1,5 @@
+var path = require('path');
+
 function serverFiles(ext) {
     ext = ext || 'js';
     return [
@@ -42,6 +44,34 @@ function serverTestFiles(ext) {
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        concurrent: {
+            options: {
+                logConcurrentOutput: true
+            },
+            build: {
+                tasks: [
+                    'ts:server',
+                    'ts:public'
+                ]
+            },
+            install: {
+                tasks: [
+                    'tsd',
+                    'bower'
+                ]
+            },
+            run: {
+                tasks: [
+                    'build',
+                    'nodemon'
+                ]
+            },
+            test: {
+                tasks: [
+                    'ts:test'
+                ]
+            }
+        },
         nodemon: {
             dev: {
                 script: 'server/server.js',
@@ -51,20 +81,22 @@ module.exports = function (grunt) {
                 }
             }
         },
-        typescript: {
+        ts: {
+            options: {
+                module: 'commonjs',
+                target: 'es5'
+            },
             server: {
                 src: serverFiles('ts'),
-                options: {
-                    module: 'commonjs',
-                    target: 'es5'
-                }
+                watch: 'server'
             },
             public: {
                 src: publicFiles('ts'),
-                options: {
-                    module: 'commonjs',
-                    target: 'es5'
-                }
+                watch: 'public'
+            },
+            test: {
+                src: serverTestFiles('ts').concat(publicTestFiles('ts')),
+                watch: 'test'
             }
         },
         bower: {
@@ -80,9 +112,18 @@ module.exports = function (grunt) {
             options: {
                 force: true
             },
-            bootstrap: ['public/app/lib/bootstrap/*', '!public/app/lib/bootstrap/dist'],
-            jquery: ['public/app/lib/jquery/*', '!public/app/lib/jquery/dist'],
-            bower: ['public/app/lib/**/.bower.json']
+            bootstrap: [
+                'public/app/lib/bootstrap/*', 
+                '!public/app/lib/bootstrap/dist', 
+                'public/app/lib/bootstrap/dist/*',
+                '!public/app/lib/bootstrap/dist/*.min.js'],
+            jquery: [
+                'public/app/lib/jquery/*', 
+                '!public/app/lib/jquery/dist'
+            ],
+            bower: [
+                'public/app/lib/**/.bower.json'
+            ]
         },
         karma: {
             options: {
@@ -146,19 +187,33 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+        shell: {
+            tsd: {
+                command: [
+                    'node node_modules/tsd/build/cli update -so --config tsd.public.json',
+                    'node node_modules/tsd/build/cli update -so --config tsd.server.json'
+                ].join(' && ')
+            },
+            bower: {
+                command: path.normalize('./node_modules/.bin/bower') + ' install'
+            }
         }
     });
 
     // Load tasks
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-nodemon');
-    grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-shell');
 
     // Register tasks
-    grunt.registerTask('ts', ['typescript:server', 'typescript:public']);
-    grunt.registerTask('test', ['karma']);
-    grunt.registerTask('default', ['nodemon']);
-    grunt.registerTask('install', ['bower', 'clean']);
+    grunt.registerTask('bower', 'shell:bower');
+    grunt.registerTask('tsd', 'shell:tsd');
+    grunt.registerTask('build', ['concurrent:build']);
+    grunt.registerTask('test', ['concurrent:test', 'karma']);
+    grunt.registerTask('default', ['concurrent:run']);
+    grunt.registerTask('install', ['concurrent:install', 'clean']);
 };
