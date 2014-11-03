@@ -9,7 +9,6 @@ var Schema = mongoose.Schema,
 var UserSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
-    username: { type: String, required: true },
     provider: String,
     hashed_password: { type: String, required: true },
     salt: { type: String, required: true },
@@ -84,39 +83,6 @@ UserSchema.path('email').validate(function (value: any, done: (valid: boolean) =
 
 }, 'An account with this email address has already been registered.');
 
-UserSchema.path('username').validate(function (username) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (authTypes.indexOf(this.provider) !== -1) {
-        return true;
-    }
-    return username.length;
-}, 'Username cannot be blank');
-
-// username between 3 and 20 chars long
-UserSchema.path('username').validate(function (username: string): boolean {
-    var _this: IUserDocument = this;
-
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (authTypes.indexOf(_this.provider) !== -1) {
-        return true;
-    }
-    return !!username.length && username.length >= 3 && username.length <= 20;
-}, 'Username must be between 3 and 20 characters long.');
-
-// username must be unique
-UserSchema.path('username').validate(function (value: any, done: (valid: boolean) => void) {
-    // TODO: When mongoose type definitions are updated, we can remove the type casting.
-    var _this: IUserDocument = this;
-    (<IUserModel>(<any>mongoose).model('User')).findOne({ username: value }, (err, userDoc) => {
-        if (err || !userDoc) {
-            return done(true);
-        }
-
-        done(userDoc._id.toString() === _this._id.toString());
-    });
-
-}, 'Username is taken.');
-
 UserSchema.path('hashed_password').validate(function (hashed_password) {
     var _this: IUserDocument = this;
 
@@ -164,7 +130,6 @@ export var User: IUserModel = <any>mongoose.model('User', UserSchema);
 export interface IUser {
     name: string;
     email: string;
-    username: string;
     provider: string;
     hashed_password: string;
     salt: string;
