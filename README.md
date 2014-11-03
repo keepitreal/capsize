@@ -78,7 +78,7 @@ $ grunt test
 
 ## Other Grunt Tasks
 
-`grunt bower` will install all the bower modules.
-`grunt build` will build all ts files.
-`grunt tsd` will update all the tsd definitions.
-`grunt install` will install all bower modules and tsd definitions.
+- **bower** - installs all the bower modules.
+- **build** - builds all ts files.
+- **tsd** - all the tsd definitions.
+- **install** - installs all bower modules and tsd definitions.
