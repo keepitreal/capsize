@@ -126,9 +126,10 @@ module.exports = function (grunt) {
             },
             bootstrap: [
                 'public/app/lib/bootstrap/*', 
-                '!public/app/lib/bootstrap/dist', 
-                'public/app/lib/bootstrap/dist/*',
-                '!public/app/lib/bootstrap/dist/*.min.js'],
+                '!public/app/lib/bootstrap/dist',
+                'public/app/lib/bootstrap/dist/js/bootstrap.js',
+                'public/app/lib/bootstrap/dist/js/npm.js'
+            ],
             jquery: [
                 'public/app/lib/jquery/*', 
                 '!public/app/lib/jquery/dist'
