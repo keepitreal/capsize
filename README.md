@@ -45,12 +45,6 @@ MongoDB is an open-source document database, and the leading NoSQL database. It 
     $ npm install
     ```
 
-0. Open the repository in an IDE like Visual Studio or WebStorm and ensure that the TypeScript files compile to JavaScript. If you are using a text editor (like Sublime Text) or an IDE that doesn't have TypeScript support, you can compile your TypeScript with a Grunt task we've included. You'll just need to remember to include any new TypeScript files you add into the task in Gruntfile.js. To compile, run:
-
-    ```
-    $ grunt build
-    ```
-
 0. Ensure that you have a MongoDB server running on port 27017. Typically, once Mongo is installed this can be done from the command line with the following command:
 
     ```
@@ -81,3 +75,10 @@ We use Karma/Jasmine for our testing. There are some included tests with code co
 ```
 $ grunt test
 ```
+
+## Other Grunt Tasks
+
+`grunt bower` will install all the bower modules.
+`grunt build` will build all ts files.
+`grunt tsd` will update all the tsd definitions.
+`grunt install` will install all bower modules and tsd definitions.
