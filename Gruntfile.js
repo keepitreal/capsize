@@ -111,15 +111,6 @@ module.exports = function (grunt) {
                 watch: 'test'
             }
         },
-        bower: {
-            install: {
-                options: {
-                    targetDir: './public/app/lib',
-                    layout: 'byComponent',
-                    verbose: true
-                }
-            }
-        },
         clean: {
             options: {
                 force: true
