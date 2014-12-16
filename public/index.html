@@ -5,18 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
     <title>PlatyNEM</title>
-    
-    <link href="css/main.css" rel="stylesheet" />
+    <link href="app/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="app/common/templatecontrols/socialauth/socialauth.templatcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/create/create.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/edit/edit.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/list/list.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/blog/single/single.viewcontrol.css" rel="stylesheet" />
+    <link href="app/viewcontrols/auth/auth.viewcontrol.css" rel="stylesheet" />
 </head>
 <body>
-    <navigation class="navigation navigation-default" role="navigation"></navigation>
-    <div class="content">
-        <plat-routeport></plat-routeport>
-    </div>
+    <navigation></navigation>
+    <section class="content">
+        <section class="container">
+            <plat-routeport></plat-routeport>
+        </section>
+    </section>
 
     <!-- lib -->
+    <script src="app/lib/jquery/dist/jquery.min.js"></script>
+    <script src="app/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="app/lib/platypus/platypus.js"></script>
-    <script src="app/lib/platypusui/platypusui.js"></script>
 
     <!-- Models -->
     <script src="app/models/user.model.js"></script>
@@ -43,9 +52,6 @@
     <script src="app/viewcontrols/blog/edit/edit.viewcontrol.js"></script>
     <script src="app/viewcontrols/auth/login/login.viewcontrol.js"></script>
     <script src="app/viewcontrols/auth/register/register.viewcontrol.js"></script>
-    <script src="app/viewcontrols/tools/home/home.viewcontrol.js"></script>
-    <script src="app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js"></script>
-    <script src="app/viewcontrols/about/about.viewcontrol.js"></script>
 
     <!-- App -->
     <script src="app/app.js"></script>

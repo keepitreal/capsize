@@ -5,7 +5,6 @@ module platynem.templatecontrols {
 
     export class NavigationBar extends plat.ui.TemplateControl {
         templateUrl = 'app/common/templatecontrols/navigation/navigation.templatecontrol.html';
-        replaceWith = 'nav';
 
         context = {
             user: <models.IUser>null
@@ -30,10 +29,6 @@ module platynem.templatecontrols {
             ev.preventDefault();
             this.context.user = null;
             return this.usersRepository.logout();
-        }
-
-        toggleVisibility() {
-            this.dom.toggleClass(this.element, 'navigation-hidden');
         }
     }
 
