@@ -16,8 +16,10 @@ function publicFiles(ext) {
         'public/app/lib/jquery/dist/*.' + ext,
         'public/app/lib/bootstrap/dist/js/*.' + ext,
         'public/app/lib/platypus/*.' + ext,
+        'public/app/lib/platypusui/*.' + ext,
         'public/app/services/**/*.' + ext,
         'public/app/models/**/*.' + ext,
+        'public/app/lib/**/*.' + ext,
         'public/app/repositories/**/*.' + ext,
         'public/app/common/templatecontrols/**/*.' + ext,
         'public/app/viewcontrols/**/*.' + ext,
@@ -69,6 +71,7 @@ module.exports = function (grunt) {
             run: {
                 tasks: [
                     'concurrent:watch_build',
+                    'watch:less',
                     'nodemon'
                 ]
             },
@@ -192,6 +195,13 @@ module.exports = function (grunt) {
                 }
             }
         },
+        less: {
+            development: {
+                files: {
+                    "public/css/main.css": "public/css/main.less"
+                }
+            }
+        },
         shell: {
             tsd: {
                 command: [
@@ -202,22 +212,31 @@ module.exports = function (grunt) {
             bower: {
                 command: path.normalize('./node_modules/.bin/bower') + ' install'
             }
+        },
+        watch: {
+            less: {
+                files: ['public/css/**/*.less'],
+                tasks: ['less']
+            }
         }
     });
 
     // Load tasks
-    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-ts');
-    grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-shell');
-
+    grunt.loadNpmTasks('grunt-ts');
+        
     // Register tasks
     grunt.registerTask('bower', 'shell:bower');
-    grunt.registerTask('tsd', 'shell:tsd');
     grunt.registerTask('build', ['concurrent:build']);
-    grunt.registerTask('test', ['concurrent:test', 'karma']);
     grunt.registerTask('default', ['concurrent:run']);
     grunt.registerTask('install', ['concurrent:install', 'clean']);
+    grunt.registerTask('test', ['concurrent:test', 'karma']);
+    grunt.registerTask('tsd', 'shell:tsd');
+    
 };

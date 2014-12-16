@@ -23,6 +23,7 @@ module platynem.viewcontrols {
                     this.navigator.goBack();
                 })
                 .catch((response) => {
+                    console.log(response);
                     var utils = this.$utils;
                     this.context.errors = utils.map(response.errors, (err: { message: string }) => {
                         return err;

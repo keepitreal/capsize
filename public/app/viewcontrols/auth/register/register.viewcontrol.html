@@ -1,25 +1,24 @@
 ﻿<div class="auth">
     <h2>Register</h2>
-    <social-auth></social-auth>
     <div class="auth-local">
         <div class="alert alert-danger" plat-visible="{{errors.length > 0}}">
             <ul plat-control="plat-foreach" plat-context="errors">
                 <li>{{message}}</li>
             </ul>
         </div>
-        <form class="register" plat-submit="create(user)">
-            <div class="form-group">
-                <input type="text" class="form-control" name="name" placeholder="Full Name" id="name" plat-bind="user.name" />
+        <form class="form-group" plat-submit="create(user)">
+            <div class="input-group input-group-block">
+                <input type="text" class="input-control" name="name" placeholder="Full Name" id="name" plat-bind="user.name" />
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control" name="email" placeholder="Email" id="email" plat-bind="user.email" />
+            <div class="input-group input-group-block">
+                <input type="text" class="input-control" name="email" placeholder="Email" id="email" plat-bind="user.email" />
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="Password" id="password" plat-bind="user.password" />
+            <div class="input-group input-group-block">
+                <input type="password" class="input-control" name="password" placeholder="Password" id="password" plat-bind="user.password" />
             </div>
-            <div class="row auth-actions">
-                <div class="col-md-7">
-                    <button class="btn btn-info btn-block" type="submit">Register</button>
+            <div class="auth-submit">
+                <div class="input-group input-group-block">
+                    <button class="button button-block" type="submit">Register</button>
                 </div>
             </div>
         </form>
