@@ -1,5 +1,9 @@
 /// <reference path="./lib/platypus/platypus-node.d.ts" />
 
+/// Injectables
+
+/// <reference path="./common/injectables/jquery.injectable.ts" />
+
 /// Models
 
 /// <reference path="./models/post.model.ts" />
