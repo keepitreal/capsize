@@ -5,37 +5,37 @@
 			<li class="workspace-item-inline">
 				<span class="workspace-option workspace-option-name">inset</span>
 				<span class="workspace-option workspace-option-control">
-					<plat-toggle plat-bind="demoShape.inset"></plat-toggle>
+					<plat-toggle plat-bind="demoShape.inset" plat-change="setProperty()"></plat-toggle>
 				</span>
 			</li>
 			<li>
 				<div class="workspace-option workspace-option-name">offset X</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }"></plat-slider>
+					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option workspace-option-name">offset Y</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }"></plat-slider>
+					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option workspace-option-name">blur radius</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.blurRadius"></plat-slider>
+					<plat-slider plat-bind="demoShape.blurRadius" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option workspace-option-name">spread radius</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.spreadRadius"></plat-slider>
+					<plat-slider plat-bind="demoShape.spreadRadius" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option workspace-option-name">transparency</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.rgba.alpha"></plat-slider>
+					<plat-slider plat-bind="demoShape.rgba.alpha" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
@@ -49,5 +49,8 @@
 	<div class="workspace-demo">
 		<button plat-tap="logProperty">Log Property</button>
 		<div class="workspace-demo-shape" plat-name="demoShape"></div>
+		<ul class="workspace-css">
+			<li>box-shadow: {{demoShape.inset ? 'inset' : ''}} {{demoShape.offsetX}}px {{demoShape.offsetY}}px {{demoShape.blurRadius}}px {{demoShape.spreadRadius}}px</li>
+		</ul>
 	</div>
 </div>

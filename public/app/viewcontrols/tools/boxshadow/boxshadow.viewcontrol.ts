@@ -37,10 +37,6 @@ module platynem.viewcontrols {
 			console.log(this.context.demoShape.offsetX);
 		}
 
-		contextChanged() {
-			console.log('change');
-		}
-
 		loaded() {
 			this.colpick = this.$('#colpick');
 			this.colpick.colpick({
@@ -48,16 +44,19 @@ module platynem.viewcontrols {
 				layout: 'full',
 				submit: 0
 			});
-			this.setProperty(this.demoShape.element, 'boxShadow');
+			this.setProperty();
 		}
 
-		setProperty(el: HTMLElement, property: string) {
+		setProperty() {
 			var shapeContext = this.context.demoShape,
 				value = '';
 
-			value = this.concatValues(shapeContext) + ' rgba(20,20,20,1)';
+			value += shapeContext.inset ? 'inset ' : '';
+			value += shapeContext.offsetX + 'px ' + shapeContext.offsetY + 'px ';
+			value += shapeContext.blurRadius + 'px ' + shapeContext.spreadRadius + 'px ';
+			value += 'rgba(20,20,20,1)';
 			console.log(value);
-			el.style[property] = value;
+			this.demoShape.element.style.boxShadow = value;
 		}
 
 		concatValues(obj) {

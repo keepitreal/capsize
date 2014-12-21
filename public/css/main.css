@@ -3408,6 +3408,16 @@ body {
   height: 35%;
   margin: 8em auto;
 }
+.workspace > .workspace-demo > ul.workspace-css {
+  background-color: #f9f9f9;
+  padding: 2em;
+  margin: 0 4em;
+  border: 1px solid #e0e0e0;
+  list-style: none;
+}
+.workspace > .workspace-demo > ul.workspace-css > li {
+  text-align: left;
+}
 .colpick {
   background-color: transparent;
   border: none;
