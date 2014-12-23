@@ -1,0 +1,109 @@
+@import '../common/variables';
+
+// =============== Workspace Constants ==================
+
+@sidebar-width: 41.7%;
+
+// =============== Workspace Constants ==================
+
+.workspace {
+	position: relative;
+	width: 100%;
+	min-height: 45em;
+	margin-bottom: 5em;
+	border: 1px solid @accent-grey;
+
+	& > .workspace-sidebar {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: @sidebar-width;
+		max-width: 40em;
+		border-right: 1px solid @accent-grey;
+		background-color: @background-color;
+
+		 & > ul.workspace-options {
+			padding: 0;
+			margin: 0;
+			color: @font-grey;
+
+			& > li {
+				display: block;
+				padding: 0.35em 0.8em;
+				border-bottom: 1px solid @accent-grey;
+
+				& > .workspace-option {
+					height: 2.4em;
+					line-height: 2.4em;
+
+					&.workspace-option-name {
+						text-align: center;
+					}
+
+					& > .workspace-option-colorpicker { 
+						display: block;
+						height: auto;
+					}	
+				}
+
+				&.workspace-item-inline {
+					padding-right: 1.6em;
+					padding-left: 1.6em;
+					
+					& > .workspace-option-control {
+						float: right;
+						.flexbox();
+						.align-items(center);
+					}
+				}
+			}
+
+			& > li:last-child {
+				border-bottom-width: 0;
+			}
+		}
+	}
+
+	& > .workspace-demo {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: 100% - @sidebar-width;
+		text-align: center;
+
+		& > .workspace-demo-shape {
+			background-color: lighten(@blue, 20%);
+			width: 50%;
+			height: 35%;
+			margin: 8em auto;
+		}
+
+		& > ul.workspace-css {
+			background-color: @background-color;
+			padding: 2em;
+			margin: 0 4em;
+			border: 1px solid darken(@background-color, 10%);
+			list-style: none;
+
+			& > li {
+				text-align: left;
+			}
+		}
+	}
+}
+
+/// ============ Colpick Overrides ==============
+
+.colpick {
+	background-color: transparent;
+	border: none;
+}
+
+
+
+
+
+
+
