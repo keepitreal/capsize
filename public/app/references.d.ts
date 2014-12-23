@@ -1,6 +1,4 @@
 /// <reference path="./lib/platypus/platypus-node.d.ts" />
-<<<<<<< HEAD
-=======
 
 /// Injectables
 
@@ -21,4 +19,3 @@
 
 /// <reference path="./repositories/posts.repository.ts" />
 /// <reference path="./repositories/users.repository.ts" />
->>>>>>> darion
