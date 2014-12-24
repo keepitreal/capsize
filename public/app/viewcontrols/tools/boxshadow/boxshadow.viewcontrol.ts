@@ -25,59 +25,51 @@ module platynem.viewcontrols {
 				blurRadius: 4,
 				spreadRadius: 3,
 				rgba: {
-					red: 0,
-					green: 0,
-					blue: 0,
-					alpha: 1
+					r: 100,
+					g: 100,
+					b: 100,
+					a: 1
 				}
 			}
 		};
 
 		logProperty() {
-			console.log(this.context.demoShape.offsetX);
+			console.log(this.colpick);
 		}
 
 		loaded() {
+			var color = this.context.demoShape.rgba;
 			this.colpick = this.$('#colpick');
 			this.colpick.colpick({
 				flat: true,
 				layout: 'full',
-				submit: 0
+				submit: 0,
+				color: {
+					r: color.r,
+					g: color.g,
+					b: color.b
+				},
+				onChange: (hsb, hex, rgb) => {
+					color.r = rgb.r;
+					color.g = rgb.g;
+					color.b = rgb.b;
+					this.setProperty();
+				}
 			});
 			this.setProperty();
 		}
 
 		setProperty() {
 			var shapeContext = this.context.demoShape,
+				color = shapeContext.rgba,
 				value = '';
 
 			value += shapeContext.inset ? 'inset ' : '';
 			value += shapeContext.offsetX + 'px ' + shapeContext.offsetY + 'px ';
 			value += shapeContext.blurRadius + 'px ' + shapeContext.spreadRadius + 'px ';
-			value += 'rgba(20,20,20,1)';
-			console.log(value);
-			this.demoShape.element.style.boxShadow = value;
-		}
-
-		concatValues(obj) {
-			var value: string = '';
+			value += 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a +')';
 			
-			this.$utils.forEach(obj, (prop: any, key: any) => {
-				if (key === 'inset') {
-					value += prop ? 'inset' : '';
-					return;
-				}
-
-				if (key === 'rgba') {
-					return;
-				}
-
-				if (this.$utils.isNumber(prop)) {
-					value += ' ' + prop + 'px';
-				}
-			});
-
-			return value;
+			this.demoShape.element.style.boxShadow = value;
 		}
 	}
 

@@ -1,4 +1,5 @@
 <h1>Box Shadow Generator</h1>
+<p>Box shadow is a feature from the CSS3 specification that describes one or more box shadow (also known as 'drop shadow' in other contexts) effects that can be applied as a property to an HTML element. Multiple box shadow effects are achieved through a comma-separated list of values on the 'box-shadow'. Earlier box-shadow effects are stacked/z-indexed above </p>
 <div class="workspace">
 	<div class="workspace-sidebar">
 		<ul class="workspace-options">
@@ -9,31 +10,31 @@
 				</span>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">offset X</div>
+				<div class="workspace-option workspace-option-name">offset X: {{demoShape.offsetX}}px</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">offset Y</div>
+				<div class="workspace-option workspace-option-name">offset Y: {{demoShape.offsetY}}px</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">blur radius</div>
+				<div class="workspace-option workspace-option-name">blur radius: {{demoShape.blurRadius}}px</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.blurRadius" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">spread radius</div>
+				<div class="workspace-option workspace-option-name">spread radius: {{demoShape.spreadRadius}}px</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.spreadRadius" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">transparency</div>
+				<div class="workspace-option workspace-option-name">transparency: {{demoShape.rgba.a}}</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.rgba.alpha" plat-change="setProperty()"></plat-slider>
 				</div>
@@ -47,10 +48,10 @@
 		</ul>
 	</div>
 	<div class="workspace-demo">
-		<button plat-tap="logProperty">Log Property</button>
-		<div class="workspace-demo-shape" plat-name="demoShape"></div>
 		<ul class="workspace-css">
-			<li>box-shadow: {{demoShape.inset ? 'inset' : ''}} {{demoShape.offsetX}}px {{demoShape.offsetY}}px {{demoShape.blurRadius}}px {{demoShape.spreadRadius}}px</li>
+			<li>box-shadow: {{demoShape.inset ? 'inset' : ''}} {{demoShape.offsetX}}px {{demoShape.offsetY}}px {{demoShape.blurRadius}}px {{demoShape.spreadRadius}}px rgba({{demoShape.rgba.r}},{{demoShape.rgba.g}},{{demoShape.rgba.b}},{{demoShape.rgba.a}});</li>
 		</ul>
+		<div class="workspace-demo-shape" plat-name="demoShape"></div>
+		<button plat-tap="logProperty">Log Property</button>
 	</div>
 </div>

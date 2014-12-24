@@ -11,6 +11,10 @@
             <label for="content">Content</label>
             <textarea class="form-control" plat-bind="post.content" placeholder="Content" rows="10"/></textarea>
         </div>
+        <div class="form-group">
+            <p>Display</p>
+            <marked-display plat-context="post.content" plat-options="{ editMode: true }"></marked-display>
+        </div>
         <input type="submit" class="btn btn-primary" />
     </form>
 </section>

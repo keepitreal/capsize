@@ -3320,6 +3320,14 @@ body {
   -ms-align-items: center;
   align-items: center;
 }
+.auth {
+  width: 360px;
+  margin: 20% auto;
+  text-align: center;
+}
+.auth-submit {
+  padding: 1em 0;
+}
 .container {
   padding: 1em;
 }
@@ -3328,14 +3336,6 @@ body {
   width: 960px;
   margin: 0 auto;
   padding: 1em 2em;
-}
-.auth {
-  width: 360px;
-  margin: 20% auto;
-  text-align: center;
-}
-.auth-submit {
-  padding: 1em 0;
 }
 .workspace {
   position: relative;
@@ -3406,21 +3406,26 @@ body {
   background-color: #81c1e4;
   width: 50%;
   height: 35%;
-  margin: 8em auto;
+  margin: 0 auto 8em;
 }
 .workspace > .workspace-demo > ul.workspace-css {
+  font-family: monospace;
+  font-size: 0.9em;
   background-color: #f9f9f9;
-  padding: 2em;
-  margin: 0 4em;
+  padding: 2em 0.5em;
+  margin: 4em 1em;
   border: 1px solid #e0e0e0;
   list-style: none;
 }
 .workspace > .workspace-demo > ul.workspace-css > li {
-  text-align: left;
+  text-align: center;
 }
 .colpick {
   background-color: transparent;
   border: none;
+}
+.colpick_field_letter {
+  width: 18px;
 }
 .button {
   padding: 0.8em 2em;

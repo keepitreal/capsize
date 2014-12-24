@@ -3,6 +3,7 @@
 /// Injectables
 
 /// <reference path="./common/injectables/jquery.injectable.ts" />
+/// <reference path="./common/injectables/marked.injectable.ts" />
 
 /// Models
 

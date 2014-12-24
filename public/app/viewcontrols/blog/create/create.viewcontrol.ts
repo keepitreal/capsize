@@ -14,7 +14,7 @@ module platynem.viewcontrols {
         context = {
             post: <models.IPost>{
                 title: '',
-                content: ''
+                content: '##wut wut'
             }
         };
 

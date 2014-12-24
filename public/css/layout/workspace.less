@@ -77,18 +77,20 @@
 			background-color: lighten(@blue, 20%);
 			width: 50%;
 			height: 35%;
-			margin: 8em auto;
+			margin: 0 auto 8em;
 		}
 
 		& > ul.workspace-css {
+			font-family: monospace;
+			font-size: 0.9em;
 			background-color: @background-color;
-			padding: 2em;
-			margin: 0 4em;
+			padding: 2em 0.5em;
+			margin: 4em 1em;
 			border: 1px solid darken(@background-color, 10%);
 			list-style: none;
 
 			& > li {
-				text-align: left;
+				text-align: center;
 			}
 		}
 	}
@@ -99,6 +101,10 @@
 .colpick {
 	background-color: transparent;
 	border: none;
+}
+
+.colpick_field_letter {
+	width: 18px;
 }
 
 
