@@ -1,6 +1,6 @@
 /// <reference path="../../../references.d.ts" />
 
-module platynem.viewcontrols {
+module capsize.viewcontrols {
 	'use strict';
 
 	export class ToolsHomeViewControl extends plat.ui.WebViewControl {

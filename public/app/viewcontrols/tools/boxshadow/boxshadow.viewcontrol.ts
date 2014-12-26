@@ -2,7 +2,7 @@
 
 declare var $;
 
-module platynem.viewcontrols {
+module capsize.viewcontrols {
 	'use strict';
 
 	export class BoxShadowViewControl extends BaseViewControl {
@@ -10,7 +10,7 @@ module platynem.viewcontrols {
 		
 		templateUrl = 'app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html';
 
-		$ = plat.acquire(platynem.injectables.jQueryFactory);
+		$ = plat.acquire(injectables.jQueryFactory);
 
 		demoShape: plat.controls.INamedElement<HTMLDivElement, any>;
 
@@ -40,6 +40,7 @@ module platynem.viewcontrols {
 		loaded() {
 			var color = this.context.demoShape.rgba;
 			this.colpick = this.$('#colpick');
+			
 			this.colpick.colpick({
 				flat: true,
 				layout: 'full',
@@ -56,6 +57,7 @@ module platynem.viewcontrols {
 					this.setProperty();
 				}
 			});
+			
 			this.setProperty();
 		}
 

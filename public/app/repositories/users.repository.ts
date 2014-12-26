@@ -1,6 +1,6 @@
 /// <reference path="../references.d.ts" />
 
-module platynem.repositories {
+module capsize.repositories {
     'use strict';
 
     export class UsersRepository {
@@ -49,8 +49,8 @@ module platynem.repositories {
     }
 
     plat.register.injectable('usersRepository', UsersRepository, [
-        platynem.models.UserFactory,
-        platynem.services.UsersService,
+        models.UserFactory,
+        services.UsersService,
         plat.async.IPromise,
         plat.IUtils
     ]);

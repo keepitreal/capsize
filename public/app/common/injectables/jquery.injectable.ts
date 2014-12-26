@@ -1,6 +1,6 @@
 /// <reference path="../../references.d.ts" />
 
-module platynem.injectables {
+module capsize.injectables {
 	'use strict';
 
 	declare var $;

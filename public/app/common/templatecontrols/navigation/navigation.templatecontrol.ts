@@ -1,6 +1,6 @@
 /// <reference path="../../../references.d.ts" />
 
-module platynem.templatecontrols {
+module capsize.templatecontrols {
     'use strict';
 
     export class NavigationBar extends plat.ui.TemplateControl {
@@ -11,7 +11,7 @@ module platynem.templatecontrols {
             user: <models.IUser>null
         };
 
-        constructor(private usersRepository: platynem.repositories.UsersRepository) {
+        constructor(private usersRepository: capsize.repositories.UsersRepository) {
             super();
         }
 
@@ -38,6 +38,6 @@ module platynem.templatecontrols {
     }
 
     plat.register.control('navigation', NavigationBar, [
-        platynem.repositories.UsersRepository
+        capsize.repositories.UsersRepository
     ]);
 }

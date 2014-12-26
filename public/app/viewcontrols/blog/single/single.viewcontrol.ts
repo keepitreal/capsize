@@ -1,6 +1,6 @@
 /// <reference path="../../../references.d.ts" />
 
-module platynem.viewcontrols {
+module capsize.viewcontrols {
     'use strict';
 
     export class SingleViewControl extends plat.ui.WebViewControl {
@@ -43,8 +43,8 @@ module platynem.viewcontrols {
     }
 
     plat.register.viewControl('singleViewControl', SingleViewControl, [
-        platynem.repositories.PostsRepository,
-        platynem.repositories.UsersRepository,
+        repositories.PostsRepository,
+        repositories.UsersRepository,
         plat.async.IPromise
     ], ['posts/:id']);
 }

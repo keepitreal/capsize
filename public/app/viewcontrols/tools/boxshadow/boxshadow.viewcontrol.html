@@ -10,37 +10,54 @@
 				</span>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">offset X: {{demoShape.offsetX}}px</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">offset X:</div>
+					<div class="workspace-option-value">{{demoShape.offsetX}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">offset Y: {{demoShape.offsetY}}px</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">offset Y:</div>
+					<div class="workspace-option-value">{{demoShape.offsetY}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">blur radius: {{demoShape.blurRadius}}px</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">blur radius:</div>
+					<div class="workspace-option-value">{{demoShape.blurRadius}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.blurRadius" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">spread radius: {{demoShape.spreadRadius}}px</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">spread radius:</div>
+					<div class="workspace-option-value">{{demoShape.spreadRadius}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.spreadRadius" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">transparency: {{demoShape.rgba.a}}</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">transparency:</div>
+					<div class="workspace-option-value">{{demoShape.rgba.a}}</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="demoShape.rgba.alpha" plat-change="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">color</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">color</div>
+				</div>
 				<div class="workspace-option workspace-option-control cf">
 					<div class="workspace-option-colorpicker" data-target="colpick" id="colpick"></div>
 				</div>

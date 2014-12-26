@@ -37,8 +37,17 @@
 					height: 2.4em;
 					line-height: 2.4em;
 
-					&.workspace-option-name {
+					& > .workspace-option-name {
 						text-align: center;
+						float: left;
+						padding-right: 0.8em;
+						padding-left: 0.8em;
+					}
+
+					& > .workspace-option-value {
+						float: right;
+						padding-right: 0.8em;
+						padding-left: 0.8em;
 					}
 
 					& > .workspace-option-colorpicker { 
@@ -87,6 +96,7 @@
 			padding: 2em 0.5em;
 			margin: 4em 1em;
 			border: 1px solid darken(@background-color, 10%);
+			border-radius: 5px;
 			list-style: none;
 
 			& > li {
