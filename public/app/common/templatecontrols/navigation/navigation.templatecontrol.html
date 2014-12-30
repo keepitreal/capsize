@@ -1,19 +1,49 @@
 <div class="navigation-container">
-    <div class="navigation-header">
-        Logo
-    </div>
-    <ul class="navigation-menu" data-category="Tools">
-        <li>
-            <a href="#!/tools/boxshadowgenerator">Box Shadow Generator</a>
+    <ul class="navigation-menu">
+        <li data-category="generators">
+            <input type="checkbox" id="generators">
+            <label for="generators">Generators</label>
+            <ul class="navigation-submenu">
+                <li>
+                    <a href="#!/tools/boxshadowgenerator">Box Shadow Generator</a>
+                </li>
+            </ul>
         </li>
-    </ul>
-    <ul class="navigation-menu" data-category="Other">
-        <li>
+        <li data-category="mixins">
+            <input type="checkbox" id="mixins">
+            <label for="mixins">Mixins</label>
+            <ul class="navigation-submenu">
+                <li>
+                    <a href="">Layout</a>
+                </li>
+                <li>
+                    <a href="">Animations</a>
+                </li>
+                <li>
+                    <a href="">CSS3</a>
+                </li>
+            </ul>
+        </li>
+        <li data-category="blog">
             <a href="#!/posts">Blog</a>
         </li>
-        <li>
+        <li data-category="about">
             <a href="#!/about">About</a>
         </li>
+        <li data-category="admin">
+            <input type="checkbox" id="admin">
+            <label for="admin">Admin</label>
+            <ul class="navigation-submenu">
+                <li>
+                    <a href="#!/admin/posts/list">All Posts</a>
+                </li>
+                <li>
+                    <a href="#!/admin/posts/new">New Post</a>
+                </li>
+                <li>
+                    <a plat-tap="logout">Log Out</a>
+                </li>
+            </ul>
+        </li>
     </ul>
-    <span class="navigation-dismiss" plat-tap="toggleVisibility"></span>
 </div>

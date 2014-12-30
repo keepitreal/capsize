@@ -100,14 +100,14 @@ module.exports = function (grunt) {
                 watch: 'server'
             },
             watch_public: {
-                src: publicFiles('ts').concat(['!public/app/lib/platypus/*.ts']),
+                src: publicFiles('ts'),
                 watch: 'public'
             },
             server: {
                 src: serverFiles('ts')
             },
             public: {
-                src: publicFiles('ts').concat(['!public/app/lib/platypus/*.ts'])
+                src: publicFiles('ts')
             },
             test: {
                 src: serverTestFiles('ts').concat(publicTestFiles('ts').concat(['!public/app/lib/platypus/*.ts'])),

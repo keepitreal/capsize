@@ -1,19 +1,10 @@
-/// <reference path="../../references.d.ts" />
-
 /* tslint:disable */
 /**
  * Copyright 2014 Platypi, LLC. All rights reserved. 
- * 
  * PlatypusUI is licensed under the GPL-3.0 found at  
  * http://opensource.org/licenses/GPL-3.0 
- * 
  */
     /**
-     * @name platui
-     * @kind namespace
-     * @access public
-     * 
-     * @description
      * The entry point into the platypus UI controls library.
      */
 module platui {
@@ -21,14 +12,16 @@ module platui {
     /*
      * Injectables
      */
-    var __Promise = '$Promise',
-        __Compat = '$Compat',
-        __Regex = '$Regex',
-        __Window = '$Window',
-        __Document = '$Document',
-        __ExceptionStatic = '$ExceptionStatic',
-        __Utils = '$Utils',
-        __Animator = '$Animator',
+    var __prefix = '$',
+        __Promise = __prefix + 'Promise',
+        __Compat = __prefix + 'Compat',
+        __Regex = __prefix + 'Regex',
+        __Window = __prefix + 'Window',
+        __Document = __prefix + 'Document',
+        __ExceptionStatic = __prefix + 'ExceptionStatic',
+        __Utils = __prefix + 'Utils',
+        __Animator = __prefix + 'Animator',
+        __DomEventInstance = __prefix + 'DomEventInstance',
     
         /**
          * Controls
@@ -97,183 +90,103 @@ module platui {
         };
     /* tslint:enable:no-unused-variable */
     
+    if (typeof window !== 'undefined') {
+        if (typeof (<any>window).platui === 'undefined') {
+            (<any>window).platui = platui;
+        }
+
+        if (typeof (<any>window).module === 'undefined') {
+            (<any>window).module = {};
+        }
+    }
+
     /**
-     * @name IUIControl
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
      * An interface a control should implement if they plan on using 
      * class based CSS to style the UI.
      */
     export interface IUIControl {
         /**
-         * @name setClasses
-         * @memberof platui.IUIControl
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(classNames?: any, element?: Element): void;
     }
 
     /**
-     * @name IFormControl
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
      * An interface a control should implement if validation is necessary.
      */
     export interface IFormControl {
         /**
-         * @name validate
-         * @memberof platui.IFormControl
-         * @kind function
-         * @access public
-         * 
-         * @description
          * A function to validate user input.
-         * 
-         * @returns {boolean} Whether or not the user input is valid.
          */
         validate(): boolean;
+    }
+
+    /**
+     * Describes a point with x and y coordinates and an associated value.
+     */
+    export interface IValuePoint extends plat.ui.IPoint {
+        /**
+         * A value associated with the given point.
+         */
+        value: number;
     }
 
     /// <reference path="../../references.d.ts" />
     
     /**
-     * @name Button
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.BindablePropertyControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that standardizes an HTML5 button.
+     * An IBindablePropertyControl that standardizes an HTML5 button.
      */
     export class Button extends plat.ui.BindablePropertyControl implements IUIControl {
         /**
-         * @name $document
-         * @memberof platui.Button
-         * @kind property
-         * @access public
-         * 
-         * @type {Document}
-         * 
-         * @description
          * Reference to the Document injectable.
          */
         $document: Document = plat.acquire(__Document);
 
         /**
-         * @name replaceWith
-         * @memberof platui.Button
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * Replaces the <plat-button> node with 
          * a <button> node.
          */
         replaceWith = 'button';
 
         /**
-         * @name options
-         * @memberof platui.Button
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.IButtonOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<IButtonOptions>;
 
         /**
-         * @name groupName
-         * @memberof platui.Button
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The button groups name if a button group is present.
          */
         groupName = '';
 
         /**
-         * @name _isSelected
-         * @memberof platui.Button
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * A boolean value showing the selected state of this {@link platui.Button|Button}.
+         * A boolean value showing the selected state of this Button.
          */
         protected _isSelected: boolean;
 
         /**
-         * @name setClasses
-         * @memberof platui.Button
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Button + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Button
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets default classes.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name setTemplate
-         * @memberof platui.Button
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Wrap all inner text nodes in spans.
-         * 
-         * @returns {void}
          */
         setTemplate(): void {
             var $document = this.$document,
@@ -305,15 +218,7 @@ module platui {
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Button
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Determine the button style and apply the proper classes.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var element = this.element,
@@ -334,15 +239,7 @@ module platui {
         }
 
         /**
-         * @name _addEventListeners
-         * @memberof platui.Button
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Add event listeners for selection.
-         * 
-         * @returns {void}
          */
         protected _addEventListeners(name: string): void {
             var element = this.element,
@@ -360,15 +257,7 @@ module platui {
         }
 
         /**
-         * @name _onTap
-         * @memberof platui.Button
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Place the pushed button in a selected state.
-         * 
-         * @returns {void}
          */
         protected _onTap(): void {
             if (this._isSelected) {
@@ -386,62 +275,25 @@ module platui {
     plat.register.control(__Button, Button);
 
     /**
-     * @name IButtonOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Button|Button} control.
+     * The available options for the Button control.
      */
     export interface IButtonOptions {
         /**
-         * @name group
-         * @memberof platui.IButtonOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The group name of this {@link platui.Button|Button's} associated button group.
+         * The group name of this Button's associated button group.
          */
         group?: string;
     }
 
     /**
-     * @name Select
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.IBindablePropertyControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that simulates a toggle switch.
+     * An IBindablePropertyControl that simulates a toggle switch.
      */
     export class Toggle extends plat.ui.BindablePropertyControl implements IUIControl {
         /**
-         * @name $utils
-         * @memberof platui.Toggle
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
 
         /**
-         * @name templateString
-         * @memberof platui.Toggle
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -450,89 +302,40 @@ module platui {
         '</div>';
 
         /**
-         * @name isActive
-         * @memberof platui.Toggle
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A boolean value indicating whether the control is actively selected.
          */
         isActive = false;
 
         /**
-         * @name _targetType
-         * @memberof platui.Toggle
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The type of the control's activated element.
          */
         protected _targetType = 'slide';
 
         /**
-         * @name _targetElement
-         * @memberof platui.Toggle
-         * @kind property
-         * @access protected
-         * 
-         * @type {Element}
-         * 
-         * @description
          * The element used to create the targeted effect.
          */
         protected _targetElement: Element;
 
         /**
-         * @name setClasses
-         * @memberof platui.Toggle
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Toggle + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Toggle
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the class name.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Toggle
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Adds a listener for the tap event.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var element = this.element;
@@ -541,20 +344,11 @@ module platui {
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Toggle
-         * @kind function
-         * @access public
-         * 
-         * @description
          * The function called when the bindable property is set externally.
-         * 
          * @param {any} newValue The new value of the bindable property.
          * @param {any} oldValue? The old value of the bindable property.
          * @param {boolean} setProperty? A boolean value indicating whether we should set 
          * the property if we need to toggle the activated state.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any, oldValue?: any, setProperty?: boolean): void {
             if (newValue === oldValue) {
@@ -570,40 +364,28 @@ module platui {
         }
 
         /**
-         * @name _onTap
-         * @memberof platui.Toggle
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The callback for a tap event.
-         * 
          * @param {plat.ui.IGestureEvent} ev The tap event object.
-         * 
-         * @returns {void}
          */
         protected _onTap(ev: plat.ui.IGestureEvent): void {
-            var domEvent = plat.acquire(plat.ui.IDomEventInstance);
-
             this._toggle(true);
+            this._trigger('change');
+        }
 
-            domEvent.initialize(this.element, 'change');
+        /**
+         * Triggers an event starting from this control's element.
+         * @param {string} event The event name to trigger.
+         */
+        protected _trigger(event: string): void {
+            var domEvent: plat.ui.IDomEventInstance = plat.acquire(__DomEventInstance);
+            domEvent.initialize(this.element, event);
             domEvent.trigger();
         }
 
         /**
-         * @name _toggle
-         * @memberof platui.Toggle
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Toggles the mark and updates the bindable property if needed.
-         * 
          * @param {boolean} setProperty? A boolean value stating whether the bindable 
          * property should be updated.
-         * 
-         * @returns {void}
          */
         protected _toggle(setProperty?: boolean): void {
             var wasActive = this.isActive,
@@ -617,18 +399,9 @@ module platui {
         }
 
         /**
-         * @name _activate
-         * @memberof platui.Toggle
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * A function to activate the given element by toggling the 
          * class specified as the target type.
-         * 
          * @param {Element} element The element to activate.
-         * 
-         * @returns {void}
          */
         protected _activate(element: Element): void {
             this.dom.toggleClass(element, __Plat + this._targetType);
@@ -638,38 +411,15 @@ module platui {
     plat.register.control(__Toggle, Toggle);
 
     /**
-     * @name Checkbox
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {platui.Toggle}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that standardizes the HTML5 checkbox.
+     * An IBindablePropertyControl that standardizes the HTML5 checkbox.
      */
     export class Checkbox extends Toggle {
         /**
-         * @name $document
-         * @memberof platui.Checkbox
-         * @kind property
-         * @access public
-         * 
-         * @type {Document}
-         * 
-         * @description
          * Reference to the Document injectable.
          */
         $document: Document = plat.acquire(__Document);
 
         /**
-         * @name templateString
-         * @memberof platui.Checkbox
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -678,61 +428,28 @@ module platui {
         '</div>\n';
 
         /**
-         * @name options
-         * @memberof platui.Checkbox
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.ICheckboxOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<ICheckboxOptions>;
 
         /**
-         * @name _targetTypeSet
-         * @memberof platui.Checkbox
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether the target type has been set already or not.
          */
         protected _targetTypeSet = false;
 
         /**
-         * @name setClasses
-         * @memberof platui.Checkbox
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Checkbox + ' ' + (className || ''));
         }
 
         /**
-         * @name setTemplate
-         * @memberof platui.Checkbox
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Adds the inner template to the DOM making sure to wrap text nodes in spans.
-         * 
-         * @returns {void}
          */
         setTemplate(): void {
             var isNull = this.$utils.isNull,
@@ -765,16 +482,8 @@ module platui {
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Checkbox
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Checks for checked attributes and handles them accordingly. Also, 
          * initializes the mark and adds a listener for the tap event.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             super.loaded();
@@ -807,18 +516,9 @@ module platui {
         }
 
         /**
-         * @name _convertChecked
-         * @memberof platui.Checkbox
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * A function for checking "checked" attributes and handling them accordingly.
-         * 
          * @param {any} newValue The newValue of the attribute to convert.
          * @param {any} oldValue? The oldValue of the attribute to convert.
-         * 
-         * @returns {void}
          */
         protected _convertChecked(): void {
             var element = this.element;
@@ -834,19 +534,10 @@ module platui {
         }
 
         /**
-         * @name _convertAttribute
-         * @memberof platui.Checkbox
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * A function for handling the attribute value conversion for updating the 
          * bound property.
-         * 
          * @param {any} newValue The newValue of the attribute to convert.
          * @param {any} oldValue? The oldValue of the attribute to convert.
-         * 
-         * @returns {void}
          */
         protected _convertAttribute(newValue: any, oldValue?: any): void {
             var $utils = this.$utils;
@@ -860,18 +551,9 @@ module platui {
         }
 
         /**
-         * @name _activate
-         * @memberof platui.Checkbox
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * A function to activate the given element by toggling the 
          * class specified as the target type.
-         * 
          * @param {Element} element The element to activate.
-         * 
-         * @returns {void}
          */
         protected _activate(element: Element): void {
             if (this._targetTypeSet) {
@@ -886,27 +568,12 @@ module platui {
     plat.register.control(__Checkbox, Checkbox);
 
     /**
-     * @name ICheckboxOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Checkbox|Checkbox} control.
+     * The available options for the Checkbox control.
      */
     export interface ICheckboxOptions {
         /**
-         * @name mark
-         * @memberof platui.ICheckboxOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The type of mark to place inside the {@link platui.Checkbox|Checkbox}. 
+         * The type of mark to place inside the Checkbox. 
          * Defaults to "check".
-         * 
-         * @remarks
          * - "check"
          * - "x"
          */
@@ -914,25 +581,10 @@ module platui {
     }
 
     /**
-     * @name Radio
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {platui.Checkbox}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that standardizes the HTML5 radio button.
+     * An IBindablePropertyControl that standardizes the HTML5 radio button.
      */
     export class Radio extends Checkbox {
         /**
-         * @name templateString
-         * @memberof platui.Radio
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -941,87 +593,38 @@ module platui {
         '</div>';
 
         /**
-         * @name groupName
-         * @memberof platui.Radio
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The radio groups name if a radio group is present.
          */
         groupName = '';
 
         /**
-         * @name _targetType
-         * @memberof platui.Radio
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The check type to be placed in the element.
          */
         protected _targetType = 'bullet';
 
         /**
-         * @name _targetTypeSet
-         * @memberof platui.Radio
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether the target type has been set already or not.
          */
         protected _targetTypeSet = true;
         
         /**
-         * @name _removeListener
-         * @memberof platui.Radio
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
          * A function to stop listening for dispatched group events.
          */
         protected _removeListener: plat.IRemoveListener;
 
         /**
-         * @name setClasses
-         * @memberof platui.Radio
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Radio + ' ' + (className || ''));
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Radio
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Checks for a radio group and converts "checked" attributes.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var element = this.element;
@@ -1040,20 +643,11 @@ module platui {
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Radio
-         * @kind function
-         * @access public
-         * 
-         * @description
          * The function called when the bindable property is set externally.
-         * 
          * @param {any} newValue The new value of the bindable property.
          * @param {any} oldValue? The old value of the bindable property.
          * @param {boolean} setProperty? A boolean value indicating whether we should set 
          * the property if we need to toggle the check mark value.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any, oldValue?: any, setProperty?: boolean): void {
             if (newValue === oldValue) {
@@ -1071,19 +665,10 @@ module platui {
         }
 
         /**
-         * @name propertyChanged
-         * @memberof platui.Radio
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Checks if the radio has been selected and only notifies of a bindable 
          * property changed if it has.
-         * 
          * @param {any} newValue The new value of the property after the change.
          * @param {any} oldValue? The old value of the property prior to the change.
-         * 
-         * @returns {void}
          */
         propertyChanged(newValue: any, oldValue?: any): void {
             if (this.isActive) {
@@ -1092,18 +677,9 @@ module platui {
         }
 
         /**
-         * @name _onTap
-         * @memberof platui.Radio
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * The callback for a tap event. Only fires the event if the {@link platui.Radio|Radio}  
+         * The callback for a tap event. Only fires the event if the Radio  
          * has been selected.
-         * 
          * @param {plat.ui.IGestureEvent} ev The tap event object.
-         * 
-         * @returns {void}
          */
         protected _onTap(ev: plat.ui.IGestureEvent): void {
             if (this.isActive) {
@@ -1114,18 +690,9 @@ module platui {
         }
 
         /**
-         * @name _toggle
-         * @memberof platui.Radio
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Toggles the mark and updates the bindable property if needed.
-         * 
          * @param {boolean} setProperty? A boolean value stating whether the bindable 
          * property should be updated.
-         * 
-         * @returns {void}
          */
         protected _toggle(setProperty?: boolean): void {
             super._toggle(setProperty);
@@ -1145,19 +712,10 @@ module platui {
         }
 
         /**
-         * @name _convertAttribute
-         * @memberof platui.Radio
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * A function for handling the attribute value conversion for updating the 
          * bound property.
-         * 
          * @param {any} newValue The newValue of the attribute to convert.
          * @param {any} oldValue? The oldValue of the attribute to convert.
-         * 
-         * @returns {void}
          */
         protected _convertAttribute(newValue: any, oldValue?: any): void {
             var $utils = this.$utils;
@@ -1176,16 +734,8 @@ module platui {
         }
 
         /**
-         * @name _getValue
-         * @memberof platui.Radio
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Grabs the value of this {@link platui.Radio|Radio's} bindable property. It first checks for 
+         * Grabs the value of this Radio's bindable property. It first checks for 
          * the "value" attribute, and defaults to the elements textContent if it's unavailable.
-         * 
-         * @returns {string} Returns the bindable value of this control.
          */
         protected _getValue(): string {
             var element = this.element;
@@ -1196,26 +746,10 @@ module platui {
     plat.register.control(__Radio, Radio);
 
     /**
-     * @name ProgressRing
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.TemplateControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.ITemplateControl|ITemplateControl} for showing indeterminate progress.
+     * An ITemplateControl for showing indeterminate progress.
      */
     export class ProgressRing extends plat.ui.TemplateControl implements IUIControl {
         /**
-         * @name templateString
-         * @memberof platui.ProgressRing
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -1224,35 +758,18 @@ module platui {
         '</div>';
 
         /**
-         * @name setClasses
-         * @memberof platui.ProgressRing
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __ProgressRing + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.ProgressRing
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the animation.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
@@ -1262,39 +779,19 @@ module platui {
     plat.register.control(__ProgressRing, ProgressRing);
 
     /**
-     * @name ProgressBar
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.TemplateControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.ITemplateControl|ITemplateControl} for showing incremental progress.
+     * An ITemplateControl for showing incremental progress.
      */
     export class ProgressBar extends plat.ui.TemplateControl implements IUIControl {
         /**
-         * @name $utils
-         * @memberof platui.ProgressBar
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the Window injectable.
+         */
+        $window: Window = plat.acquire(__Window);
+        /**
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
 
         /**
-         * @name templateString
-         * @memberof platui.ProgressBar
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -1303,105 +800,48 @@ module platui {
         '</div>\n';
 
         /**
-         * @name _barElement
-         * @memberof platui.ProgressBar
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The animated bar element.
          */
         protected _barElement: HTMLElement;
 
         /**
-         * @name _barMax
-         * @memberof platui.ProgressBar
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The max value of the bar.
          */
         protected _barMax: number;
 
         /**
-         * @name _cloneAttempts
-         * @memberof platui.ProgressBar
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current number of times we checked to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _cloneAttempts = 0;
 
         /**
-         * @name _maxCloneCount
-         * @memberof platui.ProgressBar
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * The max number of times we'll check to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _maxCloneAttempts = 25;
 
         /**
-         * @name setClasses
-         * @memberof platui.ProgressBar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __ProgressBar + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.ProgressBar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the class name.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name loaded
-         * @memberof platui.ProgressBar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Grabs the bar element and bar max value and checks to make sure the context is correctly 
          * set or a plat-bind is being used, then does the initial animation of the bar.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var context = this.context,
@@ -1414,47 +854,36 @@ module platui {
 
             if (!this.$utils.isNumber(context) || context > 1 || context < 0) {
                 var Exception: plat.IExceptionStatic = plat.acquire(plat.IExceptionStatic);
-                Exception.warn('The context of a "' + __ProgressBar + '" control must be a number between 0 and 1');
+                Exception.warn('The context of a "' + this.type + '" control must be a number between 0 and 1');
                 return;
             }
 
+            this.addEventListener(this.$window, 'resize', () => {
+                var offset = this._barMax = barElement.parentElement.offsetWidth;
+                if (!offset) {
+                    this._setOffsetWithClone();
+                }
+            }, false);
             this.setProgress();
         }
 
         /**
-         * @name contextChanged
-         * @memberof platui.ProgressBar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Animates the bar on a context changed.
-         * 
-         * @returns {void}
          */
         contextChanged(): void {
             this.setProgress();
         }
 
         /**
-         * @name setProgress
-         * @memberof platui.ProgressBar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the progress bar value.
-         * 
          * @param {number} value? The decimal number between 0 and 1 to set as the 
          * bar percentage (e.g. - 0.5 would be 50% complete).
-         * 
-         * @returns {void}
          */
         setProgress(value?: number): void {
             var barValue = value || this.context;
             if (!this.$utils.isNumber(barValue) || barValue > 1 || barValue < 0) {
                 var Exception: plat.IExceptionStatic = plat.acquire(plat.IExceptionStatic);
-                Exception.warn('The context of a "' + __ProgressBar + '" control must be a number between 0 and 1');
+                Exception.warn('The context of a "' + this.type + '" control must be a number between 0 and 1');
                 return;
             }
 
@@ -1462,15 +891,7 @@ module platui {
         }
 
         /**
-         * @name _setOffsetWithClone
-         * @memberof platui.ProgressBar
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Creates a clone of this element and uses it to find the max offset.
-         * 
-         * @returns {void}
          */
         protected _setOffsetWithClone(): void {
             var element = this.element,
@@ -1480,9 +901,10 @@ module platui {
             if (!body.contains(element)) {
                 var cloneAttempts = ++this._cloneAttempts;
                 if (cloneAttempts === this._maxCloneAttempts) {
-                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                    $exception.warn('Max clone attempts reached before the ' + __ProgressBar + ' was placed into the ' +
-                        'DOM. Disposing of the ' + __ProgressBar);
+                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic),
+                        type = this.type;
+                    $exception.warn('Max clone attempts reached before the ' + type + ' was placed into the ' +
+                        'DOM. Disposing of the ' + type);
                     (<plat.ui.ITemplateControlFactory>plat.acquire(__TemplateControlFactory)).dispose(this);
                     return;
                 }
@@ -1495,14 +917,13 @@ module platui {
 
             var clone = <HTMLElement>element.cloneNode(true),
                 regex = /\d+(?!\d+|%)/,
-                $window: Window = plat.acquire(__Window),
                 parentChain = <Array<HTMLElement>>[],
                 shallowCopy = clone,
                 computedStyle: CSSStyleDeclaration,
                 width: string;
 
             shallowCopy.id = '';
-            while (!regex.test((width = (computedStyle = $window.getComputedStyle(element)).width))) {
+            while (!regex.test((width = (computedStyle = this.$window.getComputedStyle(element)).width))) {
                 if (computedStyle.display === 'none') {
                     shallowCopy.style.setProperty('display', 'block', 'important');
                 }
@@ -1539,138 +960,57 @@ module platui {
     plat.register.control(__ProgressBar, ProgressBar);
 
     /**
-     * @name Drawer
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.BindablePropertyControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that acts as a global drawer.
+     * An IBindablePropertyControl that acts as a global drawer.
      */
     export class Drawer extends plat.ui.BindablePropertyControl implements IUIControl {
         /**
-         * @name $utils
-         * @memberof platui.Drawer
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
 
         /**
-         * @name options
-         * @memberof platui.Drawer
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.IDrawerOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<IDrawerOptions>;
 
         /**
-         * @name _currentPosition
-         * @memberof platui.Drawer
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The current position of the {@link platui.Drawer|Drawer}.
+         * The current position of the Drawer.
          */
         protected _currentPosition: string;
         /**
-         * @name _useContext
-         * @memberof platui.Drawer
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not to use the inherited context of this global {@link platui.Drawer|Drawer}.
+         * Whether or not to use the inherited context of this global Drawer.
          */
         protected _useContext: boolean;
 
         /**
-         * @name controller
-         * @memberof platui.Drawer
-         * @kind property
-         * @access public
-         * 
-         * @type {platui.DrawerController}
-         * 
-         * @description
-         * A reference to all the {@link platui.DrawerController|DrawerController} used to control this {@link platui.Drawer|Drawer}.
+         * A reference to all the DrawerController used to control this Drawer.
          */
         protected _controllers: Array<DrawerController> = [];
 
         /**
-         * @name _loaded
-         * @memberof platui.Drawer
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link plat.controls.Bind|Bind} control has been loaded.
+         * Whether or not the Bind control has been loaded.
          */
         protected _loaded = false;
 
         /**
-         * @name _preloadedValue
-         * @memberof platui.Drawer
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A value specified prior to the control being loaded.
          */
         protected _preloadedValue = false;
 
         /**
-         * @name setClasses
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Drawer + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the class name and hides the element and 
          * removes the innerHTML from the DOM and saves it.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             var childNodes = Array.prototype.slice.call(this.element.childNodes);
@@ -1681,15 +1021,7 @@ module platui {
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Check for a position and initialize event handling.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var element = this.element,
@@ -1725,24 +1057,16 @@ module platui {
         }
 
         /**
-         * @name open
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Opens the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer} is open and the animation is complete.
+         * Opens the Drawer.
+         * when the Drawer is open and the animation is complete.
          */
         open(): plat.async.IThenable<void> {
             var controller = this._controllers[0];
             if (this.$utils.isNull(controller)) {
                 var $promise: plat.async.IPromise = plat.acquire(__Promise),
                     $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                $exception.warn('No ' + __DrawerController + ' found for the ' + __Drawer + ' attempting to open.',
-                    $exception.TEMPLATE);
+                $exception.warn('No controller, such as a ' + __DrawerController + ', found for the ' +
+                    this.type + ' attempting to open.', $exception.TEMPLATE);
                 return $promise.resolve(null);
             }
 
@@ -1750,24 +1074,16 @@ module platui {
         }
 
         /**
-         * @name close
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Closes the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer} is closed and the animation is complete.
+         * Closes the Drawer.
+         * when the Drawer is closed and the animation is complete.
          */
         close(): plat.async.IThenable<void> {
             var controller = this._controllers[0];
             if (this.$utils.isNull(controller)) {
                 var $promise: plat.async.IPromise = plat.acquire(__Promise),
                     $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                $exception.warn('No ' + __DrawerController + ' found for the ' + __Drawer + ' attempting to close.',
-                    $exception.TEMPLATE);
+                $exception.warn('No controller, such as a ' + __DrawerController + ', found for the ' +
+                    this.type + ' attempting to close.', $exception.TEMPLATE);
                 return $promise.resolve(null);
             }
 
@@ -1775,24 +1091,16 @@ module platui {
         }
 
         /**
-         * @name toggle
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Toggles the {@link platui.Drawer|Drawer's} open/closed state.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer's} state is toggled and the animation is complete.
+         * Toggles the Drawer's open/closed state.
+         * when the Drawer's state is toggled and the animation is complete.
          */
         toggle(): plat.async.IThenable<void> {
             var controller = this._controllers[0];
             if (this.$utils.isNull(controller)) {
                 var $promise: plat.async.IPromise = plat.acquire(__Promise),
                     $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                $exception.warn('No ' + __DrawerController + ' found for the ' + __Drawer + ' attempting to toggle.',
-                    $exception.TEMPLATE);
+                $exception.warn('No controller, such as a ' + __DrawerController + ', found for the ' +
+                    this.type + ' attempting to toggle.', $exception.TEMPLATE);
                 return $promise.resolve(null);
             }
 
@@ -1800,24 +1108,16 @@ module platui {
         }
 
         /**
-         * @name reset
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Resets the {@link platui.Drawer|Drawer} to it's current open/closed state.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer's} state is reset and the animation is complete.
+         * Resets the Drawer to it's current open/closed state.
+         * when the Drawer's state is reset and the animation is complete.
          */
         reset(): plat.async.IThenable<void> {
             var controller = this._controllers[0];
             if (this.$utils.isNull(controller)) {
                 var $promise: plat.async.IPromise = plat.acquire(__Promise),
                     $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                $exception.warn('No ' + __DrawerController + ' found for the ' + __Drawer + ' attempting to reset.',
-                    $exception.TEMPLATE);
+                $exception.warn('No controller, such as a ' + __DrawerController + ', found for the ' +
+                    this.type + ' attempting to reset.', $exception.TEMPLATE);
                 return $promise.resolve(null);
             }
 
@@ -1825,22 +1125,14 @@ module platui {
         }
 
         /**
-         * @name isOpen
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Indicates whether the {@link platui.Drawer|Drawer} is currently open.
-         * 
-         * @returns {boolean} Whether or not the {@link platui.Drawer|Drawer} is currently open.
+         * Indicates whether the Drawer is currently open.
          */
         isOpen(): boolean {
             var controller = this._controllers[0];
             if (this.$utils.isNull(controller)) {
                 var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                $exception.warn('No ' + __DrawerController + ' found for the ' + __Drawer + ' attempting to check if is open.',
-                    $exception.TEMPLATE);
+                $exception.warn('No controller, such as a ' + __DrawerController + ', found for the ' +
+                    this.type + ' attempting to check if open.', $exception.TEMPLATE);
                 return false;
             }
 
@@ -1848,18 +1140,9 @@ module platui {
         }
 
         /**
-         * @name bindTemplate
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Adds and binds the added HTML template to this control's inherited context.
-         * 
          * @param {string} name The template name to both add and bind.
          * @param {Node} node The node to add as a bindable template.
-         * 
-         * @returns {void}
          */
         bindTemplate(name: string, node: Node): void {
             var bindableTemplates = this.bindableTemplates;
@@ -1872,17 +1155,8 @@ module platui {
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
          * The function called when the bindable property is set externally.
-         * 
          * @param {any} newValue The new value of the bindable property.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any): void {
             if (!this.loaded) {
@@ -1909,35 +1183,18 @@ module platui {
         }
 
         /**
-         * @name controllerCount
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Returns the number of {@link platui.DrawerController|DrawerControllers} linked to this 
-         * {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {number} The {@link platui.DrawerController|DrawerController} count.
+         * Returns the number of DrawerControllers linked to this 
+         * Drawer.
          */
         controllerCount(): number {
             return this._controllers.length;
         }
 
         /**
-         * @name spliceController
-         * @memberof platui.Drawer
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Removes a specified {@link platui.DrawerController|DrawerController} from this control's Array of 
-         * linked {@link platui.DrawerController|DrawerControllers}.
-         * 
-         * @param {platui.DrawerController} controller The {@link platui.DrawerController|DrawerController} 
+         * Removes a specified DrawerController from this control's Array of 
+         * linked DrawerControllers.
+         * @param {platui.DrawerController} controller The DrawerController 
          * to splice.
-         * 
-         * @returns {void}
          */
         spliceController(controller: DrawerController): void {
             var controllers = this._controllers,
@@ -1950,17 +1207,8 @@ module platui {
         }
 
         /**
-         * @name _changeDirection
-         * @memberof platui.Drawer
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Changes the placement and implied position of the {@link platui.Drawer|Drawer}.
-         * 
+         * Changes the placement and implied position of the Drawer.
          * @param {string} position The new position to change to.
-         * 
-         * @returns {void}
          */
         protected _changeDirection(position: string): void {
             if (this.$utils.isNull(position) || position === this._currentPosition) {
@@ -1977,20 +1225,11 @@ module platui {
         }
 
         /**
-         * @name _initializeEvents
-         * @memberof platui.Drawer
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Initializes and dispatches pub sub events.
-         * 
-         * @param {string} id The ID of this {@link platui.Drawer|Drawer} if used.
+         * @param {string} id The ID of this Drawer if used.
          * @param {string} position The position.
-         * @param {boolean} isElastic Whether or not the {@link platui.Drawer|Drawer} has an 
+         * @param {boolean} isElastic Whether or not the Drawer has an 
          * elastic transition effect.
-         * 
-         * @returns {void}
          */
         protected _initializeEvents(id: string, position: string, isElastic: boolean): void {
             var $utils = this.$utils,
@@ -2037,15 +1276,7 @@ module platui {
         }
 
         /**
-         * @name _checkPreload
-         * @memberof platui.Drawer
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks the preloaded value and handles accordingly.
-         * 
-         * @returns {void}
          */
         protected _checkPreload(): void {
             if (this._preloadedValue) {
@@ -2063,553 +1294,217 @@ module platui {
     plat.register.control(__Drawer, Drawer);
 
     /**
-     * @name DrawerController
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.BindablePropertyControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that manipulates and controls a global drawer.
+     * An IBindablePropertyControl that manipulates and controls a global drawer.
      */
     export class DrawerController extends plat.ui.BindablePropertyControl {
         /**
-         * @name $utils
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
         /**
-         * @name $compat
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ICompat}
-         * 
-         * @description
-         * Reference to the {@link plat.ICompat|ICompat} injectable.
+         * Reference to the ICompat injectable.
          */
         $compat: plat.ICompat = plat.acquire(__Compat);
         /**
-         * @name $window
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {Window}
-         * 
-         * @description
          * Reference to the Window injectable.
          */
         $window: Window = plat.acquire(__Window);
         /**
-         * @name $document
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {Document}
-         * 
-         * @description
          * Reference to the Document injectable.
          */
         $document: Document = plat.acquire(__Document);
         /**
-         * @name $animator
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ui.animations.IAnimator}
-         * 
-         * @description
-         * Reference to the {@link plat.ui.animations.IAnimator|IAnimator} injectable.
+         * Reference to the IAnimator injectable.
          */
         $animator: plat.ui.animations.IAnimator = plat.acquire(__Animator);
         /**
-         * @name $Promise
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.async.IPromise}
-         * 
-         * @description
-         * Reference to the {@link plat.async.IPromise|IPromise} injectable.
+         * Reference to the IPromise injectable.
          */
         $Promise: plat.async.IPromise = plat.acquire(__Promise);
 
         /**
-         * @name options
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.IDrawerOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<IDrawerControllerOptions>;
 
         /**
-         * @name _position
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The position of the global {@link platui.Drawer|Drawer} associated 
+         * The position of the global Drawer associated 
          * with this control.
          */
         protected _position: string;
 
         /**
-         * @name _drawerElement
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
-         * The HTMLElement of the global {@link platui.Drawer|Drawer} associated 
+         * The HTMLElement of the global Drawer associated 
          * with this control.
          */
         protected _drawerElement: HTMLElement;
 
         /**
-         * @name _drawer
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {platui.Drawer}
-         * 
-         * @description
-         * The global {@link platui.Drawer|Drawer} associated 
+         * The global Drawer associated 
          * with this control.
          */
         protected _drawer: Drawer;
 
         /**
-         * @name _transform
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The current browser's CSS3 transform property.
          */
         protected _transform: string;
 
         /**
-         * @name _preTransform
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The value of the inline transform property prior to the Drawer manipulating it.
          */
         protected _preTransform: string;
 
         /**
-         * @name _lastTouch
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.ui.IPoint}
-         * 
-         * @description
          * The last touch start recorded.
          */
         protected _lastTouch: plat.ui.IPoint;
 
         /**
-         * @name _hasSwiped
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the user has swiped.
          */
         protected _hasSwiped = false;
 
         /**
-         * @name _hasTapped
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the user has tapped.
          */
         protected _hasTapped = false;
 
         /**
-         * @name _isOpen
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link platui.Drawer|Drawer} is open.
+         * Whether or not the Drawer is open.
          */
         protected _isOpen = false;
 
         /**
-         * @name _isElastic
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link platui.Drawer|Drawer} is elastic.
+         * Whether or not the Drawer is elastic.
          */
         protected _isElastic: boolean;
 
         /**
-         * @name _inTouch
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the user is currently touching the screen.
          */
         protected _inTouch: boolean;
 
         /**
-         * @name _useContext
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not to use this control's inherited context.
          */
         protected _useContext: boolean;
 
         /**
-         * @name _maxOffset
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The max offset to transform the {@link platui.Drawer|Drawer's} element.
+         * The max offset to transform the Drawer's element.
          */
         protected _maxOffset: number;
 
         /**
-         * @name _removeTap
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
          * A function for removing the tap event listener.
          */
         protected _removeTap: plat.IRemoveListener;
 
         /**
-         * @name _removeSwipeOpen
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
          * A function for removing the swipe open event listener.
          */
         protected _removeSwipeOpen: plat.IRemoveListener;
 
         /**
-         * @name _removePrimaryTrack
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
          * A function for removing the primary track (open) event listener.
          */
         protected _removePrimaryTrack: plat.IRemoveListener;
 
         /**
-         * @name _removeSecondaryTrack
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
          * A function for removing the secondary track (close) event listener.
          */
         protected _removeSecondaryTrack: plat.IRemoveListener;
 
         /**
-         * @name _openTapRemover
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
-         * A function for removing the tap event listener on the open {@link platui.Drawer|Drawer}.
+         * A function for removing the tap event listener on the open Drawer.
          */
         protected _openTapRemover: plat.IRemoveListener;
 
         /**
-         * @name _openSwipeRemover
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
-         * A function for removing the swipe event listeners on the open {@link platui.Drawer|Drawer}.
+         * A function for removing the swipe event listeners on the open Drawer.
          */
         protected _openSwipeRemover: plat.IRemoveListener;
 
         /**
-         * @name _openTrackRemover
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
-         * A function for removing the swipe event listeners on the open {@link platui.Drawer|Drawer}.
+         * A function for removing the swipe event listeners on the open Drawer.
          */
         protected _openTrackRemover: plat.IRemoveListener;
 
         /**
-         * @name _disposeRemover
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
-         * A function for removing the listener for responding to other {@link platui.DrawerController|DrawerControllers} 
+         * A function for removing the listener for responding to other DrawerControllers 
          * being disposed.
          */
         protected _disposeRemover: plat.IRemoveListener = () => { };
 
         /**
-         * @name _rootElement
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The root element to translate.
          */
         protected _rootElement: HTMLElement;
 
         /**
-         * @name _rootElementStyle
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {{ position?: string; zIndex?: string; }}
-         * 
-         * @description
          * An object to hold the _rootElement style so that we can reset it 
-         * when the {@link platui.DrawerController|Drawer Controller} is disposed.
+         * when the Drawer Controller is disposed.
          */
         protected _rootElementStyle: { position?: string; zIndex?: string; };
 
         /**
-         * @name _type
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The type of {@link platui.Drawer|Drawer} 
-         * (i.e. the method by which the {@link platui.Drawer|Drawer} opens and closes).
+         * The type of Drawer 
+         * (i.e. the method by which the Drawer opens and closes).
          */
         protected _type: string;
 
         /**
-         * @name _templateUrl
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * A URL that points to the HTML template.
          */
         protected _templateUrl: string;
 
         /**
-         * @name _directionalTransitionPrep
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * A class name that is used to set styling based on the transition direction.
          */
         protected _directionalTransitionPrep: string;
 
         /**
-         * @name _loaded
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link plat.controls.Bind|Bind} control has been loaded.
+         * Whether or not the Bind control has been loaded.
          */
         protected _loaded = false;
 
         /**
-         * @name _preloadedValue
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A value specified prior to the control being loaded.
          */
         protected _preloadedValue = false;
 
         /**
-         * @name _isTap
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * A value specifying whether the {@link platui.Drawer|Drawer} is waiting for a tap 
+         * A value specifying whether the Drawer is waiting for a tap 
          * for opening and closing.
          */
         protected _isTap: boolean;
 
         /**
-         * @name _isSwipe
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * A value specifying whether the {@link platui.Drawer|Drawer} is waiting for a swipe 
+         * A value specifying whether the Drawer is waiting for a swipe 
          * for opening and closing.
          */
         protected _isSwipe: boolean;
 
         /**
-         * @name _isTrack
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * A value specifying whether the {@link platui.Drawer|Drawer} is being tracked 
+         * A value specifying whether the Drawer is being tracked 
          * for opening and closing.
          */
         protected _isTrack: boolean;
 
         /**
-         * @name _toggleDelay
-         * @memberof platui.DrawerController
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IRemoveListener}
-         * 
-         * @description
          * A function to remove the toggle delay if present.
          */
         protected _toggleDelay: plat.IRemoveListener;
 
         /**
-         * @name initialize
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the class name on the element.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.dom.addClass(this.element, __DrawerController);
         }
 
         /**
-         * @name loaded
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Initialize the track events on the element.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var optionObj = this.options || <plat.observable.IObservableProperty<IDrawerControllerOptions>>{},
@@ -2625,17 +1520,9 @@ module platui {
         }
 
         /**
-         * @name dispose
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Remove the transition classes off the root element and reset the position and 
-         * zIndex properties if modified and only if this is the last {@link platui.DrawerController|DrawerController}  
-         * referencing this {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {void}
+         * zIndex properties if modified and only if this is the last DrawerController  
+         * referencing this Drawer.
          */
         dispose(): void {
             var $utils = this.$utils,
@@ -2679,16 +1566,8 @@ module platui {
         }
 
         /**
-         * @name open
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Opens the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer} is open and the animation is complete.
+         * Opens the Drawer.
+         * when the Drawer is open and the animation is complete.
          */
         open(): plat.async.IThenable<void> {
             var wasClosed = !this._isOpen,
@@ -2717,16 +1596,8 @@ module platui {
         }
 
         /**
-         * @name close
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Closes the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer} is closed and the animation is complete.
+         * Closes the Drawer.
+         * when the Drawer is closed and the animation is complete.
          */
         close(): plat.async.IThenable<void> {
             var wasOpen = this._isOpen,
@@ -2755,16 +1626,8 @@ module platui {
         }
 
         /**
-         * @name toggle
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Toggles the {@link platui.Drawer|Drawer's} open/closed state.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer's} state is toggled and the animation is complete.
+         * Toggles the Drawer's open/closed state.
+         * when the Drawer's state is toggled and the animation is complete.
          */
         toggle(): plat.async.IThenable<void> {
             if (this._isOpen) {
@@ -2775,16 +1638,8 @@ module platui {
         }
 
         /**
-         * @name reset
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Resets the {@link platui.Drawer|Drawer} to it's current open/closed state.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer's} state is reset and the animation is complete.
+         * Resets the Drawer to it's current open/closed state.
+         * when the Drawer's state is reset and the animation is complete.
          */
         reset(): plat.async.IThenable<void> {
             if (this._isOpen) {
@@ -2795,34 +1650,17 @@ module platui {
         }
 
         /**
-         * @name isOpen
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Indicates whether the {@link platui.Drawer|Drawer} is currently open.
-         * 
-         * @returns {boolean} Whether or not the {@link platui.Drawer|Drawer} is currently open.
+         * Indicates whether the Drawer is currently open.
          */
         isOpen(): boolean {
             return this._isOpen;
         }
 
         /**
-         * @name bindTemplate
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Binds the added HTML template to this control's inherited context and 
-         * places the node into the {@link platui.Drawer|Drawer}.
-         * 
+         * places the node into the Drawer.
          * @param {string} name The template name to bind.
          * @param {Node} node The node to add as a bindable template.
-         * 
-         * @returns {void}
          */
         bindTemplate(name: string, node: Node): void {
             var bindableTemplates = this.bindableTemplates;
@@ -2835,17 +1673,8 @@ module platui {
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * The function called when the bindable property is set externally.
-         * 
          * @param {any} newValue The new value of the bindable property.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any): void {
             if (!this.loaded) {
@@ -2876,16 +1705,8 @@ module platui {
         }
 
         /**
-         * @name _open
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Opens the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer} is open and the animation is complete.
+         * Opens the Drawer.
+         * when the Drawer is open and the animation is complete.
          */
         protected _open(): plat.async.IThenable<void> {
             var rootElement = this._rootElement,
@@ -2935,16 +1756,8 @@ module platui {
         }
 
         /**
-         * @name _close
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Closes the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {plat.async.IThenable<void>} A promise that resolves 
-         * when the {@link platui.Drawer|Drawer} is closed and the animation is complete.
+         * Closes the Drawer.
+         * when the Drawer is closed and the animation is complete.
          */
         protected _close(): plat.async.IThenable<void> {
             var rootElement = this._rootElement,
@@ -2981,15 +1794,7 @@ module platui {
         }
 
         /**
-         * @name _addEventIntercepts
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Adds all event listeners to the moving root element when tracking and closing an open {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {void}
+         * Adds all event listeners to the moving root element when tracking and closing an open Drawer.
          */
         protected _addEventIntercepts(): void {
             if (this._isTap) {
@@ -3018,15 +1823,7 @@ module platui {
         }
 
         /**
-         * @name _removeEventIntercepts
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Removes all event intercepts on the moving root element when closing an open {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {void}
+         * Removes all event intercepts on the moving root element when closing an open Drawer.
          */
         protected _removeEventIntercepts(): void {
             var isFunction = this.$utils.isFunction;
@@ -3048,15 +1845,7 @@ module platui {
         }
 
         /**
-         * @name _addSwipeOpen
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds swipe events to the controller element.
-         * 
-         * @returns {void}
          */
         protected _addSwipeOpen(): void {
             this._removeSwipeOpen = this.addEventListener(this.element, __$swipe + __transitionNegate[this._position], () => {
@@ -3066,15 +1855,7 @@ module platui {
         }
 
         /**
-         * @name _addSwipeClose
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds swipe close event to the root element.
-         * 
-         * @returns {void}
          */
         protected _addSwipeClose(): void {
             this._openSwipeRemover = this.addEventListener(this._rootElement, __$swipe + this._position, () => {
@@ -3084,15 +1865,7 @@ module platui {
         }
 
         /**
-         * @name _addTapOpen
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds tap close event to the controller element.
-         * 
-         * @returns {void}
          */
         protected _addTapOpen(): void {
             this._removeTap = this.addEventListener(this.element, __$tap, () => {
@@ -3102,15 +1875,7 @@ module platui {
         }
 
         /**
-         * @name _addTapClose
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds tap close event to the root element.
-         * 
-         * @returns {void}
          */
         protected _addTapClose(): void {
             this._openTapRemover = this.addEventListener(this._rootElement, __$tap, () => {
@@ -3120,17 +1885,8 @@ module platui {
         }
 
         /**
-         * @name _addEventListeners
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Adds primary and secondary tracking events to the {@link platui.DrawerController|DrawerController} element.
-         * 
-         * @param {string} position The position of the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {void}
+         * Adds primary and secondary tracking events to the DrawerController element.
+         * @param {string} position The position of the Drawer.
          */
         protected _addEventListeners(position: string): void {
             var element = this.element,
@@ -3141,6 +1897,8 @@ module platui {
 
             // remove event listeners here first if we want to later be able to dynamically change position of drawer.
             // this._removeEventListeners();
+
+            this.addEventListener(this.$window, 'resize', this._setOffset, false);
 
             if (this._isTap = (types.indexOf('tap') !== -1)) {
                 this._addTapOpen();
@@ -3168,7 +1926,8 @@ module platui {
                     default:
                         var Exception = plat.acquire(plat.IExceptionStatic);
                         Exception.warn('Incorrect position: "' + position +
-                            '" defined for "' + __Drawer + '" or "' + __DrawerController + '."');
+                            '" defined for the drawer control, such as "' +
+                            __Drawer + '", or "' + this.type + '."');
                         return;
                 }
 
@@ -3187,15 +1946,7 @@ module platui {
         }
 
         /**
-         * @name _removeEventListeners
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Removes all event listeners.
-         * 
-         * @returns {void}
          */
         protected _removeEventListeners(): void {
             var isFunction = this.$utils.isFunction;
@@ -3224,17 +1975,8 @@ module platui {
         }
 
         /**
-         * @name _touchStart
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Log when the user touches the {@link platui.DrawerController|DrawerController}.
-         * 
+         * Log when the user touches the DrawerController.
          * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
          */
         protected _touchStart(ev: plat.ui.IGestureEvent): void {
             this._inTouch = true;
@@ -3252,17 +1994,8 @@ module platui {
         }
 
         /**
-         * @name _touchEnd
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The $touchend and $trackend event handler.
-         * 
          * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
          */
         protected _touchEnd(ev: plat.ui.IGestureEvent): void {
             var inTouch = this._inTouch,
@@ -3298,36 +2031,18 @@ module platui {
         }
 
         /**
-         * @name _track
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The $track event handler. Used for tracking only horizontal or vertical tracking motions  
          * depending on the defined position.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $tracking event.
-         * 
-         * @returns {void}
          */
         protected _track(ev: plat.ui.IGestureEvent): void {
             this._rootElement.style[<any>this._transform] = this._calculateTranslation(ev);
         }
 
         /**
-         * @name _isRightDirection
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks to make sure the user has been tracking in the right direction to 
          * toggle.
-         * 
          * @param {number} distanceMoved The distance the user's pointer has moved.
-         * 
-         * @returns {boolean} Whether or not the user was tracking in the right direction.
          */
         protected _isRightDirection(distanceMoved: number): boolean {
             switch (this._position) {
@@ -3343,17 +2058,8 @@ module platui {
         }
 
         /**
-         * @name _calculateTranslation
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the translation value for setting the transform value.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $tracking event.
-         * 
-         * @returns {string} The translation value.
          */
         protected _calculateTranslation(ev: plat.ui.IGestureEvent): string {
             var distanceMoved: number;
@@ -3384,18 +2090,9 @@ module platui {
         }
 
         /**
-         * @name _checkElasticity
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks for elasticity and potentially readjusts the user's 
          * distance moved.
-         * 
          * @param {number} distanceMoved The distance the user's finger moved.
-         * 
-         * @returns {number} The potentially recalcuated distance moved.
          */
         protected _checkElasticity(distanceMoved: number): number {
             if (this._isElastic) {
@@ -3412,18 +2109,9 @@ module platui {
         }
 
         /**
-         * @name _initializeEvents
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Initializes and dispatches pub sub events.
-         * 
-         * @param {string} id The ID of this {@link platui.DrawerController|DrawerController} if used.
-         * @param {string} position The position of the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {void}
+         * @param {string} id The ID of this DrawerController if used.
+         * @param {string} position The position of the Drawer.
          */
         protected _initializeEvents(id: string, position: string): void {
             this._setTransform();
@@ -3444,8 +2132,8 @@ module platui {
                             position = drawerArg.position;
                         } else {
                             var Exception = plat.acquire(plat.IExceptionStatic);
-                            Exception.warn('"position" is incorrectly defined for "' +
-                                __Drawer + '" or "' + __DrawerController + '."' +
+                            Exception.warn('"position" is incorrectly defined for the drawer control, such as "' +
+                                __Drawer + '" or "' + this.type + '."' +
                                 ' Please ensure it is a string.');
                             return;
                         }
@@ -3455,10 +2143,8 @@ module platui {
                         return;
                     }
 
-                    drawerElement.removeAttribute(__Hide);
                     this._addEventListeners(position.toLowerCase());
                     this._setOffset();
-                    drawerElement.setAttribute(__Hide, '');
 
                     if (isUndefined(this._isElastic)) {
                         this._isElastic = drawerArg.elastic === true;
@@ -3495,18 +2181,9 @@ module platui {
         }
 
         /**
-         * @name _determineTemplate
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Determines the proper HTML template, binds it, and inserts it if needed.
-         * 
-         * @param {Node} fragment? A Node to insert as the {@link platui.Drawer|Drawer's} HTML template 
-         * if no templateUrl is present on this {@link platui.DrawerController|DrawerController}.
-         * 
-         * @returns {void}
+         * @param {Node} fragment? A Node to insert as the Drawer's HTML template 
+         * if no templateUrl is present on this DrawerController.
          */
         protected _determineTemplate(fragment?: Node): void {
             var $utils = this.$utils;
@@ -3521,15 +2198,7 @@ module platui {
         }
 
         /**
-         * @name _setTransform
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Obtains the current browser's transform property value.
-         * 
-         * @returns {void}
          */
         protected _setTransform(): void {
             var style = this.element.style,
@@ -3551,17 +2220,8 @@ module platui {
         }
 
         /**
-         * @name _controllerIsValid
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks if this control has all valid properties.
-         * 
-         * @param {string} position The position of the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {boolean} Whether or not this control is valid.
+         * @param {string} position The position of the Drawer.
          */
         protected _controllerIsValid(position: string): boolean {
             var isNull = this.$utils.isNull,
@@ -3569,15 +2229,16 @@ module platui {
 
             if (isNull(this._drawerElement)) {
                 Exception = plat.acquire(plat.IExceptionStatic);
-                Exception.warn('Could not find a corresponding "' + __Drawer + '" for this "' + __DrawerController + '."');
+                Exception.warn('Could not find a corresponding drawer control, such as "' + __Drawer +
+                    '" for this "' + this.type + '."');
                 return false;
             }
 
             var rootElement = this._rootElement = this._getRootElement(this.root);
             if (isNull(rootElement)) {
                 Exception = plat.acquire(plat.IExceptionStatic);
-                Exception.warn('Cannot have a "' + __DrawerController +
-                    '" in a hierarchy above the corresponding "' + __Drawer + '."');
+                Exception.warn('Cannot have a "' + this.type +
+                    '" in a hierarchy above the corresponding drawer control, such as "' + __Drawer + '."');
                 return false;
             }
 
@@ -3597,17 +2258,8 @@ module platui {
         }
 
         /**
-         * @name _getRootElement
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Obtains the root element to translate.
-         * 
          * @param {plat.ui.ITemplateControl} root The control to start searching at.
-         * 
-         * @returns {HTMLElement} The root element.
          */
         protected _getRootElement(root: plat.ui.ITemplateControl): HTMLElement {
             var $utils = this.$utils,
@@ -3649,17 +2301,12 @@ module platui {
         }
 
         /**
-         * @name _setOffset
-         * @memberof platui.DrawerController
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Sets the max offset to translate the {@link platui.Drawer|Drawer}.
-         * 
-         * @returns {void}
+         * Sets the max offset to translate the Drawer.
          */
         private _setOffset(): void {
+            var drawerElement = this._drawerElement;
+            drawerElement.removeAttribute(__Hide);
+
             switch (this._position) {
                 case 'left':
                 case 'right':
@@ -3670,48 +2317,27 @@ module platui {
                     this._maxOffset = this._drawerElement.offsetHeight;
                     break;
                 default:
-                    return;
+                    break;
             }
+
+            drawerElement.setAttribute(__Hide, '');
         }
     }
 
     plat.register.control(__DrawerController, DrawerController);
 
     /**
-     * @name IDrawerOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Drawer|Drawer} control.
+     * The available options for the Drawer control.
      */
     export interface IDrawerOptions {
         /**
-         * @name id
-         * @memberof platui.IDrawerOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The unique ID of the {@link platui.Drawer|Drawer} / {@link platui.DrawerController|DrawerController} pair.
+         * The unique ID of the Drawer / DrawerController pair.
          */
         id?: string;
 
         /**
-         * @name position
-         * @memberof platui.IDrawerOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The position of the {@link platui.Drawer|Drawer}. 
+         * The position of the Drawer. 
          * Defaults to "left".
-         * 
-         * @remarks
          * - "left"
          * - "right"
          * - "top"
@@ -3720,70 +2346,29 @@ module platui {
         position?: string;
 
         /**
-         * @name templateUrl
-         * @memberof platui.IDrawerOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The URL of the {@link platui.Drawer|Drawer's} intended template.
+         * The URL of the Drawer's intended template.
          */
         templateUrl?: string;
 
         /**
-         * @name useContext
-         * @memberof platui.IDrawerOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A boolean value stating whether to use the associated control's context or not.
          */
         useContext?: boolean;
 
         /**
-         * @name elastic
-         * @memberof platui.IDrawerOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether the {@link platui.Drawer|Drawer} has an elastic effect while sliding. 
+         * Whether the Drawer has an elastic effect while sliding. 
          * Defaults to false.
          */
         elastic?: boolean;
     }
 
     /**
-     * @name IDrawerControllerOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @extends {platui.IDrawerOptions}
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.DrawerController|DrawerController} control.
+     * The available options for the DrawerController control.
      */
     export interface IDrawerControllerOptions extends IDrawerOptions {
         /**
-         * @name type
-         * @memberof platui.IDrawerControllerOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * Specifies how the {@link platui.Drawer|Drawer} should open. Multiple types can be combined by making it space delimited. 
+         * Specifies how the Drawer should open. Multiple types can be combined by making it space delimited. 
          * It's default behavior is "tap track".
-         * 
-         * @remarks
          * "tap": The drawer opens when the controller is tapped.
          * "track": The drawer opens when the controller is dragged.
          * "swipe": The drawer opens when the controller is swiped.
@@ -3794,229 +2379,87 @@ module platui {
     }
 
     /**
-     * @name IDrawerHandshakeEvent
-     * @memberof platui
-     * @kind interface
-     * @exported false
-     * 
-     * @description
-     * An interface for the {@link platui.Drawer|Drawer's} event object used during the 
-     * {@link platui.Drawer|Drawer} / {@link platui.DrawerController|DrawerController} handshake.
+     * An interface for the Drawer's event object used during the 
+     * Drawer / DrawerController handshake.
      */
     interface IDrawerHandshakeEvent {
         /**
-         * @name received
-         * @memberof platui.IDrawerHandshakeEvent
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A boolean value specifying whether the handshake is being reciprocated.
          */
         received?: boolean;
         /**
-         * @name control
-         * @memberof platui.IDrawerHandshakeEvent
-         * @kind property
-         * @access public
-         * 
-         * @type {any}
-         * 
-         * @description
-         * A reference to either the corresponding {@link platui.DrawerController|DrawerController} or the corresponding 
-         * {@link platui.Drawer|Drawer} the  used to control the {@link platui.Drawer|Drawer}.
+         * A reference to either the corresponding DrawerController or the corresponding 
+         * Drawer the  used to control the Drawer.
          */
         control?: any;
         /**
-         * @name position
-         * @memberof platui.IDrawerHandshakeEvent
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The position of the {@link platui.Drawer|Drawer}. 
+         * The position of the Drawer. 
          */
         position?: string;
         /**
-         * @name template
-         * @memberof platui.IDrawerHandshakeEvent
-         * @kind property
-         * @access public
-         * 
-         * @type {Node}
-         * 
-         * @description
-         * The intended template of the global {@link platui.Drawer|Drawer} element.
+         * The intended template of the global Drawer element.
          */
         template?: Node;
         /**
-         * @name useContext
-         * @memberof platui.IDrawerHandshakeEvent
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A boolean value stating whether to use the associated control's context or not.
          */
         useContext?: boolean;
         /**
-         * @name elastic
-         * @memberof platui.IDrawerHandshakeEvent
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether the {@link platui.Drawer|Drawer} has an elastic effect while sliding. 
+         * Whether the Drawer has an elastic effect while sliding. 
          * Defaults to false.
          */
         elastic?: boolean;
     }
 
     /**
-     * @name Modal
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.BindablePropertyControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} for showing a templated and animated overlay.
+     * An IBindablePropertyControl for showing a templated and animated overlay.
      */
     export class Modal extends plat.ui.BindablePropertyControl implements IUIControl {
         /**
-         * @name $utils
-         * @memberof platui.Modal
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
         /**
-         * @name $compat
-         * @memberof platui.Modal
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ICompat}
-         * 
-         * @description
-         * Reference to the {@link plat.ICompat|ICompat} injectable.
+         * Reference to the ICompat injectable.
          */
         $compat: plat.ICompat = plat.acquire(__Compat);
 
         /**
-         * @name templateString
-         * @memberof platui.Modal
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString = '<div class="plat-modal-container"></div>\n';
 
         /**
-         * @name options
-         * @memberof platui.Modal
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.IModalOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<IModalOptions>;
 
         /**
-         * @name _modalElement
-         * @memberof platui.Modal
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTML element representing the content of the modal.
          */
         protected _modalElement: HTMLElement;
 
         /**
-         * @name _isVisible
-         * @memberof platui.Modal
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the modal is currently visible.
          */
         protected _isVisible = false;
 
         /**
-         * @name _loaded
-         * @memberof platui.Modal
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link plat.controls.Bind|Bind} control has been loaded.
+         * Whether or not the Bind control has been loaded.
          */
         protected _loaded = false;
 
         /**
-         * @name _preloadedValue
-         * @memberof platui.Modal
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A value specified prior to the control being loaded.
          */
         protected _preloadedValue = false;
 
         /**
-         * @name _transitionEnd
-         * @memberof platui.Modal
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The browser's "transitionend" event.
          */
         protected _transitionEnd: string;
 
         /**
-         * @name _transitionHash
-         * @memberof platui.Modal
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.IObject<boolean>}
-         * 
-         * @description
          * A hash for validating available transitions.
          */
         protected _transitionHash: plat.IObject<boolean> = {
@@ -4028,35 +2471,18 @@ module platui {
         };
 
         /**
-         * @name setClasses
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Modal + ' ' + __Hide + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Check for templateUrl and set if needed then hide the control.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             var optionObj = this.options || <plat.observable.IObservableProperty<IModalOptions>>{},
@@ -4067,50 +2493,36 @@ module platui {
         }
 
         /**
-         * @name setTemplate
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Add the innerTemplate to the control's element.
-         * 
-         * @returns {void}
          */
         setTemplate(): void {
             var $utils = this.$utils,
-                modal: HTMLElement;
+                modalContainer: HTMLElement;
 
             if ($utils.isString(this.templateUrl)) {
                 var fragment = this.dom.serializeHtml(this.templateString),
-                    childNodes: Array<Node> = Array.prototype.slice.call(this.element.childNodes);
+                    element = this.element,
+                    childNodes: Array<Node> = Array.prototype.slice.call(element.childNodes);
 
-                modal = this._modalElement = <HTMLElement>fragment.firstChild;
+                modalContainer = this._modalElement = <HTMLElement>fragment.firstChild;
                 while (childNodes.length > 0) {
-                    modal.appendChild(childNodes.shift());
+                    modalContainer.appendChild(childNodes.shift());
                 }
 
+                element.appendChild(fragment);
                 return;
             }
 
-            modal = this._modalElement = <HTMLElement>this.element.firstElementChild;
+            modalContainer = this._modalElement = <HTMLElement>this.element.firstElementChild;
 
             var innerTemplate = this.innerTemplate;
-            if (this.$utils.isNode(innerTemplate)) {
-                modal.appendChild(innerTemplate);
+            if ($utils.isNode(innerTemplate)) {
+                modalContainer.appendChild(innerTemplate);
             }
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Check for a transition and initialize it if necessary.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var optionObj = this.options || <plat.observable.IObservableProperty<IModalOptions>>{},
@@ -4131,7 +2543,7 @@ module platui {
             } else if (!this._transitionHash[transition]) {
                 var Exception: plat.IExceptionStatic = plat.acquire(plat.IExceptionStatic);
                 Exception.warn('Custom transition: "' + transition +
-                    '" defined for "' + __Modal + '." Please ensure the transition is defined to avoid errors.');
+                    '" defined for "' + this.type + '." Please ensure the transition is defined to avoid errors.');
             }
 
             this._transitionEnd = this.$compat.animationEvents.$transitionEnd;
@@ -4144,15 +2556,7 @@ module platui {
         }
 
         /**
-         * @name show
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Shows the {@link platui.Modal|Modal}.
-         * 
-         * @returns {void}
+         * Shows the Modal.
          */
         show(): void {
             var wasHidden = !this._isVisible;
@@ -4163,15 +2567,7 @@ module platui {
         }
 
         /**
-         * @name hide
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Hides the {@link platui.Modal|Modal}.
-         * 
-         * @returns {void}
+         * Hides the Modal.
          */
         hide(): void {
             var wasVisible = this.isVisible;
@@ -4182,15 +2578,7 @@ module platui {
         }
 
         /**
-         * @name toggle
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Toggles the visibility of the {@link platui.Modal|Modal}.
-         * 
-         * @returns {void}
+         * Toggles the visibility of the Modal.
          */
         toggle(): void {
             if (this._isVisible) {
@@ -4202,15 +2590,7 @@ module platui {
         }
 
         /**
-         * @name isVisible
-         * @memberof platui.Modal
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Whether or not the {@link platui.Modal|Modal} is currently visible.
-         * 
-         * @returns {boolean} True if the {@link platui.Modal|Modal} is currently open 
+         * Whether or not the Modal is currently visible.
          * and visible, false otherwise.
          */
         isVisible(): boolean {
@@ -4218,18 +2598,9 @@ module platui {
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * The function called when the bindable property is set externally.
-         * 
          * @param {any} newValue The new value of the bindable property.
          * @param {any} oldValue? The old value of the bindable property.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any, oldValue?: any): void {
             if (!this._loaded) {
@@ -4253,15 +2624,7 @@ module platui {
         }
 
         /**
-         * @name _show
-         * @memberof platui.Modal
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Shows the {@link platui.Modal|Modal}.
-         * 
-         * @returns {void}
+         * Shows the Modal.
          */
         protected _show(): void {
             var dom = this.dom;
@@ -4274,15 +2637,7 @@ module platui {
         }
 
         /**
-         * @name _hide
-         * @memberof platui.Modal
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Hides the {@link platui.Modal|Modal}.
-         * 
-         * @returns {void}
+         * Hides the Modal.
          */
         protected _hide(): void {
             var dom = this.dom;
@@ -4297,15 +2652,7 @@ module platui {
         }
 
         /**
-         * @name _addHideOnTransitionEnd
-         * @memberof platui.Modal
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Listens for the transition to end and hides the element after it is finished.
-         * 
-         * @returns {void}
          */
         protected _addHideOnTransitionEnd(): void {
             var element = this.element,
@@ -4319,59 +2666,34 @@ module platui {
     plat.register.control(__Modal, Modal);
 
     /**
-     * @name IModalOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Modal|Modal} control.
+     * The available options for the Modal control.
      */
     export interface IModalOptions {
         /**
-         * @name style
-         * @memberof platui.IModalOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The style of {@link platui.Modal|Modal}. 
+         * The style of Modal. 
          * Defaults to "full".
-         * 
-         * @remarks
-         * - "full" - The {@link platui.Modal|Modal} fills the whole screen.
-         * - "halfWidth" - The {@link platui.Modal|Modal} fills the whole screen lengthwise and 
+         * - "full" - The Modal fills the whole screen.
+         * - "halfWidth" - The Modal fills the whole screen lengthwise and 
          * half the screen in width. When combined as "halfWidth centered" it will place the 
          * control in the middle of the screen horizontally. Otherwise, its position is specified 
          * by the defined LESS variables.
-         * - "halfHeight" - The {@link platui.Modal|Modal} fills half the screen lengthwise and 
+         * - "halfHeight" - The Modal fills half the screen lengthwise and 
          * the whole screen in width. When combined as "halfHeight centered" it will place the 
          * control in the middle of the screen vertically. Otherwise, its position is specified 
          * by the defined LESS variables.
-         * - "half" - The {@link platui.Modal|Modal} fills half the screen and its position is 
+         * - "half" - The Modal fills half the screen and its position is 
          * specified by the defined LESS variables. The top and left positioning refer to the midpoint 
-         * of the {@link platui.Modal|Modal}. When combined as "half centered" the control will be 
+         * of the Modal. When combined as "half centered" the control will be 
          * placed dead center in the middle of the screen.
-         * - "custom" - The {@link platui.Modal|Modal's} size and positioning is specified by the 
+         * - "custom" - The Modal's size and positioning is specified by the 
          * defined LESS variables. When combined as "custom centered" the top and left positioning 
          * refer to the midpoint of the control.
          */
         //style?: string;
 
         /**
-         * @name transition
-         * @memberof platui.IModalOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The transition type/direction the {@link platui.Modal|Modal} will enter with. 
+         * The transition type/direction the Modal will enter with. 
          * Defaults to "none".
-         * 
-         * @remarks
          * - "none"
          * - "left"
          * - "right"
@@ -4382,18 +2704,8 @@ module platui {
         transition?: string;
 
         /**
-         * @name templateUrl
-         * @memberof platui.IModalOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The url of the {@link platui.Modal|Modal's} intended template if not using 
+         * The url of the Modal's intended template if not using 
          * innerHTML.
-         * 
-         * @remarks
          * This URL must be a static string and cannot be a bound item on a parent control's context.
          */
         templateUrl?: string;
@@ -4401,151 +2713,70 @@ module platui {
 
     /// <reference path="../../references.d.ts" />
     
-	/**
-     * @name Navbar
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.TemplateControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.ITemplateControl|ITemplateControl} that acts as a Navigation Element.
+    /**
+     * An ITemplateControl that acts as a Navigation Element.
      */
-	export class Navbar extends plat.ui.TemplateControl implements IUIControl {
+    export class Navbar extends plat.ui.TemplateControl implements IUIControl {
 
         /**
-         * @name $utils
-         * @memberof platui.Navbar
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
 
         /**
-         * @name $animator
-         * @memberof platui.Navbar
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ui.animations.IAnimator}
-         * 
-         * @description
-         * Reference to the {@link plat.ui.animations.IAnimator|IAnimator} injectable.
+         * Reference to the IAnimator injectable.
          */
         $animator: plat.ui.animations.IAnimator = plat.acquire(__Animator);
 
         /**
-         * @name replaceWith
-         * @memberof platui.Navbar
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * Replaces the <plat-navbar> node with a <nav> node.
          */
         replaceWith = 'nav';
 
         /**
-         * @name _actionAnimation
-         * @memberof platui.Navbar
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.ui.animations.ISimpleCssAnimation}
-         * 
-         * @description
          * The registered animation that animates when a navbar-action is pressed
          */
         protected _actionAnimation = plat.acquire(platui.NavbarActionPulse);
 
         /**
-         * @name _navbarSearch
-         * @memberof platui.Navbar
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The input type=search element that may be in the innerHTML of the navbar control
          */
         protected _navbarSearch: HTMLElement;
 
         /**
-         * @name setClasses
-         * @memberof platui.Navbar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Navbar + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Navbar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets default classes.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name setTemplate
-         * @memberof platui.Navbar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Registers and sets event listeners on navbar action elements
-         * 
-         * @returns {void}
          */
         setTemplate(): void {
             var element = this.element,
                 navbarActions = element.querySelectorAll('.navbar-action'),
                 i: number;
-                
+
             for (i = 0; i < navbarActions.length; i++) {
                 this.addEventListener(navbarActions[i], __$tap, this._actionPressed, false);
             }
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Navbar
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Gathers elements from controls that will be rendered after 
-         * {@link platui.Navbar.setTemplate|setTemplate} has returned
-         * 
-         * @returns {void}
+         * setTemplate has returned
          */
         loaded() {
             var element = this.element,
@@ -4559,141 +2790,50 @@ module platui {
         }
 
         /**
-         * @name _actionPressed
-         * @memberof platui.Navbar
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Animate .navbar-action elements when the user touches the {@link platui.Navbar|Navbar}.
-         * 
+         * Animate .navbar-action elements when the user touches the Navbar.
          * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
          */
-         _actionPressed(ev: plat.ui.IGestureEvent): void {
+        _actionPressed(ev: plat.ui.IGestureEvent): void {
             // this.dom.addClass(ev.srcElement, 'plat-navbar-action-pulse');
             this.$animator.animate(ev.srcElement, __NavbarActionPulse, { pseudo: '::after' });
-         }
+        }
+    }
 
-         /**
-         * @name _inputSearchFocus
-         * @memberof platui.Navbar
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Enlarge search area to 100% of the height and width of the .plat-navbar element
-         * 
-         * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
-         */
-         _inputSearchFocus(ev: plat.ui.IGestureEvent): void {
-            this.dom.addClass(this._navbarSearch, 'input-focused');
-         }
-
-         /**
-         * @name _actionPressed
-         * @memberof platui.Navbar
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Remove full navbar search input
-         * 
-         * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
-         */
-         _inputSearchBlur(ev: plat.ui.IGestureEvent): void {
-            this.dom.removeClass(this._navbarSearch, 'input-focused');
-         }
-	}
-
-	plat.register.control(__Navbar, Navbar);
+    plat.register.control(__Navbar, Navbar);
 
     /// <reference path="../../references.d.ts" />
     
-	/**
+    /**
      * An animation control that enlarges and shrinks a transparent circle behind the navbar action
      */
-	export class NavbarActionPulse extends plat.ui.animations.SimpleCssAnimation {
-		className = __NavbarActionPulse;
-	}
+    export class NavbarActionPulse extends plat.ui.animations.SimpleCssAnimation {
+        className = __NavbarActionPulse;
+    }
 
-	plat.register.animation(__NavbarActionPulse, NavbarActionPulse);
+    plat.register.animation(__NavbarActionPulse, NavbarActionPulse);
 
     /**
-     * @name Slider
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.BindablePropertyControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that standardizes an HTML5 input[type="range"].
+     * An IBindablePropertyControl that standardizes an HTML5 input[type="range"].
      */
     export class Slider extends plat.ui.BindablePropertyControl implements IUIControl {
         /**
-         * @name $window
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {Window}
-         * 
-         * @description
          * Reference to the Window injectable.
          */
         $window: Window = plat.acquire(__Window);
         /**
-         * @name $document
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {Document}
-         * 
-         * @description
          * Reference to the Document injectable.
          */
         $document: Document = plat.acquire(__Document);
         /**
-         * @name $utils
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
         /**
-         * @name $animator
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ui.animations.IAnimator}
-         * 
-         * @description
-         * Reference to the {@link plat.ui.animations.IAnimator|IAnimator} injectable.
+         * Reference to the IAnimator injectable.
          */
         $animator: plat.ui.animations.IAnimator = plat.acquire(__Animator);
 
         /**
-         * @name templateString
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -4704,274 +2844,113 @@ module platui {
         '</div>';
 
         /**
-         * @name options
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.ISliderOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<ISliderOptions>;
 
         /**
-         * @name value
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The current value of the {@link platui.Slider|Slider}.
+         * The current value of the Slider.
          */
         value: number;
 
         /**
-         * @name min
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The min value of the {@link platui.Slider|Slider}.
+         * The min value of the Slider.
          */
         min: number;
 
         /**
-         * @name max
-         * @memberof platui.Slider
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The max value of the {@link platui.Slider|Slider}.
+         * The max value of the Slider.
          */
         max: number;
 
         /**
-         * @name _slider
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTMLElement representing the slider.
          */
         protected _slider: HTMLElement;
 
         /**
-         * @name _knob
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTMLElement representing the knob.
          */
         protected _knob: HTMLElement;
 
         /**
-         * @name _lastTouch
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.ui.IPoint}
-         * 
-         * @description
          * The last touch start recorded.
          */
-        protected _lastTouch: plat.ui.IPoint;
+        protected _lastTouch: IValuePoint;
 
         /**
-         * @name _maxOffset
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The maximum slider offset.
          */
         protected _maxOffset: number;
 
         /**
-         * @name _increment
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The slider's pixel based increment value.
          */
         protected _increment: number;
 
         /**
-         * @name _step
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
-         * Denotes the incremental step value of the {@link platui.Slider|Slider's} value property.
+         * Denotes the incremental step value of the Slider's value property.
          */
         protected _step: number;
 
         /**
-         * @name _orientation
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The orientation of this control.
          */
         protected _orientation: string;
 
         /**
-         * @name _reversed
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether the min and max positions have been reversed.
          */
         protected _reversed: boolean;
 
         /**
-         * @name _knobOffset
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current knob offset.
          */
         protected _knobOffset = 0;
 
         /**
-         * @name _loaded
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the slider has already been loaded. Useful for when 
-         * the {@link plat.controls.Bind|Bind} tries to set a value.
+         * the Bind tries to set a value.
          */
         protected _loaded = false;
 
         /**
-         * @name _lengthProperty
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * Denotes whether we're using height or width as the length of the slider.
          */
         protected _lengthProperty: string;
 
         /**
-         * @name _cloneAttempts
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current number of times we checked to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _cloneAttempts = 0;
 
         /**
-         * @name _maxCloneCount
-         * @memberof platui.Slider
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * The max number of times we'll check to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _maxCloneAttempts = 25;
 
         /**
-         * @name setClasses
-         * @memberof platui.Slider
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Slider + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Slider
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the proper classes for the control.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Slider
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Determine the button type and apply the proper classes.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var element = this.element,
@@ -5005,15 +2984,11 @@ module platui {
 
             if (min >= max) {
                 var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                Exception.warn('"' + __Slider + '\'s" min is greater than or equal to its max. Setting max to min + 1.');
+                Exception.warn('"' + this.type + '\'s" min is greater than or equal to its max. Setting max to min + 1.');
                 this.max = min + 1;
             }
 
             this._setLength();
-            if (!this._maxOffset) {
-                this._setOffsetWithClone();
-            }
-
             this._setIncrement();
             this._initializeEvents(orientation);
 
@@ -5022,17 +2997,8 @@ module platui {
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Slider
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * The function called when the {@link platui.Slider|Slider's} bindable property is set externally.
-         * 
+         * The function called when the Slider's bindable property is set externally.
          * @param {any} newValue The new value of the bindable property.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any): void {
             if (newValue === this.value) {
@@ -5050,18 +3016,9 @@ module platui {
         }
 
         /**
-         * @name setValue
-         * @memberof platui.Slider
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Set the value of the {@link platui.Slider|Slider}. If an invalid value is passed in 
+         * Set the value of the Slider. If an invalid value is passed in 
          * nothing will happen.
-         * 
-         * @param {number} value The value to set the {@link platui.Slider|Slider} to.
-         * 
-         * @returns {void}
+         * @param {number} value The value to set the Slider to.
          */
         setValue(value: number): void {
             if (!this.$utils.isNumber(value)) {
@@ -5072,41 +3029,28 @@ module platui {
         }
 
         /**
-         * @name _touchStart
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Log the first touch.
-         * 
          * @param {plat.ui.IGestureEvent} ev The touch event object.
-         * 
-         * @returns {void}
          */
         protected _touchStart(ev: plat.ui.IGestureEvent): void {
             this._lastTouch = {
                 x: ev.clientX,
-                y: ev.clientY
+                y: ev.clientY,
+                value: this.value
             };
         }
 
         /**
-         * @name _touchEnd
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Set the new slider offset.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $trackend event object.
-         * 
-         * @returns {void}
          */
         protected _touchEnd(ev: plat.ui.IGestureEvent): void {
             var newOffset = this._calculateOffset(ev),
                 maxOffset = this._maxOffset;
+
+            if (this._lastTouch.value !== this.value) {
+                this._trigger('change');
+            }
 
             if (newOffset < 0) {
                 this._knobOffset = 0;
@@ -5120,17 +3064,8 @@ module platui {
         }
 
         /**
-         * @name _track
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Track the knob movement.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $track event object.
-         * 
-         * @returns {void}
          */
         protected _track(ev: plat.ui.IGestureEvent): void {
             var length = this._calculateOffset(ev),
@@ -5158,17 +3093,8 @@ module platui {
         }
 
         /**
-         * @name _initializeEvents
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Initialize the proper tracking events.
-         * 
          * @param {string} orientation The orientation of the control.
-         * 
-         * @returns {void}
          */
         protected _initializeEvents(orientation: string): void {
             var knob = this._knob,
@@ -5193,20 +3119,16 @@ module platui {
             this.addEventListener(knob, track, trackFn, false);
             this.addEventListener(knob, reverseTrack, trackFn, false);
             this.addEventListener(knob, __$trackend, this._touchEnd, false);
+            this.addEventListener(this.$window, 'resize', () => {
+                this._setLength();
+                this._setIncrement();
+                this._setKnob();
+            }, false);
         }
 
         /**
-         * @name _calculateValue
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the current value based on knob position and slider width.
-         * 
          * @param {number} width The current width of the slider.
-         * 
-         * @returns {number} The current value of the {link platui.Slider|Slider}.
          */
         protected _calculateValue(width: number): number {
             var step = this._step;
@@ -5214,34 +3136,16 @@ module platui {
         }
 
         /**
-         * @name _calculateKnobPosition
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates knob position based on current value.
-         * 
          * @param {number} value The current value of the {link platui.Slider|Slider}.
-         * 
-         * @returns {number} The current position of the knob in pixels.
          */
         protected _calculateKnobPosition(value: number): number {
             return (value - this.min) * this._increment;
         }
 
         /**
-         * @name _calculateOffset
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the new offset of the slider based on the old offset and the distance moved.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $track or $trackend event object.
-         * 
-         * @returns {number} The current position of the knob in pixels.
          */
         protected _calculateOffset(ev: plat.ui.IGestureEvent): number {
             switch (this._orientation) {
@@ -5259,65 +3163,47 @@ module platui {
         }
 
         /**
-         * @name _setLength
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Sets the property to use for length and sets the max length of the slider.
-         * 
          * @param {HTMLElement} element? The element to use to obtain the max length.
-         * 
-         * @returns {number} The length of the slider.
          */
-        protected _setLength(element?: HTMLElement): number {
-            element = element || this._slider.parentElement;
+        protected _setLength(element?: HTMLElement): void {
+            var isNode = this.$utils.isNode(element),
+                el = isNode ? element : this._slider.parentElement;
+
             switch (this._orientation) {
                 case 'horizontal':
                     this._lengthProperty = 'width';
-                    return (this._maxOffset = element.offsetWidth);
+                    this._maxOffset = el.offsetWidth;
+                    break;
                 case 'vertical':
                     this._lengthProperty = 'height';
-                    return (this._maxOffset = element.offsetHeight);
+                    this._maxOffset = el.offsetHeight;
+                    break;
                 default:
                     var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                    Exception.warn('Invalid orientation "' + this._orientation + '" for "' + __Slider + '."');
-                    return 0;
+                    Exception.warn('Invalid orientation "' + this._orientation + '" for "' + this.type + '."');
+                    return;
+            }
+
+            if (!(isNode || this._maxOffset)) {
+                this._setOffsetWithClone();
             }
         }
 
         /**
-         * @name _setIncrement
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Sets the increment for sliding the {link platui.Slider|Slider}.
-         * 
-         * @returns {number} The slider's increment value.
          */
         protected _setIncrement(): number {
             return (this._increment = this._maxOffset / (this.max - this.min));
         }
 
         /**
-         * @name _setValue
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Sets the value of the {@link platui.Slider|Slider}.
-         * 
+         * Sets the value of the Slider.
          * @param {number} newValue The new value to set.
          * @param {boolean} setKnob Whether or not we need to set the knob position.
-         * @param {boolean} setProperty Whether or not we need to fire a propertyChanged event.
-         * 
-         * @returns {void}
+         * @param {boolean} propertyChanged Whether or not we need to fire a propertyChanged event.
          */
-        protected _setValue(newValue: number, setKnob: boolean, setProperty: boolean): void {
+        protected _setValue(newValue: number, setKnob: boolean, propertyChanged: boolean): void {
             var value = this.value;
             if (newValue === value) {
                 return;
@@ -5329,33 +3215,31 @@ module platui {
                 return;
             }
 
-            this.value = newValue;
+            this.value = (<any>this.element).value = newValue;
+
             if (setKnob) {
                 this._setKnob();
             }
 
-            if (setProperty) {
+            if (propertyChanged) {
                 this.propertyChanged(newValue, value);
             }
+
+            this._trigger('input');
         }
 
         /**
-         * @name _setKnob
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Animates and sets the knob position.
-         * 
          * @param {number} value? The value to use to calculate the knob position. If no value is 
-         * specified, the current {@link platui.Slider|Slider's} value will be used.
-         * 
-         * @returns {void}
+         * specified, the current Slider's value will be used.
          */
         protected _setKnob(value?: number): void {
             var animationOptions: plat.IObject<string> = {},
                 length = this._calculateKnobPosition((value || this.value));
+
+            if (length === this._knobOffset) {
+                return;
+            }
 
             animationOptions[this._lengthProperty] = length + 'px';
             this.$animator.animate(this._slider, __Transition, {
@@ -5365,15 +3249,17 @@ module platui {
         }
 
         /**
-         * @name _setOffsetWithClone
-         * @memberof platui.Slider
-         * @kind function
-         * @access protected
-         * 
-         * @description
+         * Triggers an event starting from this control's element.
+         * @param {string} event The event name to trigger.
+         */
+        protected _trigger(event: string): void {
+            var domEvent: plat.ui.IDomEventInstance = plat.acquire(__DomEventInstance);
+            domEvent.initialize(this.element, event);
+            domEvent.trigger();
+        }
+
+        /**
          * Creates a clone of this element and uses it to find the max offset.
-         * 
-         * @returns {void}
          */
         protected _setOffsetWithClone(): void {
             var element = this.element,
@@ -5382,9 +3268,10 @@ module platui {
             if (!body.contains(element)) {
                 var cloneAttempts = ++this._cloneAttempts;
                 if (cloneAttempts === this._maxCloneAttempts) {
-                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                    $exception.warn('Max clone attempts reached before the ' + __Slider + ' was placed into the ' +
-                        'DOM. Disposing of the ' + __Slider);
+                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic),
+                        type = this.type;
+                    $exception.warn('Max clone attempts reached before the ' + type + ' was placed into the ' +
+                        'DOM. Disposing of the ' + type);
                     (<plat.ui.ITemplateControlFactory>plat.acquire(__TemplateControlFactory)).dispose(this);
                     return;
                 }
@@ -5441,183 +3328,72 @@ module platui {
     plat.register.control(__Slider, Slider);
 
     /**
-     * @name ISliderOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Slider|Slider} control.
+     * The available options for the Slider control.
      */
     export interface ISliderOptions {
         /**
-         * @name orientation
-         * @memberof platui.ISliderOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The orientation of the {@link platui.Slider|Slider}. 
+         * The orientation of the Slider. 
          * Defaults to "horizontal".
-         * 
-         * @remarks
          * - "horizontal" - horizontal control.
          * - "vertical" - vertical control.
          */
         orientation?: string;
 
         /**
-         * @name reverse
-         * @memberof platui.ISliderOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the min and max positions are reversed. 
          * Defaults to false.
          */
         reverse?: boolean;
 
         /**
-         * @name value
-         * @memberof platui.ISliderOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The current value of the {@link platui.Slider|Slider}.
+         * The current value of the Slider.
          */
         value?: number;
 
         /**
-         * @name min
-         * @memberof platui.ISliderOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The min value of the {@link platui.Slider|Slider}.
+         * The min value of the Slider.
          */
         min?: number;
 
         /**
-         * @name max
-         * @memberof platui.ISliderOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The max value of the {@link platui.Slider|Slider}.
+         * The max value of the Slider.
          */
         max?: number;
 
         /**
-         * @name step
-         * @memberof platui.ISliderOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The incremental step value of the {@link platui.Slider|Slider}.
+         * The incremental step value of the Slider.
          */
         step?: number;
     }
 
     /**
-     * @name Range
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.TemplateControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.ITemplateControl|ITemplateControl} that allows for a lower and upper value, 
+     * An ITemplateControl that allows for a lower and upper value, 
      * thus creating a variable range of values.
      */
     export class Range extends plat.ui.TemplateControl implements IUIControl {
         /**
-         * @name $window
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {Window}
-         * 
-         * @description
          * Reference to the Window injectable.
          */
         $window: Window = plat.acquire(__Window);
         /**
-         * @name $document
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {Document}
-         * 
-         * @description
          * Reference to the Document injectable.
          */
         $document: Document = plat.acquire(__Document);
         /**
-         * @name $utils
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
         /**
-         * @name $animator
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ui.animations.IAnimator}
-         * 
-         * @description
-         * Reference to the {@link plat.ui.animations.IAnimator|IAnimator} injectable.
+         * Reference to the IAnimator injectable.
          */
         $animator: plat.ui.animations.IAnimator = plat.acquire(__Animator);
 
         /**
-         * @name context
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {platui.IRangeContext}
-         * 
-         * @description
          * The specifically defined context for this control.
          */
         context: IRangeContext;
 
         /**
-         * @name templateString
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -5629,317 +3405,132 @@ module platui {
         '</div>';
 
         /**
-         * @name options
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.IRangeOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<IRangeOptions>;
 
         /**
-         * @name lower
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The current lower value of the {@link platui.Range|Range}.
+         * The current lower value of the Range.
          */
         lower: number;
 
         /**
-         * @name upper
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The current upper value of the {@link platui.Range|Range}.
+         * The current upper value of the Range.
          */
         upper: number;
 
         /**
-         * @name min
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The min value of the {@link platui.Range|Range}.
+         * The min value of the Range.
          */
         min: number;
 
         /**
-         * @name max
-         * @memberof platui.Range
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The max value of the {@link platui.Range|Range}.
+         * The max value of the Range.
          */
         max: number;
 
         /**
-         * @name _slider
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTMLElement representing the slider element.
          */
         protected _slider: HTMLElement;
 
         /**
-         * @name _lowerKnob
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTMLElement representing the lower knob.
          */
         protected _lowerKnob: HTMLElement;
 
         /**
-         * @name _upperKnob
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
-         * The HTMLElement representing the second knob of the {@link platui.Range|Range}.
+         * The HTMLElement representing the second knob of the Range.
          */
         protected _upperKnob: HTMLElement;
 
         /**
-         * @name _lastTouch
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.ui.IPoint}
-         * 
-         * @description
          * The last touch start recorded.
          */
         protected _lastTouch: IKnobPosition;
 
         /**
-         * @name _maxOffset
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The maximum slider element offset.
          */
         protected _maxOffset: number;
 
         /**
-         * @name _increment
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The slider element's pixel based increment value.
          */
         protected _increment: number;
 
         /**
-         * @name _step
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
-         * Denotes the incremental step value of the {@link platui.Range|Range's} value property.
+         * Denotes the incremental step value of the Range's value property.
          */
         protected _step: number;
 
         /**
-         * @name _orientation
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The orientation of this control.
          */
         protected _orientation: string;
 
         /**
-         * @name _reversed
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether the upper and lower knobs have been _reversed.
          */
         protected _reversed: boolean;
 
         /**
-         * @name _lowerKnobOffset
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current lower knob offset.
          */
         protected _lowerKnobOffset: number;
 
         /**
-         * @name _upperKnobOffset
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current upper knob offset.
          */
         protected _upperKnobOffset: number;
 
         /**
-         * @name _lengthProperty
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * Denotes whether we're using height or width as the length of the sliding element.
          */
         protected _lengthProperty: string;
 
         /**
-         * @name _positionProperty
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * Denotes whether we're using left, right, top, or bottom as the position of the sliding element.
          */
         protected _positionProperty: string;
 
         /**
-         * @name _isSelf
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * A boolean value specifying that this control is the one modifying the observed context values.
          */
         protected _isSelf = false;
 
         /**
-         * @name _cloneAttempts
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current number of times we checked to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _cloneAttempts = 0;
 
         /**
-         * @name _maxCloneCount
-         * @memberof platui.Range
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * The max number of times we'll check to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _maxCloneAttempts = 25;
 
         /**
-         * @name setClasses
-         * @memberof platui.Range
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Range + ' ' + (className || ''));
         }
 
         /**
-         * @name contextChanged
-         * @memberof platui.Range
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Handles the context object being externally changed.
-         * 
-         * @returns {void}
          */
         contextChanged(): void {
             var context = this.context,
                 $utils = this.$utils;
             if (!$utils.isObject(context)) {
                 var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                Exception.warn('"' + __Range + '\'s" context should be an object that implements the platui.IRangeContext interface.');
+                Exception.warn('"' + this.type + '\'s" context should be an object that implements the platui.IRangeContext interface.');
                 return;
             }
 
@@ -5952,30 +3543,14 @@ module platui {
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Range
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the proper classes for the control.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Range
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Determine the button type and apply the proper classes.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var context = this.context || <IRangeContext>{},
@@ -6021,22 +3596,18 @@ module platui {
 
             if (min >= max) {
                 Exception = plat.acquire(__ExceptionStatic);
-                Exception.warn('"' + __Range + '\'s" min is greater than or equal to its max. Setting max to min + 1.');
+                Exception.warn('"' + this.type + '\'s" min is greater than or equal to its max. Setting max to min + 1.');
                 this.max = min + 1;
             }
 
             this._setPositionAndLength();
-            if (!this._maxOffset) {
-                this._setOffsetWithClone();
-            }
-
             this._setIncrement();
             this._setLowerKnob(min);
             this._initializeEvents(orientation);
 
             if (!$utils.isObject(this.context)) {
                 Exception = plat.acquire(__ExceptionStatic);
-                Exception.warn('"' + __Range + '\'s" context should be an object that implements the platui.IRangeContext interface.');
+                Exception.warn('"' + this.type + '\'s" context should be an object that implements the platui.IRangeContext interface.');
                 return;
             }
 
@@ -6046,18 +3617,9 @@ module platui {
         }
 
         /**
-         * @name setLower
-         * @memberof platui.Range
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Set the lower value of the {@link platui.Range|Range}. If an invalid value is passed in 
+         * Set the lower value of the Range. If an invalid value is passed in 
          * nothing will happen.
-         * 
-         * @param {number} value The value to set the {@link platui.Range|Range} to.
-         * 
-         * @returns {void}
+         * @param {number} value The value to set the Range to.
          */
         setLower(value: number): void {
             var $utils = this.$utils,
@@ -6065,7 +3627,7 @@ module platui {
 
             if (!$utils.isObject(this.context)) {
                 var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                Exception.warn('Cannot set the lower value of a "' + __Range + '" whose context has ' +
+                Exception.warn('Cannot set the lower value of a "' + this.type + '" whose context has ' +
                     'not yet been set to an object.');
                 return;
             } else if (!isNumber(value)) {
@@ -6081,18 +3643,9 @@ module platui {
         }
 
         /**
-         * @name setUpper
-         * @memberof platui.Range
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Set the upper value of the {@link platui.Range|Range}. If an invalid value is passed in 
+         * Set the upper value of the Range. If an invalid value is passed in 
          * nothing will happen.
-         * 
-         * @param {number} value The value to set the {@link platui.Range|Range} to.
-         * 
-         * @returns {void}
+         * @param {number} value The value to set the Range to.
          */
         setUpper(value: number): void {
             var $utils = this.$utils,
@@ -6100,7 +3653,7 @@ module platui {
 
             if (!$utils.isObject(this.context)) {
                 var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                Exception.warn('Cannot set the upper value of a "' + __Range + '" whose context has ' +
+                Exception.warn('Cannot set the upper value of a "' + this.type + '" whose context has ' +
                     'not yet been set to an object.');
                 return;
             } else if (!isNumber(value)) {
@@ -6116,15 +3669,7 @@ module platui {
         }
 
         /**
-         * @name _watchContext
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Observe the necessary context values.
-         * 
-         * @returns {void}
          */
         protected _watchContext(): void {
             var context = this.context;
@@ -6146,17 +3691,8 @@ module platui {
         }
 
         /**
-         * @name _initializeEvents
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Initialize the proper tracking events.
-         * 
          * @param {string} orientation The orientation of the control.
-         * 
-         * @returns {void}
          */
         protected _initializeEvents(orientation: string): void {
             var lowerKnob = this._lowerKnob,
@@ -6189,20 +3725,17 @@ module platui {
             this.addEventListener(upperKnob, reverseTrack, trackUpper, false);
             this.addEventListener(lowerKnob, __$trackend, touchEnd, false);
             this.addEventListener(upperKnob, __$trackend, touchEnd, false);
+            this.addEventListener(this.$window, 'resize', () => {
+                this._setPositionAndLength();
+                this._setIncrement();
+                this._setLowerKnob();
+                this._setUpperKnob();
+            }, false);
         }
 
         /**
-         * @name _touchStart
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Log the first touch.
-         * 
          * @param {plat.ui.IGestureEvent} ev The touch event object.
-         * 
-         * @returns {void}
          */
         protected _touchStart(ev: plat.ui.IGestureEvent): void {
             if (ev.touches.length > 1) {
@@ -6223,22 +3756,14 @@ module platui {
             this._lastTouch = {
                 x: ev.clientX,
                 y: ev.clientY,
+                value: target === this._lowerKnob ? this.lower : this.upper,
                 target: target
             };
         }
 
         /**
-         * @name _touchEnd
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Set the new slider element offset.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $trackend event object.
-         * 
-         * @returns {void}
          */
         protected _touchEnd(ev: plat.ui.IGestureEvent): void {
             var lastTouch = this._lastTouch,
@@ -6251,22 +3776,21 @@ module platui {
             var isLower = target === this._lowerKnob,
                 newOffset = this._calculateOffset(ev, isLower);
 
+            if (isLower) {
+                if (lastTouch.value !== this.lower) {
+                    this._trigger('change');
+                }
+            } else if (lastTouch.value !== this.upper) {
+                this._trigger('change');
+            }
+
             this._setOffset(newOffset, isLower);
         }
 
         /**
-         * @name _setOffset
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Sets the designated knob element's offset to the given value.
-         * 
          * @param {number} offset The new offset.
          * @param {boolean} isLower Whether we're setting the lower or upper knob.
-         * 
-         * @returns {number} The new upper offset.
          */
         protected _setOffset(offset: number, isLower: boolean): number {
             var maxOffset = this._maxOffset;
@@ -6284,17 +3808,8 @@ module platui {
         }
 
         /**
-         * @name _trackLower
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Track the lower knob movement.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $track event object.
-         * 
-         * @returns {void}
          */
         protected _trackLower(ev: plat.ui.IGestureEvent): void {
             var maxOffset = this._maxOffset,
@@ -6330,17 +3845,8 @@ module platui {
         }
 
         /**
-         * @name _trackUpper
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Track the upper knob movement.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $track event object.
-         * 
-         * @returns {void}
          */
         protected _trackUpper(ev: plat.ui.IGestureEvent): void {
             var maxOffset = this._maxOffset,
@@ -6376,19 +3882,10 @@ module platui {
         }
 
         /**
-         * @name _positionLower
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Positions the slider element and adjusts it's length to account 
          * for lower knob movement.
-         * 
          * @param {number} position The new position of the lower knob.
          * @param {number} value? The new value to set if specified.
-         * 
-         * @returns {void}
          */
         protected _positionLower(position: number, value?: number): void {
             var style = this._slider.style;
@@ -6403,19 +3900,10 @@ module platui {
         }
 
         /**
-         * @name _positionUpper
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Positions the slider element and adjusts it's length to account 
          * for upper knob movement.
-         * 
          * @param {number} position The new position of the upper knob.
          * @param {number} value? The new value to set if specified.
-         * 
-         * @returns {void}
          */
         protected _positionUpper(position: number, value?: number): void {
             this._slider.style[<any>this._lengthProperty] = (position - this._lowerKnobOffset) + 'px';
@@ -6428,19 +3916,10 @@ module platui {
         }
 
         /**
-         * @name _positionTogether
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Positions the slider element and adjusts it's length to account 
          * for synchronized knob movement.
-         * 
          * @param {number} position The new position of the knobs.
          * @param {number} value? The new value to set if specified.
-         * 
-         * @returns {void}
          */
         protected _positionTogether(position: number, value?: number): void {
             var style = this._slider.style;
@@ -6451,22 +3930,13 @@ module platui {
                 return;
             }
 
-            this._setLower(value, false);
+            this._setLower(value, false, false);
             this._setUpper(value, false);
         }
 
         /**
-         * @name _calculateValue
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the current value based on knob position and slider element width.
-         * 
          * @param {number} width The current width of the slider element.
-         * 
-         * @returns {number} The current value of the {link platui.Range|Range}.
          */
         protected _calculateValue(width: number): number {
             var step = this._step;
@@ -6474,18 +3944,9 @@ module platui {
         }
 
         /**
-         * @name _calculateOffset
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the new offset of the slider element based on the old offset and the distance moved.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $track or $trackend event object.
          * @param {boolean} isLower Whether the current knob is the lower or the upper knob.
-         * 
-         * @returns {number} The current position of the knob in pixels.
          */
         protected _calculateOffset(ev: plat.ui.IGestureEvent, isLower: boolean): number {
             var currentOffset = isLower ? this._lowerKnobOffset : this._upperKnobOffset,
@@ -6501,37 +3962,20 @@ module platui {
         }
 
         /**
-         * @name _calculateKnobPosition
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates knob position based on current value.
-         * 
          * @param {number} value The current value of the {link platui.Range|Range}.
-         * 
-         * @returns {number} The current position of the knob in pixels.
          */
         protected _calculateKnobPosition(value: number): number {
             return (value - this.min) * this._increment;
         }
 
         /**
-         * @name _setLower
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Sets the lower value of the {@link platui.Range|Range}.
-         * 
+         * Sets the lower value of the Range.
          * @param {number} newValue The new value to set.
          * @param {boolean} setKnob Whether or not we need to set the knob position.
-         * 
-         * @returns {void}
+         * @param {boolean} trigger Whether or not to trigger the 'input' event. Defaults to true.
          */
-        protected _setLower(newValue: number, setKnob: boolean): void {
+        protected _setLower(newValue: number, setKnob: boolean, trigger?: boolean): void {
             var lower = this.lower,
                 context = this.context || <IRangeContext>{};
 
@@ -6546,8 +3990,6 @@ module platui {
                 newValue = this.max;
             } else if (newValue <= this.min) {
                 newValue = this.min;
-            } else if (newValue >= this.upper) {
-                newValue = this.upper;
             } else if (Math.abs(newValue - lower) < this._step) {
                 return;
             }
@@ -6558,23 +4000,21 @@ module platui {
             if (setKnob) {
                 this._setLowerKnob();
             }
+
+            if (trigger === false) {
+                return;
+            }
+
+            this._trigger('input');
         }
 
         /**
-         * @name _setUpper
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Sets the value of the {@link platui.Range|Range}.
-         * 
+         * Sets the value of the Range.
          * @param {number} newValue The new value to set.
          * @param {boolean} setKnob Whether or not we need to set the knob position.
-         * 
-         * @returns {void}
+         * @param {boolean} trigger? Whether or not to trigger the 'input' event. Defaults to true.
          */
-        protected _setUpper(newValue: number, setKnob: boolean): void {
+        protected _setUpper(newValue: number, setKnob: boolean, trigger?: boolean): void {
             var upper = this.upper,
                 context = this.context || <IRangeContext>{};
 
@@ -6589,8 +4029,6 @@ module platui {
                 newValue = this.max;
             } else if (newValue <= this.min) {
                 newValue = this.min;
-            } else if (newValue <= this.lower) {
-                newValue = this.lower;
             } else if (Math.abs(newValue - upper) < this._step) {
                 return;
             }
@@ -6601,68 +4039,55 @@ module platui {
             if (setKnob) {
                 this._setUpperKnob();
             }
+
+            if (trigger === false) {
+                return;
+            }
+
+            this._trigger('input');
         }
 
         /**
-         * @name _setIncrement
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Sets the increment for sliding the {link platui.Range|Range}.
-         * 
-         * @returns {number} The slider element's increment value.
          */
         protected _setIncrement(): number {
             return (this._increment = this._maxOffset / (this.max - this.min));
         }
 
         /**
-         * @name _setPositionAndLength
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Sets the properties to use for length and position and sets the max length of the sliding element.
-         * 
          * @param {HTMLElement} element? The element to base the length off of.
-         * 
-         * @returns {number} The length of the sliding element.
          */
-        protected _setPositionAndLength(element?: HTMLElement): number {
-            element = element || this._slider.parentElement;
+        protected _setPositionAndLength(element?: HTMLElement): void {
+            var isNode = this.$utils.isNode(element),
+                el = isNode ? element : this._slider.parentElement;
 
             switch (this._orientation) {
                 case 'horizontal':
                     this._lengthProperty = 'width';
                     this._positionProperty = this._reversed ? 'right' : 'left';
-                    return (this._maxOffset = element.offsetWidth);
+                    this._maxOffset = el.offsetWidth;
+                    break;
                 case 'vertical':
                     this._lengthProperty = 'height';
                     this._positionProperty = this._reversed ? 'bottom' : 'top';
-                    return (this._maxOffset = element.offsetHeight);
+                    this._maxOffset = el.offsetHeight;
+                    break;
                 default:
                     var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                    Exception.warn('Invalid orientation "' + this._orientation + '" for "' + __Range + '."');
-                    return 0;
+                    Exception.warn('Invalid orientation "' + this._orientation + '" for "' + this.type + '."');
+                    return;
+            }
+
+            if (!(isNode || this._maxOffset)) {
+                this._setOffsetWithClone();
             }
         }
 
         /**
-         * @name _setLowerKnob
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Animates and sets the knob position.
-         * 
          * @param {number} value? The value to use to calculate the knob position. If no value is 
-         * specified, the current {@link platui.Range|Range's} value will be used.
-         * 
-         * @returns {void}
+         * specified, the current Range's value will be used.
          */
         protected _setLowerKnob(value?: number): void {
             var animationOptions: plat.IObject<string> = {},
@@ -6670,6 +4095,10 @@ module platui {
                 upperOffset = this.$utils.isNumber(upperKnobOffset) ? upperKnobOffset :
                 this._setOffset(this._calculateKnobPosition(this.upper), false),
                 position = this._calculateKnobPosition((value || this.lower));
+
+            if (position === this._lowerKnobOffset) {
+                return;
+            }
 
             animationOptions[this._positionProperty] = position + 'px';
             animationOptions[this._lengthProperty] = (upperOffset - position) + 'px';
@@ -6680,22 +4109,17 @@ module platui {
         }
 
         /**
-         * @name _setUpperKnob
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Animates and sets the knob position.
-         * 
          * @param {number} value? The value to use to calculate the knob position. If no value is 
-         * specified, the current {@link platui.Range|Range's} value will be used.
-         * 
-         * @returns {void}
+         * specified, the current Range's value will be used.
          */
         protected _setUpperKnob(value?: number): void {
             var animationOptions: plat.IObject<string> = {},
                 length = this._calculateKnobPosition((value || this.upper));
+
+            if (length === this._upperKnobOffset) {
+                return;
+            }
 
             animationOptions[this._lengthProperty] = (length - this._lowerKnobOffset) + 'px';
             this.$animator.animate(this._slider, __Transition, {
@@ -6705,15 +4129,17 @@ module platui {
         }
 
         /**
-         * @name _setOffsetWithClone
-         * @memberof platui.Range
-         * @kind function
-         * @access protected
-         * 
-         * @description
+         * Triggers an event starting from this control's element.
+         * @param {string} event The event name to trigger.
+         */
+        protected _trigger(event: string): void {
+            var domEvent: plat.ui.IDomEventInstance = plat.acquire(__DomEventInstance);
+            domEvent.initialize(this.element, event);
+            domEvent.trigger();
+        }
+
+        /**
          * Creates a clone of this element and uses it to find the max offset.
-         * 
-         * @returns {void}
          */
         protected _setOffsetWithClone(): void {
             var element = this.element,
@@ -6722,9 +4148,10 @@ module platui {
             if (!body.contains(element)) {
                 var cloneAttempts = ++this._cloneAttempts;
                 if (cloneAttempts === this._maxCloneAttempts) {
-                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                    $exception.warn('Max clone attempts reached before the ' + __Range + ' was placed into the ' +
-                        'DOM. Disposing of the ' + __Range);
+                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic),
+                        type = this.type;
+                    $exception.warn('Max clone attempts reached before the ' + type + ' was placed into the ' +
+                        'DOM. Disposing of the ' + type);
                     (<plat.ui.ITemplateControlFactory>plat.acquire(__TemplateControlFactory)).dispose(this);
                     return;
                 }
@@ -6781,214 +4208,92 @@ module platui {
     plat.register.control(__Range, Range);
 
     /**
-     * @name IRangeOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Range|Range} control.
+     * The available options for the Range control.
      */
     export interface IRangeOptions {
         /**
-         * @name orientation
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The orientation of the {@link platui.Range|Range}. 
+         * The orientation of the Range. 
          * Defaults to "horizontal".
-         * 
-         * @remarks
          * - "horizontal" - horizontal control.
          * - "vertical" - vertical control.
          */
         orientation?: string;
 
         /**
-         * @name reverse
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the upper and lower knobs of the {@link platui.Range|Range} are reversed. 
+         * Whether or not the upper and lower knobs of the Range are reversed. 
          * Defaults to false.
          */
         reverse?: boolean;
 
         /**
-         * @name lower
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The lower set value of the {@link platui.Range|Range}.
+         * The lower set value of the Range.
          */
         lower?: number;
 
         /**
-         * @name upper
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The upper set value of the {@link platui.Range|Range}.
+         * The upper set value of the Range.
          */
         upper?: number;
 
         /**
-         * @name min
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The min value of the {@link platui.Range|Range}.
+         * The min value of the Range.
          */
         min?: number;
 
         /**
-         * @name max
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The max value of the {@link platui.Range|Range}.
+         * The max value of the Range.
          */
         max?: number;
 
         /**
-         * @name step
-         * @memberof platui.IRangeOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The incremental step value of the {@link platui.Range|Range}.
+         * The incremental step value of the Range.
          */
         step?: number;
     }
 
     /**
-     * @name IRangePoint
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
      * A point representing a potential knob position.
      */
-    export interface IKnobPosition extends plat.ui.IPoint {
+    export interface IKnobPosition extends IValuePoint {
         /**
-         * @name target
-         * @memberof platui.IKnobPosition
-         * @kind property
-         * @access public
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The target element located at the x-y coordinate.
          */
         target?: HTMLElement;
     }
 
     /**
-     * @name IRangeContext
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * Defines the expected context of the {@link platui.Range|Range} control.
+     * Defines the expected context of the Range control.
      */
     export interface IRangeContext {
         /**
-         * @name lower
-         * @memberof platui.IRangeContext
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The lower set value of the {@link platui.Range|Range} control.
+         * The lower set value of the Range control.
          */
         lower: number;
 
         /**
-         * @name lower
-         * @memberof platui.IRangeContext
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The upper set value of the {@link platui.Range|Range} control.
+         * The upper set value of the Range control.
          */
         upper: number;
     }
 
     /**
-     * @name Select
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.controls.Select}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.ITemplateControl|ITemplateControl} that allows for data-binding a select box and adds 
+     * An ITemplateControl that allows for data-binding a select box and adds 
      * custom styling to make it look consistent across all platforms.
      */
     export class Select extends plat.ui.controls.Select implements IUIControl {
         /**
-         * @name setClasses
-         * @memberof platui.Select
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Select + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Select
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the class name.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             super.initialize();
@@ -6999,23 +4304,10 @@ module platui {
     plat.register.control(__Select, Select);
 
     /**
-     * @name ISelectOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Select|Select} control.
+     * The available options for the Select control.
      */
     export interface ISelectOptions {
         /**
-         * @name group
-         * @memberof platui.ISelectOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The property in your context array 
          * of objects to use to group the objects 
          * into optgroups.
@@ -7023,14 +4315,6 @@ module platui {
         group?: string;
 
         /**
-         * @name value
-         * @memberof platui.ISelectOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The property in your context array of 
          * objects with which to use to bind to the 
          * option's value.
@@ -7038,14 +4322,6 @@ module platui {
         value?: string;
 
         /**
-         * @name textContent
-         * @memberof platui.ISelectOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The property in your context array of 
          * objects with which to use to bind to the 
          * option's textContent.
@@ -7054,66 +4330,26 @@ module platui {
     }
 
     /**
-     * @name Input
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.BindablePropertyControl}
-     * @implements {platui.IUIControl, platui.IFormControl}
-     * 
-     * @description
-     * An {@link plat.ui.IBindablePropertyControl|IBindablePropertyControl} that standardizes and styles 
+     * An IBindablePropertyControl that standardizes and styles 
      * an HTML input element of various types.
      */
     export class Input extends plat.ui.BindablePropertyControl implements IUIControl, IFormControl {
         /**
-         * @name $utils
-         * @memberof platui.Input
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
 
         /**
-         * @name $compat
-         * @memberof platui.Input
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ICompat}
-         * 
-         * @description
-         * Reference to the {@link plat.ICompat|ICompat} injectable.
+         * Reference to the ICompat injectable.
          */
         $compat: plat.ICompat = plat.acquire(__Compat);
 
         /**
-         * @name $regex
-         * @memberof platui.Input
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.expressions.IRegex}
-         * 
-         * @description
-         * Reference to the {@link plat.expressions.IRegex|IRegex} injectable.
+         * Reference to the IRegex injectable.
          */
         $regex: plat.expressions.IRegex = plat.acquire(__Regex);
 
         /**
-         * @name templateString
-         * @memberof platui.Input
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString =
@@ -7124,233 +4360,96 @@ module platui {
         '</div>\n';
 
         /**
-         * @name options
-         * @memberof platui.Input
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.IInputOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<IInputOptions>;
 
         /**
-         * @name _imageElement
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTMLElement for the control's optional image.
          */
         protected _imageElement: HTMLElement;
 
         /**
-         * @name _inputElement
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLInputElement}
-         * 
-         * @description
          * The HTMLInputElement for the control's input[type="text"].
          */
         protected _inputElement: HTMLInputElement;
 
         /**
-         * @name _actionElement
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * The HTMLElement for the control's action.
          */
         protected _actionElement: HTMLElement;
 
         /**
-         * @name _type
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The control's type (e.g. - "email").
          */
         protected _type: string;
 
         /**
-         * @name _pattern
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * A regular expression string to regulate what text is allowed to be entered.
          */
         protected _pattern: RegExp;
 
         /**
-         * @name _typeChar
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The control's type character (e.g. - an "x" to delete 
          * input text).
          */
         protected _typeChar: string;
 
         /**
-         * @name _typeHandler
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {EventListener}
-         * 
-         * @description
          * A function to handle the type event.
          */
         protected _typeHandler: EventListener;
 
         /**
-         * @name _actionHandler
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {() => void}
-         * 
-         * @description
          * A function to check the current action state and handle accordingly.
          */
         protected _actionHandler: () => void;
 
         /**
-         * @name _inTouch
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether the user is currently touching the screen.
          */
         protected _inTouch = false;
 
         /**
-         * @name _inAction
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether the user is currently in the process of performing the {@link platui.Input|Input's} action.
+         * Whether the user is currently in the process of performing the Input's action.
          */
         protected _inAction = false;
 
         /**
-         * @name _usingBind
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link plat.controls.Bind|Bind} control is being used.
+         * Whether or not the Bind control is being used.
          */
         protected _usingBind = false;
 
         /**
-         * @name _loaded
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
-         * Whether or not the {@link plat.controls.Bind|Bind} control has been loaded.
+         * Whether or not the Bind control has been loaded.
          */
         protected _loaded = false;
 
         /**
-         * @name _preloadedValue
-         * @memberof platui.Input
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * A value specified prior to the control being loaded.
          */
         protected _preloadedValue = '';
 
         /**
-         * @name setClasses
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Input + ' ' + (className || ''));
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the class name.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name setTemplate
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set all HTMLElement references and potential attribute controls.
-         * 
-         * @returns {void}
          */
         setTemplate(): void {
             var element = this.element,
@@ -7392,15 +4491,7 @@ module platui {
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the style and initialize the action.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var optionObj = this.options || <plat.observable.IObservableProperty<IInputOptions>>{},
@@ -7425,47 +4516,23 @@ module platui {
         }
 
         /**
-         * @name dispose
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets loaded back to false to avoid acting on input.
-         * 
-         * @returns {void}
          */
         dispose(): void {
             this._loaded = false;
         }
 
         /**
-         * @name validate
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * A function to validate the user's input. For action="email" it returns 
          * true if the email can be a valid email address. For all other 
          * actions it returns true if the input is not empty.
-         * 
-         * @returns {boolean} Whether or not the user's input is valid.
          */
         validate(): boolean {
             return this._pattern.test(this._inputElement.value);
         }
 
         /**
-         * @name clear
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Clears the user's input.
-         * 
-         * @returns {void}
          */
         clear(): void {
             var inputElement = this._inputElement,
@@ -7482,63 +4549,30 @@ module platui {
         }
 
         /**
-         * @name focus
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Focuses the input.
-         * 
-         * @returns {void}
          */
         focus(): void {
             this._inputElement.focus();
         }
 
         /**
-         * @name blur
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Blurs the input.
-         * 
-         * @returns {void}
          */
         blur(): void {
             this._inputElement.blur();
         }
 
         /**
-         * @name value
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Returns the current value of {@link platui.Input|Input} control.
-         * 
-         * @returns {string} The current value of the {@link platui.Input|Input} control.
+         * Returns the current value of Input control.
          */
         value(): string {
             return this._inputElement.value;
         }
 
         /**
-         * @name setProperty
-         * @memberof platui.Input
-         * @kind function
-         * @access public
-         * 
-         * @description
          * The function called when the bindable property is set externally.
-         * 
          * @param {any} newValue The new value of the bindable property.
          * @param {any} oldValue? The old value of the bindable property.
-         * 
-         * @returns {void}
          */
         setProperty(newValue: any, oldValue?: any): void {
             if (newValue === oldValue) {
@@ -7554,15 +4588,7 @@ module platui {
         }
 
         /**
-         * @name _initializeType
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Initializes the type.
-         * 
-         * @returns {void}
          */
         protected _initializeType(): void {
             var type = this._type,
@@ -7610,17 +4636,8 @@ module platui {
         }
 
         /**
-         * @name _addEventListeners
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds all event listeners to the input and action element.
-         * 
          * @param {string} event The primary action element's event.
-         * 
-         * @returns {void}
          */
         protected _addEventListeners(event: string): void {
             var actionElement = this._actionElement,
@@ -7652,15 +4669,7 @@ module platui {
         }
 
         /**
-         * @name _addTextEventListener
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds a text event listener to the input element.
-         * 
-         * @returns {void}
          */
         protected _addTextEventListener(): void {
             var input = this._inputElement,
@@ -7717,15 +4726,7 @@ module platui {
         }
 
         /**
-         * @name _erase
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Clears the user's input and focuses the input element.
-         * 
-         * @returns {void}
          */
         protected _erase(): void {
             this.clear();
@@ -7733,16 +4734,8 @@ module platui {
         }
 
         /**
-         * @name _handlePasswordShow
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The action handler for the "password" type when showing the 
          * password text.
-         * 
-         * @returns {void}
          */
         protected _handlePasswordShow(): void {
             this._inTouch = true;
@@ -7750,16 +4743,8 @@ module platui {
         }
 
         /**
-         * @name _handlePasswordHide
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The action handler for the "password" type when hiding the 
          * password text.
-         * 
-         * @returns {void}
          */
         protected _handlePasswordHide(): void {
             if (!this._inTouch) {
@@ -7773,15 +4758,7 @@ module platui {
         }
 
         /**
-         * @name _handleEmail
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The action handler for the "email" type.
-         * 
-         * @returns {void}
          */
         protected _handleEmail(): void {
             var inputElement = this._inputElement,
@@ -7794,15 +4771,7 @@ module platui {
         }
 
         /**
-         * @name _checkText
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks the current state of the default action and handles accordingly.
-         * 
-         * @returns {void}
          */
         protected _checkText(): void {
             var char = this._typeChar;
@@ -7829,15 +4798,7 @@ module platui {
         }
 
         /**
-         * @name _checkPassword
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks the current state of the password action and handles accordingly.
-         * 
-         * @returns {void}
          */
         protected _checkPassword(): void {
             var char = this._typeChar;
@@ -7864,15 +4825,7 @@ module platui {
         }
 
         /**
-         * @name _checkEmail
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Checks the current state of the "email" action and handles accordingly.
-         * 
-         * @returns {void}
          */
         protected _checkEmail(): void {
             var value = this._inputElement.value,
@@ -7927,15 +4880,7 @@ module platui {
         }
 
         /**
-         * @name _onInput
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The event handler upon user text input.
-         * 
-         * @returns {void}
          */
         protected _onInput(): void {
             var inputElement = this._inputElement,
@@ -7957,17 +4902,8 @@ module platui {
         }
 
         /**
-         * @name _onInputChanged
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The event handler upon bound text being changed.
-         * 
          * @param {string} newValue The new value of the bound text.
-         * 
-         * @returns {void}
          */
         protected _onInputChanged(newValue: string): void {
             var inputElement = this._inputElement;
@@ -7994,17 +4930,8 @@ module platui {
         }
 
         /**
-         * @name _checkInput
-         * @memberof platui.Input
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Check the initial input and delete if it does not match the pattern.
-         * 
          * @param {string} value The value to check as input to the HTMLInputElement.
-         * 
-         * @returns {void}
          */
         protected _checkInput(value: string): void {
             switch (this._type) {
@@ -8015,7 +4942,7 @@ module platui {
                     } else {
                         if (this._usingBind) {
                             var Exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                            Exception.warn(__Input + ' control is bound to a value that does not satisfy ' +
+                            Exception.warn(this.type + ' control is bound to a value that does not satisfy ' +
                                 'the given pattern and/or type. The bound value will be reset to "".');
                         }
                         this.propertyChanged((this._inputElement.value = ''), value);
@@ -8034,27 +4961,12 @@ module platui {
     plat.register.control(__Input, Input);
 
     /**
-     * @name IInputOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Input|Input} control.
+     * The available options for the Input control.
      */
     export interface IInputOptions {
         /**
-         * @name type
-         * @memberof platui.IInputOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The type of the {@link platui.Input|Input} control. 
+         * The type of the Input control. 
          * Defaults to "text".
-         * 
-         * @remarks
          * - "text"
          * - "password"
          * - "email"
@@ -8064,377 +4976,152 @@ module platui {
         type?: string;
 
         /**
-         * @name pattern
-         * @memberof platui.IInputOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * A regular expression string to regulate what text is allowed to be entered.
          */
         pattern?: string;
     }
 
     /**
-     * @name Carousel
-     * @memberof platui
-     * @kind class
-     * 
-     * @extends {plat.ui.TemplateControl}
-     * @implements {platui.IUIControl}
-     * 
-     * @description
-     * An {@link plat.ui.ITemplateControl|ITemplateControl} that acts as a HTML template carousel.
+     * An ITemplateControl that acts as a HTML template carousel.
      */
     export class Carousel extends plat.ui.TemplateControl implements IUIControl {
         
         /**
-         * @name $utils
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.IUtils}
-         * 
-         * @description
-         * Reference to the {@link plat.IUtils|IUtils} injectable.
+         * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
         
         /**
-         * @name $compat
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ICompat}
-         * 
-         * @description
-         * Reference to the {@link plat.ICompat|ICompat} injectable.
+         * Reference to the ICompat injectable.
          */
         $compat: plat.ICompat = plat.acquire(__Compat);
         
         /**
-         * @name $document
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {Document}
-         * 
-         * @description
          * Reference to the Document injectable.
          */
         $document: Document = plat.acquire(__Document);
         
         /**
-         * @name $window
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {Window}
-         * 
-         * @description
          * Reference to the Window injectable.
          */
         $window: Window = plat.acquire(__Window);
         
         /**
-         * @name $animator
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.ui.animations.IAnimator}
-         * 
-         * @description
-         * Reference to the {@link plat.ui.animations.IAnimator|IAnimator} injectable.
+         * Reference to the IAnimator injectable.
          */
         $animator: plat.ui.animations.IAnimator = plat.acquire(__Animator);
 
         /**
-         * @name templateString
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
          * The HTML template represented as a string.
          */
         templateString = '<plat-foreach class="plat-carousel-container"></plat-foreach>';
 
         /**
-         * @name context
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {Array<any>}
-         * 
-         * @description
-         * The mandatory type of context of the {@link platui.Carousel|Carousel}.
+         * The mandatory type of context of the Carousel.
          */
         context: Array<any>;
 
         /**
-         * @name options
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.observable.IObservableProperty<platui.ICarouselOptions>}
-         * 
-         * @description
-         * The evaluated {@link plat.controls.Options|plat-options} object.
+         * The evaluated plat-options object.
          */
         options: plat.observable.IObservableProperty<ICarouselOptions>;
 
         /**
-         * @name itemsLoaded
-         * @memberof platui.Carousel
-         * @kind property
-         * @access public
-         * 
-         * @type {plat.async.IThenable<void>}
-         * 
-         * @description
          * A Promise that fulfills when the items are loaded.
          */
         itemsLoaded: plat.async.IThenable<void>;
 
         /**
-         * @name _orientation
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The orientation of this control.
          */
         protected _orientation: string;
 
         /**
-         * @name _transform
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
          * The current browser's CSS3 transform property.
          */
         protected _transform: string;
 
         /**
-         * @name _hasSwiped
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the user has swiped.
          */
         protected _hasSwiped = false;
 
         /**
-         * @name _inTouch
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the user is currently touching the screen.
          */
         protected _inTouch: boolean;
 
         /**
-         * @name _lastTouch
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.ui.IPoint}
-         * 
-         * @description
          * The last touch start recorded.
          */
         protected _lastTouch: plat.ui.IPoint = { x: 0, y: 0 };
 
         /**
-         * @name _loaded
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * Whether or not the control has been loaded based on its context being an Array.
          */
         protected _loaded = false;
 
         /**
-         * @name _index
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The current index seen in the {@link platui.Carousel|Carousel}.
+         * The current index seen in the Carousel.
          */
         protected _index = 0;
 
         /**
-         * @name _intervalOffset
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The interval offset to translate the {@link platui.Carousel|Carousel's} sliding element.
+         * The interval offset to translate the Carousel's sliding element.
          */
         protected _intervalOffset: number;
 
         /**
-         * @name _currentOffset
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The current offset of the translated {@link platui.Carousel|Carousel's} sliding element.
+         * The current offset of the translated Carousel's sliding element.
          */
         protected _currentOffset = 0;
 
         /**
-         * @name _positionProperty
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {string}
-         * 
-         * @description
-         * Denotes whether we're using left or top as the position of the {@link platui.Carousel|Carousel}.
+         * Denotes whether we're using left or top as the position of the Carousel.
          */
         protected _positionProperty: string;
 
         /**
-         * @name _slider
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {HTMLElement}
-         * 
-         * @description
          * Denotes the sliding element contained within the control.
          */
         protected _slider: HTMLElement;
 
         /**
-         * @name _cloneAttempts
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {number}
-         * 
-         * @description
          * The current number of times we checked to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _cloneAttempts = 0;
 
         /**
-         * @name _maxCloneCount
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {boolean}
-         * 
-         * @description
          * The max number of times we'll check to see if the element was placed into the DOM. 
          * Used for determining max offset width.
          */
         protected _maxCloneAttempts = 25;
 
         /**
-         * @name _animationThenable
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {plat.ui.animations.IAnimationThenable<void>}
-         * 
-         * @description
          * The most recent animation thenable. Used to cancel the current animation if another needs 
          * to begin.
          */
         protected _animationThenable: plat.ui.animations.IAnimationThenable<void>;
 
         /**
-         * @name _onLoad
-         * @memberof platui.Carousel
-         * @kind property
-         * @access protected
-         * 
-         * @type {() => void}
-         * 
-         * @description
-         * A function to call once items are loaded and the {@link platui.Carousel|Carousel} is set.
+         * A function to call once items are loaded and the Carousel is set.
          */
         protected _onLoad: () => void;
 
         /**
-         * @name setClasses
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Sets the classes on the proper elements.
-         * 
          * @param {string} className? An optional, additional class name or class names to set on the control 
          * in addition to its standard set.
          * @param {Element} element? The element to set the class name on. Should default to 
          * the control's element if not specified.
-         * 
-         * @returns {void}
          */
         setClasses(className?: string, element?: Element): void {
             this.dom.addClass(element || this.element, __Carousel + ' ' + (className || ''));
         }
 
         /**
-         * @name contextChanged
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Checks if the control has been initialized, otherwise it does so.
-         * 
-         * @returns {void}
          */
         contextChanged(): void {
             if (this._loaded) {
@@ -8445,30 +5132,14 @@ module platui {
         }
 
         /**
-         * @name initialize
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Set the class name.
-         * 
-         * @returns {void}
          */
         initialize(): void {
             this.setClasses();
         }
 
         /**
-         * @name setTemplate
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Inserts the innerHTML of this control into a child {@link plat.ui.controls.ForEach|ForEach} control.
-         * 
-         * @returns {void}
+         * Inserts the innerHTML of this control into a child ForEach control.
          */
         setTemplate(): void {
             var itemContainer = this.$document.createElement('div');
@@ -8478,22 +5149,14 @@ module platui {
         }
 
         /**
-         * @name loaded
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
          * Checks context and warns if not an Array, then initializes.
-         * 
-         * @returns {void}
          */
         loaded(): void {
             var $utils = this.$utils,
                 context = this.context;
             if (!$utils.isArray(context)) {
                 var Exception = plat.acquire(__ExceptionStatic);
-                Exception.warn('The context of a ' + __Carousel + ' must be an Array.');
+                Exception.warn('The context of a ' + this.type + ' must be an Array.');
                 return;
             }
 
@@ -8513,15 +5176,7 @@ module platui {
         }
 
         /**
-         * @name goToNext
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Advances the position of the {@link platui.Carousel|Carousel} to the next state.
-         * 
-         * @returns {void}
+         * Advances the position of the Carousel to the next state.
          */
         goToNext(): void {
             if (this._index >= this.context.length - 1) {
@@ -8536,15 +5191,7 @@ module platui {
         }
 
         /**
-         * @name goToPrevious
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Changes the position of the {@link platui.Carousel|Carousel} to the previous state.
-         * 
-         * @returns {void}
+         * Changes the position of the Carousel to the previous state.
          */
         goToPrevious(): void {
             if (this._index <= 0) {
@@ -8559,18 +5206,9 @@ module platui {
         }
 
         /**
-         * @name goToIndex
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Changes the position of the {@link platui.Carousel|Carousel} to the state 
+         * Changes the position of the Carousel to the state 
          * specified by the input index.
-         * 
-         * @param {number} index The new index of the {@link platui.Carousel|Carousel}.
-         * 
-         * @returns {void}
+         * @param {number} index The new index of the Carousel.
          */
         goToIndex(index: number): void {
             if (index === this._index || index < 0 || index >= this.context.length) {
@@ -8586,15 +5224,7 @@ module platui {
         }
 
         /**
-         * @name reset
-         * @memberof platui.Carousel
-         * @kind function
-         * @access public
-         * 
-         * @description
-         * Resets the position of the {@link platui.Carousel|Carousel} to its current state.
-         * 
-         * @returns {void}
+         * Resets the position of the Carousel to its current state.
          */
         reset(): void {
             var animationOptions: plat.IObject<string> = {};
@@ -8603,18 +5233,9 @@ module platui {
         }
 
         /**
-         * @name _initiateAnimation
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Animates the carousel with a set of characteristics passed in as an argument.
-         * 
          * @param {plat.IObject<string>} animationOptions An object containing key-value pairs 
          * of properties to animate.
-         * 
-         * @returns {void}
          */
         protected _initiateAnimation(animationOptions: plat.ui.animations.ISimpleCssTransitionOptions): void {
             if (!this.$utils.isNull(this._animationThenable)) {
@@ -8633,15 +5254,7 @@ module platui {
         }
 
         /**
-         * @name _init
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Initializes the control and adds all event listeners.
-         * 
-         * @returns {void}
          */
         protected _init(): void {
             var foreach = <plat.ui.controls.ForEach>this.controls[0];
@@ -8657,24 +5270,15 @@ module platui {
                 }
             }).catch(() => {
                     var Exception = plat.acquire(__ExceptionStatic);
-                    Exception.warn('Error processing ' + __Carousel + '. Please ensure you\'re context is correct.');
+                    Exception.warn('Error processing ' + this.type + '. Please ensure you\'re context is correct.');
                     this._loaded = false;
                     return;
                 });
         }
 
         /**
-         * @name _addEventListeners
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Adds all event listeners on this control's element.
-         * 
-         * @param {string} orientation The orientation of the {@link platui.Carousel|Carousel}.
-         * 
-         * @returns {void}
+         * @param {string} orientation The orientation of the Carousel.
          */
         protected _addEventListeners(orientation: string): void {
             var element = this.element,
@@ -8704,17 +5308,8 @@ module platui {
         }
 
         /**
-         * @name _touchStart
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
-         * Log when the user touches the {@link platui.Carousel|Carousel}.
-         * 
+         * Log when the user touches the Carousel.
          * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
          */
         protected _touchStart(ev: plat.ui.IGestureEvent): void {
             if (this._inTouch) {
@@ -8742,17 +5337,8 @@ module platui {
         }
 
         /**
-         * @name _touchEnd
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The $touchend and $trackend event handler.
-         * 
          * @param {plat.ui.IGestureEvent} ev The touch event.
-         * 
-         * @returns {void}
          */
         protected _touchEnd(ev: plat.ui.IGestureEvent): void {
             var inTouch = this._inTouch,
@@ -8780,35 +5366,17 @@ module platui {
         }
 
         /**
-         * @name _track
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * The $track event handler. Used for tracking only horizontal or vertical tracking motions  
          * depending on the defined orientation.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $tracking event.
-         * 
-         * @returns {void}
          */
         protected _track(ev: plat.ui.IGestureEvent): void {
             this._slider.style[<any>this._transform] = this._calculateDynamicTranslation(ev);
         }
 
         /**
-         * @name _calculateStaticTranslation
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the translation value for setting the transform value during a static index set.
-         * 
          * @param {number} interval The interval change.
-         * 
-         * @returns {string} The translation value.
          */
         protected _calculateStaticTranslation(interval: number): string {
             if (this._orientation === 'vertical') {
@@ -8819,17 +5387,8 @@ module platui {
         }
 
         /**
-         * @name _calculateDynamicTranslation
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Calculates the translation value for setting the transform value during tracking.
-         * 
          * @param {plat.ui.IGestureEvent} ev The $tracking event.
-         * 
-         * @returns {string} The translation value.
          */
         protected _calculateDynamicTranslation(ev: plat.ui.IGestureEvent): string {
             if (this._orientation === 'vertical') {
@@ -8840,15 +5399,7 @@ module platui {
         }
 
         /**
-         * @name _setTransform
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Obtains the current browser's transform property value.
-         * 
-         * @returns {void}
          */
         protected _setTransform(): void {
             var style = this.element.style,
@@ -8868,17 +5419,8 @@ module platui {
         }
 
         /**
-         * @name _setPosition
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Sets the properties to use for position and sets the interval length of the sliding container.
-         * 
          * @param {HTMLElement} element? The element to base the length off of.
-         * 
-         * @returns {number} The interval length.
          */
         protected _setPosition(element?: HTMLElement): number {
             element = element || <HTMLElement>this.element.firstElementChild;
@@ -8893,15 +5435,7 @@ module platui {
         }
 
         /**
-         * @name _setOffsetWithClone
-         * @memberof platui.Carousel
-         * @kind function
-         * @access protected
-         * 
-         * @description
          * Creates a clone of this element and uses it to find the max offset.
-         * 
-         * @returns {void}
          */
         protected _setOffsetWithClone(): void {
             var element = this.element,
@@ -8910,9 +5444,10 @@ module platui {
             if (!body.contains(element)) {
                 var cloneAttempts = ++this._cloneAttempts;
                 if (cloneAttempts === this._maxCloneAttempts) {
-                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
-                    $exception.warn('Max clone attempts reached before the ' + __Carousel + ' was placed into the ' +
-                        'DOM. Disposing of the ' + __Carousel);
+                    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic),
+                        type = this.type;
+                    $exception.warn('Max clone attempts reached before the ' + type + ' was placed into the ' +
+                        'DOM. Disposing of the ' + type);
                     (<plat.ui.ITemplateControlFactory>plat.acquire(__TemplateControlFactory)).dispose(this);
                     return;
                 }
@@ -8970,44 +5505,20 @@ module platui {
     plat.register.control(__Carousel, Carousel);
 
     /**
-     * @name ICarouselOptions
-     * @memberof platui
-     * @kind interface
-     * 
-     * @description
-     * The available {@link plat.controls.Options|options} for the {@link platui.Carousel|Carousel} control.
+     * The available options for the Carousel control.
      */
     export interface ICarouselOptions {
         /**
-         * @name orientation
-         * @memberof platui.ICarouselOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {string}
-         * 
-         * @description
-         * The swipe direction of the {@link platui.Carousel|Carousel}. 
+         * The swipe direction of the Carousel. 
          * Defaults to "horizontal".
-         * 
-         * @remarks
          * - "horizontal" - horizontal control.
          * - "vertical" - vertical control.
          */
         orientation?: string;
 
         /**
-         * @name index
-         * @memberof platui.ICarouselOptions
-         * @kind property
-         * @access public
-         * 
-         * @type {number}
-         * 
-         * @description
-         * The starting index of the {@link platui.Carousel|Carousel}.
+         * The starting index of the Carousel.
          */
         index?: number;
     }
 }
-/* tslint:enable */

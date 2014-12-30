@@ -75,5 +75,5 @@ module capsize.viewcontrols {
 		}
 	}
 
-	plat.register.viewControl('boxshadow', BoxShadowViewControl, [], ['/tools/boxshadowgenerator']);
+	plat.register.viewControl('boxshadow', BoxShadowViewControl, null, ['/tools/boxshadowgenerator']);
 }

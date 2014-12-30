@@ -3091,6 +3091,10 @@ h5,
 h6 {
   color: #333333;
 }
+[plat-control="plat-routeport"],
+[plat-control="plat-viewport"] {
+  background-color: transparent;
+}
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -3333,9 +3337,29 @@ body {
 }
 .content {
   height: 100%;
-  width: 960px;
-  margin: 0 auto;
-  padding: 1em 2em;
+  width: 100%;
+  z-index: -1;
+  transition: margin 300ms;
+  -webkit-transition: margin 300ms;
+}
+.navigation.navigation-hidden + .content {
+  margin-left: 0;
+}
+.content-container {
+  padding: 1em 6em;
+}
+.manage-container {
+  width: 100%;
+  height: 100%;
+}
+.manage-container > .manage-header {
+  width: 100%;
+  clear: both;
+}
+.manage-container > .manage-section {
+  float: left;
+  width: 50%;
+  height: 100%;
 }
 .workspace {
   position: relative;
@@ -3378,6 +3402,8 @@ body {
   float: right;
   padding-right: 0.8em;
   padding-left: 0.8em;
+  font-size: 0.9em;
+  font-family: monospace;
 }
 .workspace > .workspace-sidebar > ul.workspace-options > li > .workspace-option > .workspace-option-colorpicker {
   display: block;
@@ -3481,25 +3507,47 @@ body {
 }
 .navigation {
   border-right: 1px solid #ebebeb;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  width: 15em;
+  position: relative;
+  z-index: 9999;
+  width: 100%;
+  height: 3.6em;
   background-color: #f9f9f9;
+  border-bottom: 1px solid #ebebeb;
   transition: left 300ms;
   -webkit-transition: left 300ms;
-}
-.navigation.navigation-hidden {
-  left: -15em;
 }
 .navigation-container {
   position: relative;
   height: 100%;
   width: 100%;
 }
-.navigation-header {
+.navigation-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #7c7c7c;
+}
+ul.navigation-menu {
+  display: block;
+  height: 100%;
+}
+ul.navigation-menu li {
+  display: inline-block;
+  height: 3.6em;
+  line-height: 3.6em;
+  text-align: center;
+  cursor: pointer;
+}
+ul.navigation-menu li:hover,
+ul.navigation-menu li:active {
+  background-color: #f5f5f5;
+}
+ul.navigation-menu > li {
+  width: 8em;
+  float: left;
+}
+ul.navigation-menu > li a,
+ul.navigation-menu > li > label {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -3513,58 +3561,30 @@ body {
   -moz-align-items: center;
   -ms-align-items: center;
   align-items: center;
-  height: 13em;
-  border-bottom: 1px solid #ebebeb;
-}
-ul.navigation-menu::before {
-  content: attr(data-category);
-  position: relative;
-  padding: 0.5em 0.6em;
-  font-size: 0.8em;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #7c7c7c;
-}
-ul.navigation-menu {
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-  color: #7c7c7c;
-}
-ul.navigation-menu > li {
-  width: 100%;
-  height: 3em;
-  line-height: 3em;
-  cursor: pointer;
-}
-ul.navigation-menu > li > a {
-  display: block;
   height: 100%;
   width: 100%;
-  padding: 0 1em;
   text-decoration: none;
   color: #7c7c7c;
-}
-ul.navigation-menu > li:hover,
-ul.navigation-menu > li:active {
-  background-color: #f7f7f7;
-}
-.navigation-dismiss {
-  position: absolute;
-  bottom: 5vh;
-  left: 100%;
-  width: 1.5em;
-  height: 1.5em;
-  z-index: 2;
-  background-color: #f9f9f9;
   cursor: pointer;
-  border-top-right-radius: 0.3em;
-  border-bottom-right-radius: 0.3em;
-  border: 1px solid #ebebeb;
-  border-left: none;
 }
-.navigation-dismiss::after {
-  content: " ";
-  width: 0;
-  height: 0;
+ul.navigation-menu > li > input[type="checkbox"] {
+  display: none;
+}
+ul.navigation-menu > li > input[type="checkbox"]:checked ~ ul.navigation-submenu,
+ul.navigation-menu > li:hover > ul.navigation-submenu {
+  display: block;
+}
+ul.navigation-menu > li > ul.navigation-submenu {
+  display: none;
+  width: 14em;
+  background-color: #f9f9f9;
+  border: 1px solid #ebebeb;
+}
+ul.navigation-menu > li > ul.navigation-submenu > li {
+  width: 100%;
+  border-bottom: 1px solid #ebebeb;
+}
+ul.navigation-menu > li > ul.navigation-submenu > li:last-child {
+  width: 100%;
+  border-bottom-width: 0;
 }
