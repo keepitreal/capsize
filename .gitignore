@@ -3,6 +3,7 @@
 .sass-cache
 node_modules/
 public/lib
+public/assets
 typings/
 .idea/
 *.js

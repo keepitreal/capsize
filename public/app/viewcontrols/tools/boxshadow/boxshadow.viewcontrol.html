@@ -1,4 +1,4 @@
-<h1>Box Shadow Generator</h1>
+<div class="workspace-title">Generators | Box Shadow</div>
 <div class="workspace">
 	<div class="workspace-sidebar">
 		<ul class="workspace-options">
@@ -9,37 +9,54 @@
 				</span>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">offset X</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">offset X:</div>
+					<div class="workspace-option-value">{{demoShape.offsetX}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
+					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">offset Y</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">offset Y:</div>
+					<div class="workspace-option-value">{{demoShape.offsetY}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }" plat-change="setProperty()"></plat-slider>
+					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">blur radius</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">blur radius:</div>
+					<div class="workspace-option-value">{{demoShape.blurRadius}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.blurRadius" plat-change="setProperty()"></plat-slider>
+					<plat-slider plat-bind="demoShape.blurRadius" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">spread radius</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">spread radius:</div>
+					<div class="workspace-option-value">{{demoShape.spreadRadius}}px</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.spreadRadius" plat-change="setProperty()"></plat-slider>
+					<plat-slider plat-bind="demoShape.spreadRadius" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">transparency</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">transparency:</div>
+					<div class="workspace-option-value">{{demoShape.rgba.a}}</div>
+				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.rgba.alpha" plat-change="setProperty()"></plat-slider>
+					<plat-slider plat-bind="alphaAlias" plat-react="setAlpha()" plat-options="{ min: 0, max: 100 }"></plat-slider>
 				</div>
 			</li>
 			<li>
-				<div class="workspace-option workspace-option-name">color</div>
+				<div class="workspace-option">
+					<div class="workspace-option-name">color</div>
+				</div>
 				<div class="workspace-option workspace-option-control cf">
 					<div class="workspace-option-colorpicker" data-target="colpick" id="colpick"></div>
 				</div>
@@ -47,10 +64,9 @@
 		</ul>
 	</div>
 	<div class="workspace-demo">
-		<button plat-tap="logProperty">Log Property</button>
-		<div class="workspace-demo-shape" plat-name="demoShape"></div>
 		<ul class="workspace-css">
-			<li>box-shadow: {{demoShape.inset ? 'inset' : ''}} {{demoShape.offsetX}}px {{demoShape.offsetY}}px {{demoShape.blurRadius}}px {{demoShape.spreadRadius}}px</li>
+			<li>box-shadow: {{demoShape.inset ? 'inset' : ''}} {{demoShape.offsetX}}px {{demoShape.offsetY}}px {{demoShape.blurRadius}}px {{demoShape.spreadRadius}}px rgba({{demoShape.rgba.r}},{{demoShape.rgba.g}},{{demoShape.rgba.b}},{{demoShape.rgba.a}});</li>
 		</ul>
+		<div class="workspace-demo-shape" plat-name="demoShape"></div>
 	</div>
 </div>

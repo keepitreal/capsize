@@ -1,0 +1,21 @@
+@import '../common/variables';
+
+.container {
+	padding: 1em;
+}
+
+.content {
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+	transition: margin 300ms;
+	-webkit-transition: margin 300ms;
+}
+
+.navigation.navigation-hidden + .content {
+	margin-left: 0;
+}
+
+.content-container {
+	padding: 1em 6em;
+}

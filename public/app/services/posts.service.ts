@@ -1,6 +1,6 @@
 /// <reference path="../references.d.ts" />
 
-module platynem.services {
+module capsize.services {
     'use strict';
 
     export class PostsService extends BaseService implements IPostsService {

@@ -4,27 +4,27 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0">
-    <title>PlatyNEM</title>
+    <title>Capsize</title>
     
     <link rel="stylesheet" href="app/lib/colpick/colpick.css">
     <link href="css/main.css" rel="stylesheet" />
 </head>
 <body>
-    <navigation></navigation>
-    <section class="content">
-        <section class="container">
-            <plat-routeport></plat-routeport>
-        </section>
-    </section>
-
+    <navigation class="navigation navigation-default" role="navigation"></navigation>
+    <div class="content">
+        <plat-routeport></plat-routeport>
+    </div>
     <!-- lib -->
     <script src="app/lib/platypus/platypus.js"></script>
     <script src="app/lib/platypusui/platypusui.js"></script>
     <script src="app/lib/jquery/dist/jquery.min.js"></script>
     <script src="app/lib/colpick/colpick.js"></script>
+    <script src="app/lib/markdown/lib/markdown.js"></script>
+    <script src="app/lib/marked/lib/marked.js"></script>
 
     <!-- Injectables -->
     <script src="app/common/injectables/jquery.injectable.js"></script>
+    <script src="app/common/injectables/marked.injectable.js"></script>
 
     <!-- Models -->
     <script src="app/models/user.model.js"></script>
@@ -42,16 +42,18 @@
     <!-- TemplateControls -->
     <script src="app/common/templatecontrols/navigation/navigation.templatecontrol.js"></script>
     <script src="app/common/templatecontrols/socialauth/socialauth.templatecontrol.js"></script>
+    <script src="app/common/templatecontrols/markeddisplay/markeddisplay.templatecontrol.js"></script>
 
     <!-- ViewControls -->
     <script src="app/viewcontrols/base.viewcontrol.js"></script>
     <script src="app/viewcontrols/home/home.viewcontrol.js"></script>
+    <script src="app/viewcontrols/about/about.viewcontrol.js"></script>
     <script src="app/viewcontrols/blog/list/list.viewcontrol.js"></script>
-    <script src="app/viewcontrols/blog/create/create.viewcontrol.js"></script>
+    <script src="app/viewcontrols/blog/manage/manage.viewcontrol.js"></script>
     <script src="app/viewcontrols/blog/single/single.viewcontrol.js"></script>
-    <script src="app/viewcontrols/blog/edit/edit.viewcontrol.js"></script>
     <script src="app/viewcontrols/auth/login/login.viewcontrol.js"></script>
     <script src="app/viewcontrols/auth/register/register.viewcontrol.js"></script>
+    <script src="app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js"></script>
 
     <!-- App -->
     <script src="app/app.js"></script>

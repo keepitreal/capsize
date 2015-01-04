@@ -15,7 +15,8 @@ function publicFiles(ext) {
     return [
         'public/app/lib/jquery/dist/*.' + ext,
         'public/app/lib/bootstrap/dist/js/*.' + ext,
-        'public/app/lib/platypus/*.' + ext,
+       // 'public/app/lib/platypus/*.' + ext,
+       // 'public/app/lib/platypusui/*.' + ext,
         'public/app/services/**/*.' + ext,
         'public/app/models/**/*.' + ext,
         'public/app/repositories/**/*.' + ext,
@@ -97,7 +98,7 @@ module.exports = function (grunt) {
                 watch: 'server'
             },
             watch_public: {
-                src: publicFiles('ts').concat(['!public/app/lib/platypus/*.ts']),
+                src: publicFiles('ts'),
                 watch: 'public'
             },
             server: {

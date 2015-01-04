@@ -1,10 +1,10 @@
 /// <reference path="../references.d.ts" />
 
-module platynem.repositories {
+module capsize.repositories {
     'use strict';
 
     export class PostsRepository {
-        constructor(private postFactory: platynem.models.IPostFactory,
+        constructor(private postFactory: models.IPostFactory,
                     private postsService: services.IPostsService) { }
 
         create(post: models.IPost) {
@@ -39,7 +39,7 @@ module platynem.repositories {
     }
 
     plat.register.injectable('postsRepository', PostsRepository, [
-        platynem.models.PostFactory,
-        platynem.services.PostsService
+        models.PostFactory,
+        services.PostsService
     ]);
 }

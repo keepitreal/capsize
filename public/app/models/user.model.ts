@@ -1,6 +1,6 @@
 /// <reference path="../references.d.ts" />
 
-module platynem.models {
+module capsize.models {
     'use strict';
 
     export class User {

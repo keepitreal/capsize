@@ -1,6 +1,6 @@
 /// <reference path="./references.d.ts" />
 
-module platynem {
+module capsize {
     'use strict';
 
     class App extends plat.App {

@@ -1,6 +1,6 @@
 /// <reference path="../../../references.d.ts" />
 
-module platynem.viewcontrols {
+module capsize.viewcontrols {
     'use strict';
 
     export class ListViewControl extends plat.ui.WebViewControl {
@@ -27,6 +27,6 @@ module platynem.viewcontrols {
     }
 
     plat.register.viewControl('listViewControl', ListViewControl, [
-        platynem.repositories.PostsRepository
+        repositories.PostsRepository
     ], ['posts']);
 }

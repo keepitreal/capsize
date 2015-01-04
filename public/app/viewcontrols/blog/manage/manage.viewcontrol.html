@@ -1,0 +1,14 @@
+<div class="manage-container">
+	<div class="manage-header">
+		<input type="text" class="form-control" plat-bind="post.title" placeholder="Title"/>
+		<button class="button" plat-tap="createPost(post)">Submit</button>
+	</div>
+	<div class="manage-section">
+		<div class="form-group">
+		    <textarea class="form-control" plat-bind="post.content" placeholder="Content" rows="10"/></textarea>
+		</div>
+	</div>
+	<div class="manage-section">
+		<marked-display plat-context="post.content" plat-options="{ editMode: true }"></marked-display>
+	</div>
+</div>

@@ -1,9 +1,9 @@
 /// <reference path="../references.d.ts" />
 
-module platynem.viewcontrols {
+module capsize.viewcontrols {
 	'use strict';
 
 	export class BaseViewControl extends plat.ui.WebViewControl {
-		$utils: plat.IUtils = plat.acquire(plat.IUtils);
+		$utils = plat.acquire(plat.IUtils);
 	}
 }

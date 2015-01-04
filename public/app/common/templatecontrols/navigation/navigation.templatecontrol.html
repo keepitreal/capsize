@@ -1,30 +1,52 @@
-<header>
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/#!/">PlatyNEM</a>
-            </div>
-            <div class="collapse navbar-collapse" id="platynem-navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="#!/posts">Blog</a></li>
-                    <li plat-control="plat-if" plat-options="{ condition: !!user }"><a href="#!/posts/create">New Post</a></li>
-                </ul>
-                <!-- Displays when a user is detected -->
-                <ul class="nav navbar-nav navbar-right" plat-visible="{{user._id}}">
-                    <li class="dropdown">
-                        <a href="#!/" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/users/{{user._id}}">Profile</a></li>
-                            <li><a plat-tap="logout()">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <!-- Displays when no user is detected -->
-                <ul class="nav navbar-nav navbar-right" plat-visible="{{!user._id}}">
-                    <li><a href="#!/login">Login</a></li>
-                    <li><a href="#!/register">Register</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<div class="navigation-container">
+    <div class="navigation-logo">
+        <div class="navigation-logo-text">Capsize</div>
+    </div>
+    <ul class="navigation-menu">
+        <li data-category="generators">
+            <input type="checkbox" id="generators">
+            <label for="generators">Generators</label>
+            <ul class="navigation-submenu">
+                <li>
+                    <a href="#!/tools/boxshadowgenerator">Box Shadow Generator</a>
+                </li>
+            </ul>
+        </li>
+        <!-- <li data-category="mixins">
+            <input type="checkbox" id="mixins">
+            <label for="mixins">Mixins</label>
+            <ul class="navigation-submenu">
+                <li>
+                    <a href="">Layout</a>
+                </li>
+                <li>
+                    <a href="">Animations</a>
+                </li>
+                <li>
+                    <a href="">CSS3</a>
+                </li>
+            </ul>
+        </li> -->
+        <li data-category="blog">
+            <a href="#!/posts">Blog</a>
+        </li>
+        <li data-category="about">
+            <a href="#!/about">About</a>
+        </li>
+        <li data-category="admin">
+            <input type="checkbox" id="admin">
+            <label for="admin">Admin</label>
+            <ul class="navigation-submenu">
+                <li>
+                    <a href="#!/admin/posts/list">All Posts</a>
+                </li>
+                <li>
+                    <a href="#!/admin/posts/new">New Post</a>
+                </li>
+                <li>
+                    <a plat-tap="logout">Log Out</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
