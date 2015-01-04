@@ -62,7 +62,7 @@ module platynem.viewcontrols {
 		concatValues(obj) {
 			var value: string = '';
 			
-			this.$utils.forEach(obj, (prop: any, key: any) => {
+			this.$utils.forEach((prop: any, key: any) => {
 				if (key === 'inset') {
 					value += prop ? 'inset' : '';
 					return;
@@ -75,7 +75,7 @@ module platynem.viewcontrols {
 				if (this.$utils.isNumber(prop)) {
 					value += ' ' + prop + 'px';
 				}
-			});
+			}, obj);
 
 			return value;
 		}

@@ -90,7 +90,8 @@ module.exports = function (grunt) {
         ts: {
             options: {
                 module: 'commonjs',
-                target: 'es5'
+                target: 'es5',
+                fast: 'always'
             },
             watch_server: {
                 src: serverFiles('ts'),

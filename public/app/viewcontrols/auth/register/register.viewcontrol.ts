@@ -24,17 +24,17 @@ module platynem.viewcontrols {
                 })
                 .catch((response) => {
                     var utils = this.$utils;
-                    this.context.errors = utils.map(response.errors, (err: { message: string }) => {
+                    this.context.errors = utils.map((err) => {
                         return err;
-                    });
+                    }, <Array<{ message: string }>>response.errors);
                 });
         }
 
         navigatedTo(route: plat.web.IRoute<any>) {
             if (this.$utils.isObject(route.query)) {
-                this.$utils.forEach(route.query, (error: string) => {
+                this.$utils.forEach((error) => {
                     this.context.errors.push({ message: decodeURI(error) });
-                });
+                }, <Array<string>>route.query);
             }
         }
     }
