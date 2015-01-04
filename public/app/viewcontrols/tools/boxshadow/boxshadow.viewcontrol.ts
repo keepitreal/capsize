@@ -13,7 +13,7 @@ module capsize.viewcontrols {
 		$ = plat.acquire(injectables.jQueryFactory);
 
 		demoShape: plat.controls.INamedElement<HTMLDivElement, any>;
-
+		
 		colpick: any;
 
 		context = {
@@ -30,12 +30,9 @@ module capsize.viewcontrols {
 					b: 100,
 					a: 1
 				}
-			}
+			},
+			alphaAlias: 100
 		};
-
-		logProperty() {
-			console.log(this.colpick);
-		}
 
 		loaded() {
 			var color = this.context.demoShape.rgba;
@@ -58,6 +55,13 @@ module capsize.viewcontrols {
 				}
 			});
 			
+			this.setProperty();
+		}
+
+		setAlpha() {
+			var context = this.context;
+			context.demoShape.rgba.a = context.alphaAlias / 100;
+
 			this.setProperty();
 		}
 

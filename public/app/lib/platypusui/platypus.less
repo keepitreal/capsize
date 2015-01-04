@@ -147,10 +147,10 @@
     @color: @white;
     @background-color: @neutralColor;
     @length-default: 80%;
-    @length-right: @length-default;
     @length-left: @length-default;
-    @length-up: @length-default;
-    @length-down: @length-default;
+    @length-right: @length-default;
+    @length-top: @length-default;
+    @length-bottom: @length-default;
     @shadow-color: fadeout(@black, 30%);
     @shadow-offset: 2px;
     @shadow-blur: 10px;
@@ -966,7 +966,7 @@
 
 /// Flexbox
 
-.flexbox {
+.flexbox() {
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -1003,7 +1003,7 @@
     flex:  @values;
 }
 
-.flex-absolute-center {
+.flex-absolute-center() {
     .flexbox();
     .align-items(center);
     .justify-content(center);
@@ -1031,10 +1031,12 @@
 .scroll(@direction) {
     & when (@direction = x) {
         overflow-x: auto;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
     }
     & when not (@direction = x) {
         overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
     }
 }
@@ -1155,19 +1157,25 @@
 
 /// ======= Globally Set Styles for PlatypusUI ======== ///
 
-html, body {
+html {
+    .fill();
+}
+
+body {
+    position: relative;
     font-size: @defaultFontSize;
     font-weight: 100;
+    overflow: hidden;
     .fill();
 }
 
 [plat-control="plat-routeport"],
 [plat-control="plat-viewport"] {
     position: relative;
-    background-color: @defaultViewColor;
     .fill();
 
     & > *:only-child {
+        position: relative;
         .fill();
     }
 }
@@ -1703,22 +1711,22 @@ cite {
     }
 
     &.plat-left {
-        width: @length-right;
+        width: @length-left;
         left: 0;
     }
 
     &.plat-right {
-        width: @length-left;
+        width: @length-right;
         right: 0;
     }
 
     &.plat-top {
-        height: @length-down;
+        height: @length-top;
         top: 0;
     }
 
     &.plat-bottom {
-        height: @length-up;
+        height: @length-bottom;
         bottom: 0;
     }
 }
@@ -1732,19 +1740,20 @@ cite {
     &.plat-drawer-transition-left,
     &.plat-drawer-transition-top,
     &.plat-drawer-transition-bottom {
-        overflow: hidden;
-        .touch-action(none);
-
-        &.plat-drawer-open::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: transparent;
-            overflow: hidden;
-            z-index: 100;
-            .fill();
+        &.plat-drawer-open {
             .touch-action(none);
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: transparent;
+                overflow: hidden;
+                z-index: 100;
+                .fill();
+                .touch-action(none);
+            }
         }
     }
 
@@ -2408,22 +2417,28 @@ cite {
 	@navbar-color: @primaryColor;
 
 /// ============== Animations =============== ///
-
 	@navbar-action-animation-mid: 0.4;
-	@navbar-action-animation-max: 1.2;
+	@navbar-action-animation-max: 0.8;
 
 	.navbar-action-animation-0 {
-		top: (@navbar-height - (@navbar-height * @navbar-action-animation-max)) * 0.5;
-		margin-left: -((@navbar-height * @navbar-action-animation-max) * 0.5);
-		height: @navbar-height * @navbar-action-animation-max;
-		width: @navbar-action-max-width * @navbar-action-animation-max;
-	}
-
-	.navbar-action-animation-1 {
 		top: @navbar-height / 2;
 		margin-left: 0;
 		height: 0px;
 		width: 0px;
+	}
+
+	.navbar-action-animation-1 {
+		top: (@navbar-height - (@navbar-height * @navbar-action-animation-mid)) * 0.5;
+		margin-left: -((@navbar-height * @navbar-action-animation-mid) * 0.5);
+		height: @navbar-height * @navbar-action-animation-mid;
+		width: @navbar-height * @navbar-action-animation-mid;
+	}
+
+	.navbar-action-animation-2 {
+		top: (@navbar-height - (@navbar-height * @navbar-action-animation-max)) * 0.5;
+		margin-left: -((@navbar-height * @navbar-action-animation-max) * 0.5);
+		height: @navbar-height * @navbar-action-animation-max;
+		width: @navbar-height * @navbar-action-animation-max;
 	}
 }
 
@@ -2432,32 +2447,41 @@ cite {
 @-webkit-keyframes PULSE {
 	#Navbar;
 	0%   { .navbar-action-animation-0(); }
-	80%   { .navbar-action-animation-0(); }
-	100%  { .navbar-action-animation-1(); }
+	20%  { .navbar-action-animation-1(); }
+	30%  { .navbar-action-animation-2(); }
+	90%  { .navbar-action-animation-2(); }
+	100% { .navbar-action-animation-0(); }
 }
 @-moz-keyframes PULSE {
 	#Navbar;
 	0%   { .navbar-action-animation-0(); }
-	80%   { .navbar-action-animation-0(); }
-	100%  { .navbar-action-animation-1(); }
+	20%  { .navbar-action-animation-1(); }
+	30%  { .navbar-action-animation-2(); }
+	90%  { .navbar-action-animation-2(); }
+	100% { .navbar-action-animation-0(); }
 }
 @-o-keyframes PULSE {
 	#Navbar;
 	0%   { .navbar-action-animation-0(); }
-	80%   { .navbar-action-animation-0(); }
-	100%  { .navbar-action-animation-1(); }
+	20%  { .navbar-action-animation-1(); }
+	30%  { .navbar-action-animation-2(); }
+	90%  { .navbar-action-animation-2(); }
+	100% { .navbar-action-animation-0(); }
 }
 @keyframes PULSE {
 	#Navbar;
 	0%   { .navbar-action-animation-0(); }
-	80%   { .navbar-action-animation-0(); }
-	100%  { .navbar-action-animation-1(); }
+	20%  { .navbar-action-animation-1(); }
+	30%  { .navbar-action-animation-2(); }
+	90%  { .navbar-action-animation-2(); }
+	100% { .navbar-action-animation-0(); }
 }
 
 /// ============== Navbar Defaults  =============== ///
 
 .plat-navbar, .navbar {
 	#Navbar;
+	.flex-absolute-center();
 	.box-shadow(0px 2px 4px 0px rgba(50, 50, 50, 0.20));
 	width: 100%;
 	height: @navbar-height;
@@ -2483,13 +2507,6 @@ cite {
 	&.navbar-bottom {
 		.box-shadow(0px -2px 4px 0px rgba(50, 50, 50, 0.20));
 		bottom: 0;
-	}
-
-	.navbar-container {
-		height: 100%;
-		width: 100%;
-		position: relative;
-		.flex-absolute-center();
 	}
 
 /// ============ Right & Left Actions  ============= ///
@@ -2529,7 +2546,7 @@ cite {
 
 /// ================ Navbar Search  ================ ///
 
-		.plat-input.plat-search {
+		.plat-input[type="search"] {
 			.border-radius(@border-radius);
 			height: @navbar-height * 0.63;
 			line-height: @navbar-height * 0.63;
@@ -2537,16 +2554,6 @@ cite {
 			width: 80%;
 			max-width: 14em;
 			background-color: darken(@navbar-color, 6%);
-
-			&.input-focused {
-				position: absolute;
-				height: 100%;
-				left: 0;
-				max-width: none;
-				width: 100%;
-				background-color: @white;
-				.border-radius(0px);
-			}
 		}
 
 		.plat-input-container {
@@ -3140,7 +3147,6 @@ cite {
         background-color: @background-color-off;
         border: 1px solid;
         border-color: @border-color;
-        box-sizing: content-box;
         .border-radius(@height);
         .translateZ(0);
         .transition(@transition);
@@ -3301,6 +3307,32 @@ cite {
             .plat-carousel-item {
                 display: block;
             }
+        }
+    }
+}
+
+#Listview {
+}
+
+.plat-listview {
+    #Listview;
+    .fill();
+    .box-sizing(border-box);
+
+    .plat-listview-container {
+        .fill();
+        .box-sizing(border-box);
+    }
+
+    &.plat-vertical {
+        .plat-listview-container {
+            .scroll(y);
+        }
+    }
+
+    &.plat-horizontal {
+        .plat-listview-container {
+            .scroll(x);
         }
     }
 }

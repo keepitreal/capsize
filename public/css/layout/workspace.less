@@ -2,16 +2,24 @@
 
 // =============== Workspace Constants ==================
 
-@sidebar-width: 41.7%;
+@sidebar-width: 27em;
 
 // =============== Workspace Constants ==================
+.workspace-title {
+	width: 100%;
+	height: 3em;
+	line-height: 3em;
+	padding: 0 @horizontal-container;
+	background-color: @font-grey;
+	color: #ffffff;
+	font-weight: bold;
+}
+
 
 .workspace {
 	position: relative;
 	width: 100%;
 	min-height: 45em;
-	margin-bottom: 5em;
-	border: 1px solid @accent-grey;
 
 	& > .workspace-sidebar {
 		position: absolute;
@@ -19,9 +27,8 @@
 		bottom: 0;
 		left: 0;
 		width: @sidebar-width;
-		max-width: 40em;
 		border-right: 1px solid @accent-grey;
-		background-color: @background-color;
+		background-color: @background-grey;
 
 		 & > ul.workspace-options {
 			padding: 0;
@@ -59,8 +66,8 @@
 				}
 
 				&.workspace-item-inline {
-					padding-right: 1.6em;
-					padding-left: 1.6em;
+					padding-right: @horizontal-container;
+					padding-left: @horizontal-container;
 					
 					& > .workspace-option-control {
 						float: right;
@@ -81,23 +88,24 @@
 		top: 0;
 		bottom: 0;
 		right: 0;
-		width: 100% - @sidebar-width;
+		width: calc(~'100% - @{sidebar-width}');
 		text-align: center;
 
 		& > .workspace-demo-shape {
 			background-color: lighten(@blue, 20%);
-			width: 50%;
-			height: 35%;
+			width: 20em;
+			height: 20em;
 			margin: 0 auto 8em;
 		}
 
 		& > ul.workspace-css {
 			font-family: monospace;
 			font-size: 0.9em;
-			background-color: @background-color;
+			background-color: @background-grey;
 			padding: 2em 0.5em;
-			margin: 4em 1em;
-			border: 1px solid darken(@background-color, 10%);
+			margin: 4em auto;
+			max-width: 40em;
+			border: 1px solid darken(@background-grey, 10%);
 			border-radius: 5px;
 			list-style: none;
 

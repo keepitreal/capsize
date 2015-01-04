@@ -1,3 +1,5 @@
+/// <reference path="../platypus/platypus-node.d.ts" />
+
 /* tslint:disable */
 /**
  * Copyright 2014 Platypi, LLC. All rights reserved. 
@@ -22,6 +24,7 @@ module platui {
         __Utils = __prefix + 'Utils',
         __Animator = __prefix + 'Animator',
         __DomEventInstance = __prefix + 'DomEventInstance',
+        __TemplateControlFactory = __prefix + 'TemplateControlFactory',
     
         /**
          * Controls
@@ -42,7 +45,7 @@ module platui {
         __Select = __Plat + 'select',
         __Input = __Plat + 'input',
         __Carousel = __Plat + 'carousel',
-        __TemplateControlFactory = '$TemplateControlFactory',
+        __Listview = __Plat + 'listview',
     
         /**
          * Referenced Controls / Vars
@@ -54,6 +57,7 @@ module platui {
         __Context = __Plat + 'context',
         __CamelContext = 'platContext',
         __Bind = __Plat + 'bind',
+        __TemplateControlCache = '__templateControlCache',
     
         /**
          * Animations
@@ -64,10 +68,10 @@ module platui {
         /**
          * Events
          */
-        __$swipe = '$swipe',
         __$tap = '$tap',
         __$touchstart = '$touchstart',
         __$touchend = '$touchend',
+        __$swipe = '$swipe',
         __$track = '$track',
         __$trackend = '$trackend',
         __ButtonPrefix = '__plat-button-',
@@ -81,6 +85,7 @@ module platui {
         /**
          * Misc
          */
+        __CONTEXT = 'context',
         __Reversed = '-reversed',
         __transitionNegate: plat.IObject<string> = {
             right: 'left',
@@ -783,10 +788,6 @@ module platui {
      */
     export class ProgressBar extends plat.ui.TemplateControl implements IUIControl {
         /**
-         * Reference to the Window injectable.
-         */
-        $window: Window = plat.acquire(__Window);
-        /**
          * Reference to the IUtils injectable.
          */
         $utils: plat.IUtils = plat.acquire(__Utils);
@@ -858,12 +859,6 @@ module platui {
                 return;
             }
 
-            this.addEventListener(this.$window, 'resize', () => {
-                var offset = this._barMax = barElement.parentElement.offsetWidth;
-                if (!offset) {
-                    this._setOffsetWithClone();
-                }
-            }, false);
             this.setProgress();
         }
 
@@ -917,13 +912,14 @@ module platui {
 
             var clone = <HTMLElement>element.cloneNode(true),
                 regex = /\d+(?!\d+|%)/,
+                $window: Window = plat.acquire(__Window),
                 parentChain = <Array<HTMLElement>>[],
                 shallowCopy = clone,
                 computedStyle: CSSStyleDeclaration,
                 width: string;
 
             shallowCopy.id = '';
-            while (!regex.test((width = (computedStyle = this.$window.getComputedStyle(element)).width))) {
+            while (!regex.test((width = (computedStyle = $window.getComputedStyle(element)).width))) {
                 if (computedStyle.display === 'none') {
                     shallowCopy.style.setProperty('display', 'block', 'important');
                 }
@@ -1151,7 +1147,12 @@ module platui {
                 var element = this.element;
                 this.dom.clearNode(element);
                 element.appendChild(template);
-            });
+            }).catch((error) => {
+                    this.$utils.postpone(() => {
+                        var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
+                        $exception.fatal(error, $exception.BIND);
+                    });
+                });
         }
 
         /**
@@ -1669,7 +1670,12 @@ module platui {
                 var element = this._drawerElement;
                 this.dom.clearNode(element);
                 element.appendChild(template);
-            });
+            }).catch((error) => {
+                    this.$utils.postpone(() => {
+                        var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
+                        $exception.fatal(error, $exception.BIND);
+                    });
+                });
         }
 
         /**
@@ -1784,13 +1790,13 @@ module platui {
             return this.$animator.animate(rootElement, __Transition, {
                 properties: animationOptions
             }).then(() => {
-                if (this._isOpen) {
-                    return;
-                }
+                    if (this._isOpen) {
+                        return;
+                    }
 
-                drawerElement.setAttribute(__Hide, '');
-                dom.removeClass(rootElement, this._directionalTransitionPrep);
-            });
+                    drawerElement.setAttribute(__Hide, '');
+                    dom.removeClass(rootElement, this._directionalTransitionPrep);
+                });
         }
 
         /**
@@ -2736,12 +2742,7 @@ module platui {
         /**
          * The registered animation that animates when a navbar-action is pressed
          */
-        protected _actionAnimation = plat.acquire(platui.NavbarActionPulse);
-
-        /**
-         * The input type=search element that may be in the innerHTML of the navbar control
-         */
-        protected _navbarSearch: HTMLElement;
+        _actionAnimation = plat.acquire(platui.NavbarActionPulse);
 
         /**
          * Sets the classes on the proper elements.
@@ -2775,21 +2776,6 @@ module platui {
         }
 
         /**
-         * Gathers elements from controls that will be rendered after 
-         * setTemplate has returned
-         */
-        loaded() {
-            var element = this.element,
-                searchInput: HTMLElement;
-            
-            this._navbarSearch = (<NodeListOf<HTMLDivElement>>element.querySelectorAll('.plat-input.plat-search'))[0];
-            searchInput = (<NodeListOf<HTMLInputElement>>this._navbarSearch.querySelectorAll('input[type="search"'))[0];
-            
-            this.addEventListener(searchInput, 'focus', this._inputSearchFocus, false);
-            this.addEventListener(searchInput, 'blur', this._inputSearchBlur, false);
-        }
-
-        /**
          * Animate .navbar-action elements when the user touches the Navbar.
          * @param {plat.ui.IGestureEvent} ev The touch event.
          */
@@ -2803,14 +2789,14 @@ module platui {
 
     /// <reference path="../../references.d.ts" />
     
-    /**
+	/**
      * An animation control that enlarges and shrinks a transparent circle behind the navbar action
      */
-    export class NavbarActionPulse extends plat.ui.animations.SimpleCssAnimation {
-        className = __NavbarActionPulse;
-    }
+	export class NavbarActionPulse extends plat.ui.animations.SimpleCssAnimation {
+		className = __NavbarActionPulse;
+	}
 
-    plat.register.animation(__NavbarActionPulse, NavbarActionPulse);
+	plat.register.animation(__NavbarActionPulse, NavbarActionPulse);
 
     /**
      * An IBindablePropertyControl that standardizes an HTML5 input[type="range"].
@@ -5521,4 +5507,284 @@ module platui {
          */
         index?: number;
     }
+
+    /**
+     * An ITemplateControl for creating a complex list of items with 
+     * extensive functionality.
+     */
+    export class Listview extends plat.ui.controls.ForEach implements IUIControl {
+        /**
+         * Reference to the Window injectable.
+         */
+        $window: Window = plat.acquire(__Window);
+        /**
+         * Reference to the Document injectable.
+         */
+        $document: Document = plat.acquire(__Document);
+        /**
+         * Reference to the IUtils injectable.
+         */
+        $utils: plat.IUtils = plat.acquire(__Utils);
+        /**
+         * Reference to the ICompat injectable.
+         */
+        $compat: plat.ICompat = plat.acquire(__Compat);
+
+        /**
+         * The HTML template represented as a string.
+         */
+        templateString = '<div class="plat-listview-container"></div>\n';
+
+        /**
+         * The evaluated plat-options object.
+         */
+        options: plat.observable.IObservableProperty<IListviewOptions>;
+
+        /**
+         * An object containing the Listview's defined templates.
+         */
+        templates: plat.IObject<Node> = {};
+
+        /**
+         * The control's container element.
+         */
+        protected _container: HTMLElement;
+
+        /**
+         * The control's orientation.
+         * - "vertical"
+         * - "horizontal"
+         */
+        protected _orientation: string;
+
+        /**
+         * Whether or not a render function is being used.
+         */
+        protected _usingRenderFunction = false;
+
+        /**
+         * The item template key if a single item template is being used.
+         */
+        protected _itemTemplate: string;
+
+        /**
+         * The selector function used to obtain the template key for each item.
+         */
+        protected _itemTemplateSelector: (item: any, templates: plat.IObject<Node>) => string;
+
+        /**
+         * Sets the classes on the proper elements.
+         * @param {string} className? An optional, additional class name or class names to set on the control 
+         * in addition to its standard set.
+         * @param {Element} element? The element to set the class name on. Should default to 
+         * the control's element if not specified.
+         */
+        setClasses(className?: string, element?: Element): void {
+            this.dom.addClass(element || this.element, __Listview + ' ' + (className || ''));
+        }
+
+        /**
+         * Check for templateUrl and set if needed.
+         */
+        initialize(): void {
+            var optionObj = this.options || <plat.observable.IObservableProperty<IListviewOptions>>{},
+                options = optionObj.value || <IListviewOptions>{};
+
+            this.templateUrl = options.templateUrl;
+            this.setClasses();
+        }
+
+        /**
+         * Parse the innerTemplate and add it to the control's element.
+         */
+        setTemplate(): void {
+            var $utils = this.$utils;
+            if ($utils.isString(this.templateUrl)) {
+                var fragment = this.dom.serializeHtml(this.templateString),
+                    element = this.element;
+
+                this._container = <HTMLElement>fragment.firstChild;
+                this._parseTemplates(element);
+
+                element.appendChild(fragment);
+                return;
+            }
+
+            var innerTemplate = this.innerTemplate;
+            this._container = <HTMLElement>this.element.firstElementChild;
+
+            if ($utils.isNode(innerTemplate)) {
+                this._parseTemplates(innerTemplate);
+            }
+        }
+
+        /**
+         * Check new context, re-determine item templates, and kick off re-rendering.
+         */
+        //contextChanged(): void {
+        //if (!this.$utils.isArray(this.context)) {
+        //    var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
+        //    $exception.warn(__Listview + ' context set to something other than an Array.', $exception.CONTEXT);
+        //    return;
+        //}
+
+        //this._setListener();
+        //this.render();
+        //}
+
+        /**
+         * Determine item templates and kick off rendering.
+         */
+        loaded(): void {
+            var optionObj = this.options || <plat.observable.IObservableProperty<IListviewOptions>>{},
+                options = optionObj.value || <IListviewOptions>{},
+                $utils = this.$utils,
+                templates = this.templates,
+                orientation = this._orientation = options.orientation || 'vertical',
+                itemTemplate = options.itemTemplate,
+                $exception: plat.IExceptionStatic;
+
+            this.dom.addClass(this.element, __Plat + orientation);
+
+            if (!$utils.isString(itemTemplate)) {
+                $exception = plat.acquire(__ExceptionStatic);
+                $exception.warn('No item template or item template selector specified for ' + this.type + '.', $exception.TEMPLATE);
+            }
+
+            this._determineItemTemplate(itemTemplate);
+
+            if (!$utils.isArray(this.context)) {
+                if (!$utils.isNull(this.context)) {
+                    $exception = plat.acquire(__ExceptionStatic);
+                    $exception.warn(this.type + ' context set to something other than an Array.', $exception.CONTEXT);
+                }
+                return;
+            }
+
+            this._setAliases();
+            this._setListener();
+            this.render();
+        }
+
+        /**
+         * Blow out the DOM starting at the index, determine how to render, and render accordingly.
+         * @param {number} index The starting index to render.
+         */
+        render(index?: number): void {
+            var $utils = this.$utils,
+                bindableTemplates = this.bindableTemplates,
+                container = this._container;
+
+            //this.dom.clearNode(container);
+            if (!$utils.isNumber(index)) {
+                index = 0;
+            }
+
+            if (this._usingRenderFunction) {
+                return;
+            }
+
+            var key = this._itemTemplate;
+            if ($utils.isUndefined(bindableTemplates.templates[key])) {
+                return;
+            }
+
+            this._addItems(this.context.length - index, index);
+        }
+
+        /**
+         * Determine the proper item template or method of item template selection.
+         * @param {string} itemTemplate The property for indicating either the item template or the 
+         * item template selector.
+         */
+        protected _determineItemTemplate(itemTemplate: string): void {
+            var $utils = this.$utils,
+                templates = this.templates;
+
+            if ($utils.isNode(templates[itemTemplate])) {
+                this._itemTemplate = itemTemplate;
+                return;
+            }
+
+            var controlProperty = this.findProperty(itemTemplate) || <plat.IControlProperty>{};
+            if (!$utils.isFunction(controlProperty.value)) {
+                var $exception: plat.IExceptionStatic = plat.acquire(__ExceptionStatic);
+                $exception.warn(__Listview + ' item template "' + itemTemplate +
+                    '" was neither a template defined in the DOM nor a template selector function in its control hiearchy',
+                    $exception.TEMPLATE);
+                return;
+            }
+
+            this._usingRenderFunction = true;
+            this._itemTemplateSelector = (<Function>controlProperty.value).bind(controlProperty.control);
+        }
+
+        /**
+         * Binds the item to a template at that index.
+         */
+        protected _bindItem(index: number): plat.async.IThenable<DocumentFragment> {
+            return this.bindableTemplates.bind(this._itemTemplate, index, this._getAliases(index));
+        }
+
+        /**
+         * Parse the Listview templates and create the templates object.
+         * @param {Node} node The node whose childNodes we want to parse.
+         */
+        protected _parseTemplates(node: Node): void {
+            var $utils = this.$utils,
+                $document = this.$document,
+                templates = this.templates,
+                bindableTemplates = this.bindableTemplates,
+                slice = Array.prototype.slice,
+                childNodes: Array<Node> = slice.call(node.childNodes),
+                childNode: Node,
+                subNodes: Array<Node>,
+                templateName: string,
+                fragment: DocumentFragment;
+
+            while (childNodes.length > 0) {
+                childNode = childNodes.shift();
+                if (childNode.nodeType === Node.ELEMENT_NODE) {
+                    fragment = $document.createDocumentFragment();
+                    subNodes = slice.call(childNode.childNodes);
+
+                    while (subNodes.length > 0) {
+                        fragment.appendChild(subNodes.shift());
+                    }
+
+                    templateName = $utils.camelCase(childNode.nodeName.toLowerCase());
+                    bindableTemplates.add(templateName, fragment);
+                    templates[templateName] = fragment;
+                }
+            }
+        }
+    }
+
+    plat.register.control(__Listview, Listview);
+
+    /**
+     * The available options for the Listview control.
+     */
+    export interface IListviewOptions extends plat.ui.controls.IForEachOptions {
+        /**
+         * The orientation (scroll direction) of the Listview. 
+         * Defaults to "vertical".
+         * - "vertical"
+         * - "horizontal"
+         */
+        orientation: string;
+
+        /**
+         * The camel-cased node name of the desired item template or a defined template selector function.
+         */
+        itemTemplate: any;
+
+        /**
+         * The url of the Listview's intended template if not using 
+         * innerHTML.
+         * This URL must be a static string and cannot be a bound item on a parent control's context.
+         */
+        templateUrl?: string;
+    }
 }
+/* tslint:enable */
