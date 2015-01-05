@@ -1,15 +1,52 @@
+@import '../common/variables';
+
+// =========== Manage Blog Constants =============
+
+@input-padding-vertical: 1em;
+@input-padding-horizontal: 1em;
+
+// =========== Manage Blog Defaults  =============
+
 .manage-container {
 	width: 100%;
 	height: 100%;
+	background-color: @accent-grey;
+	padding: 1em @horizontal-container;
 
 	& > .manage-header {
 		width: 100%;
+		margin-bottom: 2%;
 		clear: both;
 	}
 
 	& > .manage-section {
 		float: left;
-		width: 50%;
+		width: 49%;
 		height: 100%;
+		margin-right: 2%;
+		background-color: @white;
+
+		&.manage-section-display {
+			padding: 0 @input-padding-horizontal;
+			margin-right: auto;
+		}
 	}
 }
+
+.manage-input {
+	font-family: @font-family;
+	font-size: 1em;
+	border: none;
+	outline: none;
+	padding: @input-padding-vertical @input-padding-horizontal;
+}
+
+.manage-toolbar {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: @navigation-height * .8;
+	padding: 0 @horizontal-container;
+	background-color: @font-grey;
+}
+

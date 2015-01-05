@@ -1,9 +1,9 @@
-<section>
-    <div class="page-header">
-        <h2>Blog Posts</h2>
-    </div>
-    <plat-foreach plat-context="posts">
-        <h2><a plat-href="#!/posts/{{_id}}">{{title}}</a></h2>
-        <p>{{content}}</p>
-    </plat-foreach>
-</section>
+<div class="container">
+	    <div class="page-header">
+	        <h2>Blog Posts</h2>
+	    </div>
+	    <plat-foreach plat-context="posts">
+	        <h2><a plat-href="#!/posts/{{_id}}">{{title}}</a></h2>
+	        <p>{{content}}</p>
+	    </plat-foreach>
+</div>

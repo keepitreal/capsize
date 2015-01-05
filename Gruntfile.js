@@ -58,7 +58,8 @@ module.exports = function (grunt) {
             watch_build: {
                 tasks: [
                     'ts:watch_server',
-                    'ts:watch_public'
+                    'ts:watch_public',
+                    'watch:less'
                 ]
             },
             install: {
@@ -91,7 +92,8 @@ module.exports = function (grunt) {
         ts: {
             options: {
                 module: 'commonjs',
-                target: 'es5'
+                target: 'es5',
+                fast: 'always'
             },
             watch_server: {
                 src: serverFiles('ts'),
@@ -193,6 +195,16 @@ module.exports = function (grunt) {
                 }
             }
         },
+        less: {
+            main: {
+                options: {
+                    paths: ["public/css"]
+                },
+                files: {
+                    "public/css/main.css": "public/css/main.less"
+                }
+            }
+        },
         shell: {
             tsd: {
                 command: [
@@ -203,11 +215,19 @@ module.exports = function (grunt) {
             bower: {
                 command: path.normalize('./node_modules/.bin/bower') + ' install'
             }
+        },
+        watch: {
+            less: {
+                files: 'public/css/**/*.less',
+                tasks: ['less']
+            }
         }
     });
 
     // Load tasks
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-nodemon');
