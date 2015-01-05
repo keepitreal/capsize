@@ -1,4 +1,5 @@
 @import '../common/variables';
+@import '../common/mixins';
 
 // =========== Manage Blog Constants =============
 
@@ -41,12 +42,23 @@
 	padding: @input-padding-vertical @input-padding-horizontal;
 }
 
+textarea.manage-input {
+	height: 100%;
+}
+
 .manage-toolbar {
+	.flex-vertical-center();
+	.justify-content(flex-end);
 	position: fixed;
 	bottom: 0;
 	width: 100%;
 	height: @navigation-height * .8;
 	padding: 0 @horizontal-container;
 	background-color: @font-grey;
+
+	& > .toolbar-button {
+		float: right;
+		border-radius: 2px;
+	}
 }
 

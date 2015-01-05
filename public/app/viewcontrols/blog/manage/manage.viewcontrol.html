@@ -4,14 +4,12 @@
 		<input type="text" class="form-input form-input-block manage-input" plat-bind="post.title" placeholder="Title"/>
 	</div>
 	<div class="manage-section">
-		<div class="form-group">
-		    <textarea class="form-input form-input-block manage-input" plat-bind="post.content" placeholder="Content" rows="10"/></textarea>
-		</div>
+	    <textarea class="form-input form-input-block manage-input" plat-bind="post.content" placeholder="Content" rows="10"/></textarea>
 	</div>
 	<div class="manage-section manage-section-display">
 		<marked-display plat-context="post.content" plat-options="{ editMode: true }"></marked-display>
 	</div>
 </div>
 <div class="manage-toolbar">
-	<button class="button" plat-tap="createPost(post)">Submit</button>
+	<button class="button button-primary toolbar-button" plat-tap="submit()">Submit</button>
 </div>

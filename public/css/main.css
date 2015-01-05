@@ -3238,6 +3238,17 @@ input {
   display: -webkit-flex;
   display: flex;
 }
+.flex-vertical-center {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
 .flex-absolute-center {
   display: -webkit-box;
   display: -moz-box;
@@ -3306,13 +3317,33 @@ input {
   outline: none;
   padding: 1em 1em;
 }
+textarea.manage-input {
+  height: 100%;
+}
 .manage-toolbar {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-end;
+  -moz-justify-content: flex-end;
+  -ms-justify-content: flex-end;
+  justify-content: flex-end;
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 2.88em;
   padding: 0 3.2em;
   background-color: #7c7c7c;
+}
+.manage-toolbar > .toolbar-button {
+  float: right;
+  border-radius: 2px;
 }
 .workspace-title {
   width: 100%;
