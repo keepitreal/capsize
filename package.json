@@ -35,6 +35,7 @@
     "bower": "latest",
     "debug": "latest",
     "grunt": "latest",
+    "grunt-browserify": "^3.2.1",
     "grunt-cli": "latest",
     "grunt-concurrent": "latest",
     "grunt-contrib-clean": "latest",

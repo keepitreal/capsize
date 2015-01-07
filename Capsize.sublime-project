@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				// "**/*.js.map",
+				// "**/*.js",
+				"**/*.css.map",
+				"**/*.css"
+			],
+			"follow_symlinks": true,
+			"name": "Capsize",
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"tab_size": 4
+	}
+}

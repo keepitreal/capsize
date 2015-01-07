@@ -3,9 +3,7 @@
         <div class="navigation-logo-text">Capsize</div>
     </div>
     <ul class="navigation-menu">
-        <li data-category="generators">
-            <input type="checkbox" id="generators">
-            <label for="generators">Generators</label>
+        <li data-category="generators">Generators
             <ul class="navigation-submenu">
                 <li>
                     <a href="#!/tools/boxshadowgenerator">Box Shadow Generator</a>
@@ -33,9 +31,7 @@
         <li data-category="about">
             <a href="#!/about">About</a>
         </li>
-        <li data-category="admin">
-            <input type="checkbox" id="admin">
-            <label for="admin">Admin</label>
+        <li data-category="admin" plat-visible="{{!!user}}">Admin
             <ul class="navigation-submenu">
                 <li>
                     <a href="#!/admin/posts/list">All Posts</a>

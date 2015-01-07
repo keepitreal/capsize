@@ -1,9 +1,9 @@
 /// <reference path="../references.d.ts" />
 
-module capsize.viewcontrols {
-	'use strict';
+'use strict';
 
-	export class BaseViewControl extends plat.ui.WebViewControl {
-		$utils = plat.acquire(plat.IUtils);
-	}
+import plat = require('platypus');
+
+export class BaseViewControl extends plat.ui.WebViewControl {
+	$utils = plat.acquire(plat.IUtils);
 }

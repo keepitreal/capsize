@@ -1,18 +1,17 @@
 /// <reference path="../../references.d.ts" />
+'use strict';
 
-module capsize.injectables {
-	'use strict';
+import plat = require('platypus');
 
-	declare var marked;
-	var renderer = new marked.Renderer();
+declare var marked;
+var renderer = new marked.Renderer();
 
-	export function Marked() {
-		marked.setOptions({
-			renderer: renderer
-		});
+export function Marked() {
+	marked.setOptions({
+		renderer: renderer
+	});
 
-		return marked;
-	}
-
-	plat.register.injectable('marked', Marked, null, plat.register.injectable.STATIC);
+	return marked;
 }
+
+plat.register.injectable('marked', Marked, null, plat.register.injectable.STATIC);

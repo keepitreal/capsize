@@ -37,7 +37,7 @@
 
 .navigation-logo {
 	float: left;
-	padding-left: @horizontal-container;
+	padding: 0 @horizontal-container;
 	height: @navigation-height;
 
 	& > .navigation-logo-text {
@@ -85,14 +85,11 @@ ul.navigation-menu {
 			display: none;
 		}
 
-		& > input[type="checkbox"]:checked ~ ul.navigation-submenu,
 		&:hover > ul.navigation-submenu {
 			display: block;
 		}
 		
 		& > ul.navigation-submenu {
-			position: absolute;
-			right: 0;
 			display: none;
 			width: @submenu-item-width;
 			background-color: @navbar-color;

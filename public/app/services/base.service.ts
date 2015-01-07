@@ -1,33 +1,32 @@
 ﻿/// <reference path="../references.d.ts" />
+'use strict';
 
-module capsize.services {
-    'use strict';
+import plat = require('platypus');
 
-    export class BaseService {
-        private __http = plat.acquire(plat.async.IHttp);
+export class BaseService {
+    private __http = plat.acquire(plat.async.IHttp);
 
-        _http(options: plat.async.IHttpConfig) {
-            return this.__http.json<IResponse>(options).then((result) => {
-                return result.response.data;
-            }, (result) => {
-                this._handleError(result.response);
-            });
-        }
-
-        _handleError(response: IResponse) {
-            switch (response.status) {
-                case 'fail':
-                    throw response.data;
-                case 'error':
-                    console.log(response.message);
-                    break;
-            }
-        }
+    _http(options: plat.async.IHttpConfig) {
+        return this.__http.json<IResponse>(options).then((result) => {
+            return result.response.data;
+        }, (result) => {
+            this._handleError(result.response);
+        });
     }
 
-    export interface IResponse {
-        status: string;
-        data?: any;
-        message?: string;
+    _handleError(response: IResponse) {
+        switch (response.status) {
+            case 'fail':
+                throw response.data;
+            case 'error':
+                console.log(response.message);
+                break;
+        }
     }
+}
+
+export interface IResponse {
+    status: string;
+    data?: any;
+    message?: string;
 }

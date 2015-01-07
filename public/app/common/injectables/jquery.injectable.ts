@@ -1,13 +1,12 @@
 /// <reference path="../../references.d.ts" />
+'use strict';
 
-module capsize.injectables {
-	'use strict';
+import plat = require('platypus');
 
-	declare var $;
+declare var $;
 
-	export function jQueryFactory() {
-		return $;
-	}
-
-	plat.register.injectable('jQuery', jQueryFactory);
+export function jQueryFactory() {
+	return $;
 }
+
+plat.register.injectable('jQuery', jQueryFactory);

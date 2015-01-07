@@ -15,14 +15,13 @@ function publicFiles(ext) {
     return [
         'public/app/lib/jquery/dist/*.' + ext,
         'public/app/lib/bootstrap/dist/js/*.' + ext,
-       // 'public/app/lib/platypus/*.' + ext,
-       // 'public/app/lib/platypusui/*.' + ext,
         'public/app/services/**/*.' + ext,
         'public/app/models/**/*.' + ext,
         'public/app/repositories/**/*.' + ext,
         'public/app/common/templatecontrols/**/*.' + ext,
         'public/app/viewcontrols/**/*.' + ext,
-        'public/app/app.' + ext
+        'public/app/app/app.' + ext,
+        'public/app/main.' + ext,
     ];
 }
 
@@ -45,6 +44,13 @@ function serverTestFiles(ext) {
 module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        browserify: {
+            dist: {
+                files: {
+                    './public/app/app.js': './public/app/main.js'
+                }
+            }
+        },
         concurrent: {
             options: {
                 logConcurrentOutput: true
@@ -59,7 +65,7 @@ module.exports = function (grunt) {
                 tasks: [
                     'ts:watch_server',
                     'ts:watch_public',
-                    'watch:less'
+                    'watch'
                 ]
             },
             install: {
@@ -220,11 +226,16 @@ module.exports = function (grunt) {
             less: {
                 files: 'public/css/**/*.less',
                 tasks: ['less']
+            },
+            browserify: {
+                files: publicFiles(),
+                tasks: ['browserify']
             }
         }
     });
 
     // Load tasks
+    grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
