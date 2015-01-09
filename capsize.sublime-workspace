@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"public",
+				"publicFiles"
+			],
+			[
+				"users",
+				"usersRepository"
+			],
+			[
+				"ij",
+				"injectable"
+			],
+			[
 				"n",
 				"navigation-height	 variables.less"
 			],
@@ -502,28 +514,32 @@
 			[
 				"inline",
 				"inline-block"
-			],
-			[
-				"padding",
-				"padding-top"
-			],
-			[
-				"z",
-				"z-index"
-			],
-			[
-				"repos",
-				"repository"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "public/app/app.ts",
+			"file": "public/app/viewcontrols/base.viewcontrol.ts",
 			"settings":
 			{
-				"buffer_size": 1802,
+				"buffer_size": 197,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+			"settings":
+			{
+				"buffer_size": 1894,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/app/viewcontrols/tools/home/home.viewcontrol.ts",
+			"settings":
+			{
+				"buffer_size": 447,
 				"line_ending": "Unix"
 			}
 		}
@@ -623,26 +639,74 @@
 		"/Users/darionwelch/Sites/capsize",
 		"/Users/darionwelch/Sites/capsize/public",
 		"/Users/darionwelch/Sites/capsize/public/app",
-		"/Users/darionwelch/Sites/capsize/public/css",
-		"/Users/darionwelch/Sites/capsize/public/css/modules"
+		"/Users/darionwelch/Sites/capsize/public/app/common",
+		"/Users/darionwelch/Sites/capsize/public/app/common/injectables",
+		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/about",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/home"
 	],
 	"file_history":
 	[
-		"/Users/darionwelch/Sites/capsize/public/css/layout/workspace.less",
-		"/Users/darionwelch/Sites/capsize/public/css/common/variables.less",
-		"/Users/darionwelch/Sites/capsize/public/css/modules/navigation.less",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/list/list.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/home/home.viewcontrol.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/passport-twitter/node_modules/passport-oauth1/node_modules/oauth/lib/sha1.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/toLookup.js",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/bootstrap/js/tooltip.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/xm/typeOf.js",
+		"/Users/darionwelch/Sites/capsize/public/css/base/typography.less",
+		"/Users/darionwelch/Sites/capsize/public/index.html",
+		"/Users/darionwelch/Sites/capsize/Gruntfile.js",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/manage/manage.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/single/single.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/navigation/navigation.templatecontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/navigation/navigation.templatecontrol.html",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/login/login.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/home/home.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/register/register.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/about/about.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/about/about.viewcontrol.html",
+		"/Users/darionwelch/Sites/capsize/public/app/repositories/users.repository.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/navigation/navigation.templatecontrol.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.sass-cache/0f32e16ff79ecad90b630b26e3ba41e1f9a6ab52/_background-origin.scssc",
+		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/navigation/navigation.templatecontrol.html",
+		"/Users/darionwelch/Sites/capsize/.tscache/watch_public/hashes/navigation.templatecontrol.ts-e4620633ac514882b99038795cbf6f8d",
+		"/Users/darionwelch/Sites/capsize/public/css/modules/navigation.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/base.viewcontrol.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/source-map/lib/source-map/base64-vlq.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/karma/lib/launchers/base.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt-cli/completion/bash",
+		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/object/bindAll.js",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/buttons.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/base.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/.tscache/watch_public/hashes/list.viewcontrol.ts-bfab65bbe5eb4613803eda044bdceb08",
+		"/Users/darionwelch/Sites/capsize/node_modules/ejs/examples/list.ejs",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/list/list.viewcontrol.html",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/marked/test/original/links_inline_style.html",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/lastIndexOf.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/async/LICENSE",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/list/list.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/repositories/posts.repository.ts",
+		"/Users/darionwelch/Sites/capsize/package.json",
+		"/Users/darionwelch/Sites/capsize/public/app/main.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/main.js",
+		"/Users/darionwelch/Sites/capsize/public/app.js",
+		"/Users/darionwelch/Sites/capsize/public/app/models/user.model.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/models/post.model.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/services/posts.service.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/services/users.service.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/services/base.service.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/markeddisplay/markeddisplay.templatecontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/marked.injectable.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/app/app.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.ts",
+		"/Users/darionwelch/Sites/capsize/Capsize.sublime-project",
+		"/Users/darionwelch/Sites/capsize/public/app/app.ts",
+		"/Users/darionwelch/Sites/capsize/public/css/layout/workspace.less",
+		"/Users/darionwelch/Sites/capsize/public/css/common/variables.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.sass-cache/0f32e16ff79ecad90b630b26e3ba41e1f9a6ab52/_background-origin.scssc",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/forms.less",
 		"/Users/darionwelch/Sites/capsize/public/css/common/mixins.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/socket.io/lib/manager.js",
@@ -650,23 +714,18 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/test/core/Manager.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/lib/core/Manager.js",
 		"/Users/darionwelch/Sites/capsize/public/css/main.less",
-		"/Users/darionwelch/Sites/capsize/public/css/base/typography.less",
 		"/Users/darionwelch/Sites/capsize/server/utils/format.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/inquirer/node_modules/through/LICENSE.APACHE2",
 		"/Users/darionwelch/Sites/capsize/public/css/layout/manage.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/object/forOwn.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/manage/manage.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/css/layout/blog.less",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/features/code/blank_lines.text",
-		"/Users/darionwelch/Sites/capsize/Gruntfile.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/list/list.viewcontrol.html",
 		"/Users/darionwelch/Sites/capsize/public/css/common/animations.less",
 		"/Users/darionwelch/Sites/capsize/public/css/base/normalize.less",
 		"/Users/darionwelch/Sites/capsize/public/css/layout/main.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/bower-logger/lib/Logger.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/features/code/block.text",
 		"/Users/darionwelch/Sites/capsize/bower.json",
-		"/Users/darionwelch/Sites/capsize/public/index.html",
 		"/Users/darionwelch/Sites/capsize/.gitignore",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/.bin/opn",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/register/register.viewcontrol.html",
@@ -675,7 +734,6 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/inquirer/node_modules/rx/src/core/backpressureheader.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/grunt-karma/lib/background.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/lib/reporters/base_color.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/object/bindAll.js",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/toggle.less",
 		"/Users/darionwelch/Sites/capsize/public/app/references.d.ts",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/navbar.less",
@@ -687,16 +745,10 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/express/lib/router/layer.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/platypus/platypus.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/platypusui/platypusui.ts",
-		"/Users/darionwelch/Sites/capsize/package.json",
 		"/Users/darionwelch/Sites/capsize/node_modules/mongoose/node_modules/mpromise/test/promises.Aplus.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/platypus/platypus.d.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/models/user.model.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/base.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/.tscache/watch_public/hashes/platypusui.ts-85981944b08694e039d07650d3c5436b",
 		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/tsd/support/PackageLinker.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/grunt-cli/completion/bash",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/lib/launchers/base.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/source-map/lib/source-map/base64-vlq.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/fixtures/docs-maruku-unittest/blanks_in_code.html",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/lang/isObject.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/indexOf.js",
@@ -708,21 +760,16 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/test/layouts-test.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/lib/layouts.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/inquirer/lib/ui/baseUI.js",
-		"/Users/darionwelch/Sites/capsize/public/app/repositories/posts.repository.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/single/single.viewcontrol.html",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/single/single.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/http-proxy/node_modules/pkginfo/examples/single-property.js",
 		"/Users/darionwelch/Sites/capsize/server/server.js",
-		"/Users/darionwelch/Sites/capsize/public/app/app.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/function/awaitDelay.js",
 		"/Users/darionwelch/Sites/capsize/server/models/post.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.idea/modules.xml",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/graceful-fs/test/max-open.js",
-		"/Users/darionwelch/Sites/capsize/public/app/repositories/users.repository.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/ejs/test/fixtures/single-quote.ejs",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/request/node_modules/http-signature/lib/signer.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/tsd/node_modules/bluebird/js/main/synchronous_inspection.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/ejs/examples/list.ejs",
 		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/MANIFEST.in",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/edit/edit.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/edit/edit.viewcontrol.html",
@@ -730,32 +777,7 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/ejs/ejs.js",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/create/create.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/capsize.sublime-project",
-		"/Users/darionwelch/Sites/capsize/server/controllers/users.ts",
-		"/Users/darionwelch/Sites/capsize/server/models/user.ts",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mkdirp/test/umask_sync.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/underscore/underscore.js",
-		"/Users/darionwelch/Sites/capsize/.tscache/watch_server/hashes/posts.ts-f503fd894b7f147af80a7726834ce83d",
-		"/Users/darionwelch/Sites/capsize/server/controllers/posts.ts",
-		"/Users/darionwelch/Sites/capsize/node_modules/mongoose/examples/population/population-options.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/home/home.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/register/register.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/login/login.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/about/about.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/services/users.service.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/services/posts.service.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/services/base.service.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/models/post.model.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/socialauth/socialauth.templatecontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/markeddisplay/markeddisplay.templatecontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/marked.injectable.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/create/create.viewcontrol.html",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/create/create.viewcontrol.css",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/lang/createObject.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/express-session/node_modules/crc/lib/create.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/lib/util/createLink.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/lib/util/createError.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/mongoose/contRun.sh"
+		"/Users/darionwelch/Sites/capsize/server/controllers/users.ts"
 	],
 	"find":
 	{
@@ -782,6 +804,20 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"repositories",
+			"usersRepository",
+			"repositories",
+			"models.",
+			"base",
+			"models.",
+			"model",
+			"single",
+			"blog",
+			"list",
+			"login",
+			"about",
+			"templatecontrold",
+			"injectables",
 			"1em",
 			"clean",
 			"less",
@@ -895,21 +931,7 @@
 			"navbarDetails",
 			"single",
 			"checking",
-			"buttons",
-			"navbar",
-			"statusbar",
-			"flex",
-			"format",
-			"6em",
-			"Food\",",
-			"\"category\": \"Fast Food\",",
-			"7.85",
-			"\"2014-11-6T13:37:27+00:00\"",
-			"activity",
-			"date",
-			"accounts",
-			"amount",
-			"type"
+			"buttons"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -927,24 +949,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "public/app/app.ts",
-					"semi_transient": true,
+					"file": "public/app/viewcontrols/base.viewcontrol.ts",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1802,
+						"buffer_size": 197,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								60,
-								60
+								0,
+								0
 							]
 						],
 						"settings":
@@ -958,6 +980,187 @@
 								{
 									"characters": ".#",
 									"selector": "text.html"
+								}
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1894,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								797,
+								797
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/app/viewcontrols/tools/home/home.viewcontrol.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 447,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								100,
+								159
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
 								},
 								{
 									"characters": ".#",
@@ -965,15 +1168,13 @@
 								}
 							],
 							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
-							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -1030,6 +1231,30 @@
 		"selected_items":
 		[
 			[
+				"toolshome",
+				"public/app/viewcontrols/tools/home/home.viewcontrol.ts"
+			],
+			[
+				"grunt",
+				"Gruntfile.js"
+			],
+			[
+				"navi",
+				"public/app/common/templatecontrols/navigation/navigation.templatecontrol.ts"
+			],
+			[
+				"baseview",
+				"public/app/viewcontrols/base.viewcontrol.ts"
+			],
+			[
+				"user",
+				"public/app/repositories/users.repository.ts"
+			],
+			[
+				"inde",
+				"public/index.html"
+			],
+			[
 				"navig",
 				"public/app/common/templatecontrols/navigation/navigation.templatecontrol.ts"
 			],
@@ -1070,10 +1295,6 @@
 				"public/css/common/variables.less"
 			],
 			[
-				"navi",
-				"public/css/modules/navigation.less"
-			],
-			[
 				"form",
 				"public/css/modules/forms.less"
 			],
@@ -1090,16 +1311,8 @@
 				"public/css/layout/manage.less"
 			],
 			[
-				"grunt",
-				"Gruntfile.js"
-			],
-			[
 				".giti",
 				".gitignore"
-			],
-			[
-				"inde",
-				"public/index.html"
 			],
 			[
 				"regis",
@@ -1528,18 +1741,6 @@
 			[
 				"makes",
 				"app/common/templatecontrols/modals/makes/makes.templatecontrol.html"
-			],
-			[
-				"addcar",
-				"app/common/templatecontrols/modals/addCar/addCar.templatecontrol.html"
-			],
-			[
-				"models",
-				"app/common/templatecontrols/modals/models/models.templatecontrol.html"
-			],
-			[
-				"filt",
-				"app/common/templatecontrols/modals/filter/filter.templatecontrol.html"
 			]
 		],
 		"width": 0.0
@@ -1567,7 +1768,7 @@
 	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 309.0,
 	"status_bar_visible": true,
 	"template_settings":

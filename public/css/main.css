@@ -3484,7 +3484,7 @@ textarea.manage-input {
   padding: 0 1.6em;
   height: 3.6em;
 }
-.navigation-logo > .navigation-logo-text {
+.navigation-logo > .navigation-logo-text > a {
   color: #fdfdfd;
   font-family: 'LearningCurve';
   font-size: 3.06em;

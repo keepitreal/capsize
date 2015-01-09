@@ -15,7 +15,6 @@ export class BoxShadowViewControl extends baseViewcontrol.BaseViewControl {
 	$ = plat.acquire(jQueryInjectable.jQueryFactory);
 
 	demoShape: plat.controls.INamedElement<HTMLDivElement, any>;
-	
 	colpick: any;
 
 	context = {
