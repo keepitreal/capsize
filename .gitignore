@@ -6,6 +6,8 @@ public/lib
 public/assets
 typings/
 .idea/
+*.sublime-project
+*.sublime-workspace
 *.js
 *.js.map
 !Gruntfile.js
