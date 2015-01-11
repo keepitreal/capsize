@@ -3,10 +3,9 @@
 declare var require: any;
 
 require('./lib/jquery/dist/jquery.min');
-require('./lib/colpick/colpick');
+require('./lib/colpick/js/colpick');
 require('./lib/markdown/lib/markdown');
 require('./lib/marked/lib/marked');
-
 require('./lib/platypusui/platypusui');
 
 // app
