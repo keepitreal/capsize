@@ -29,7 +29,9 @@
     "passport-local": "latest",
     "passport-twitter": "latest",
     "underscore": "latest",
-    "ejs": "latest",
+    "ejs": "latest"
+  },
+  "devDependencies": {
     "bower": "latest",
     "debug": "latest",
     "grunt": "latest",
@@ -52,8 +54,5 @@
     "karma-jasmine": "latest",
     "tsd": "next",
     "typescript": "^1.3.0"
-  },
-  "devDependencies": {
-    
   }
 }
