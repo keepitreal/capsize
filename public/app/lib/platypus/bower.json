@@ -1,0 +1,32 @@
+{
+  "name": "platypus",
+  "version": "0.9.8",
+  "homepage": "http://getplatypi.com",
+  "authors": [
+    "Platypi <support@getplatypi.com> (http://getplatypi.com)"
+  ],
+  "description": "A front-end MVVM framework written in TypeScript",
+  "main": "platypus.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "platypi",
+    "platypus",
+    "typescript",
+    "mvvm",
+    "mvc"
+  ],
+  "license": "GPL-3.0",
+  "ignore": [
+    "**/.*",
+    "package.json",
+    ".gitignore",
+    ".git",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

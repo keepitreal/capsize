@@ -9,6 +9,7 @@ typings/
 *.sublime-workspace
 *.js
 *.js.map
+!public/app/lib/**/*.js
 !Gruntfile.js
 /tests/coverage/IE 11.0.0 (Windows)
 /bin
@@ -21,12 +22,6 @@ typings/
 /web.config
 /web.Debug.config
 /web.Release.config
-!/public/app/lib/colpick/js/colpick.js
-/public/app/lib/jquery
-/public/app/lib/markdown
-!/public/app/lib/markdown/lib/markdown.js
-/public/app/lib/marked
-/public/app/lib/platypus
 tests/coverage
 .tscache
 *.tmp.*
