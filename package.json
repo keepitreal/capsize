@@ -9,7 +9,7 @@
     "email": "support@getplatypi.com"
   },
   "scripts": {
-    "postinstall": "node node_modules/grunt-cli/bin/grunt install --force"
+    "postinstall": "npm cache clean && node node_modules/grunt-cli/bin/grunt install --force"
   },
   "dependencies": {
     "async": "latest",
