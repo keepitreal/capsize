@@ -24,6 +24,7 @@ typings/
 !/public/app/lib/colpick/js/colpick.js
 /public/app/lib/jquery
 /public/app/lib/markdown
+!/public/app/lib/markdown/lib/markdown.js
 /public/app/lib/marked
 /public/app/lib/platypus
 tests/coverage
