@@ -259,4 +259,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['concurrent:run']);
     grunt.registerTask('make', ['ts:server', 'ts:public', 'browserify', 'less']);
     grunt.registerTask('install', ['concurrent:install', 'make', 'clean']);
+    grunt.registerTask('heroku', ['install']);
 };
