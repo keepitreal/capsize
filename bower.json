@@ -18,6 +18,7 @@
         "jquery": "latest",
         "colpick": "latest",
         "markdown": "latest",
-        "marked": "latest"
+        "marked": "latest",
+        "platypus": "latest"
     }
 }
