@@ -52,7 +52,7 @@ module.exports = function (grunt) {
                 options: {
                     commondir: true,
                     browserifyOptions: {
-                        debug: DEBUG
+                        debug: true
                     }
                 }
             }
