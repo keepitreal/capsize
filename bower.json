@@ -15,8 +15,9 @@
         "tests"
     ],
     "dependencies": {
-        "bootstrap": "latest",
         "jquery": "latest",
-        "platypus": "master"
+        "colpick": "latest",
+        "mardown": "latest",
+        "marked": "latest"
     }
 }
