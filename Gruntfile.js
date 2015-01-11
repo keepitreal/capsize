@@ -71,7 +71,9 @@ module.exports = function (grunt) {
             install: {
                 tasks: [
                     'tsd',
-                    'bower'
+                    'bower',
+                    'ts:public',
+                    'ts:server'
                 ]
             },
             run: {
