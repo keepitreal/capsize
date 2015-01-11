@@ -17,7 +17,7 @@
     "dependencies": {
         "jquery": "latest",
         "colpick": "latest",
-        "mardown": "latest",
+        "markdown": "latest",
         "marked": "latest"
     }
 }
