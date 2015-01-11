@@ -10,7 +10,6 @@ require('./lib/platypusui/platypusui');
 // app
 require('./app/app');
 
-
 // injectables
 require('./common/injectables/jquery.injectable');
 require('./common/injectables/marked.injectable');
