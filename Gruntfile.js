@@ -48,6 +48,12 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     './public/app/app.js': './public/app/main.js'
+                },
+                options: {
+                    commondir: true,
+                    browserifyOptions: {
+                        debug: DEBUG
+                    }
                 }
             }
         },
