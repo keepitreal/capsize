@@ -2,6 +2,10 @@
 
 declare var require: any;
 
+require('./scripts')
+
+require('./lib/platypusui/platypusui');
+
 // app
 require('./app/app');
 
