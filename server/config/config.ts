@@ -1,7 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 import path = require('path');
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 var cfg = require('./env/' + process.env.NODE_ENV + '.json') || {};
 

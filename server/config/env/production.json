@@ -1,5 +1,5 @@
 {
-    "db": "mongodb://localhost/platynem-prod",
+    "db": "mongodb://darion:overr#@dy12@ds031541.mongolab.com:31541/heroku_app33127324",
     "app": {
         "name": "PlatyNEM - A TypeScript MVC Stack for Node"
     },
