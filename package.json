@@ -8,9 +8,6 @@
     "name": "Platypi",
     "email": "support@getplatypi.com"
   },
-  "scripts": {
-    //"postinstall": "npm cache clean && node node_modules/grunt-cli/bin/grunt install --force"
-  },
   "dependencies": {
     "async": "latest",
     "body-parser": "latest",
