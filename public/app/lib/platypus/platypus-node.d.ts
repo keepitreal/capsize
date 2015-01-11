@@ -12895,13 +12895,9 @@ declare module plat {
               */
             loaded(): void;
             /**
-              * Parses function args and sets the event listener.
+              * Sets the event listener.
               */
             protected _setListener(): void;
-            /**
-              * Adds any and all necessary event listeners.
-              */
-            protected _addEventListeners(): void;
             /**
               * Constructs the function to evaluate with
               * the evaluated arguments taking resources
@@ -13182,25 +13178,6 @@ declare module plat {
               * @param {Event} ev The event object.
               */
             protected _onEvent(ev: Event): void;
-        }
-        /**
-          * A SimpleEventControl for the 'input' event. If
-          * 'input' is not an event, it will simulate an 'input' using other events like 'keydown',
-          * 'cut', 'paste', etc. Also fires on the 'change' event.
-          */
-        class React extends SimpleEventControl {
-            /**
-              * Reference to the ICompat injectable.
-              */
-            $Compat: ICompat;
-            /**
-              * The event name.
-              */
-            event: string;
-            /**
-              * Adds any and all necessary event listeners.
-              */
-            protected _addEventListeners(): void;
         }
         /**
           * A mapping of all keys to their equivalent keyCode.
@@ -13704,7 +13681,7 @@ declare module plat {
               */
             $document: Document;
             /**
-              * The priority of Bind is set high to precede
+              * The priority of Bind is set high to take precede
               * other controls that may be listening to the same
               * event.
               */

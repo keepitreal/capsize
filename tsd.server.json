@@ -6,31 +6,31 @@
   "bundle": "server/typings/tsd.d.ts",
   "installed": {
     "async/async.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "node/node.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "express/express.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "underscore/underscore.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "mongoose/mongoose.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "passport/passport.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "passport-facebook/passport-facebook.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "jasmine/jasmine.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     },
     "express-session/express-session.d.ts": {
-      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     }
   }
 }
