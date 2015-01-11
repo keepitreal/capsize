@@ -2,7 +2,6 @@
 .nodemonignore
 .sass-cache
 node_modules/
-public/lib
 public/assets
 typings/
 .idea/
@@ -22,8 +21,10 @@ typings/
 /web.config
 /web.Debug.config
 /web.Release.config
-/public/app/lib/bootstrap
+!/public/app/lib/colpick/js/colpick.js
 /public/app/lib/jquery
+/public/app/lib/markdown
+/public/app/lib/marked
 /public/app/lib/platypus
 tests/coverage
 .tscache
