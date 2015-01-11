@@ -71,9 +71,7 @@ module.exports = function (grunt) {
             install: {
                 tasks: [
                     'tsd',
-                    'bower',
-                    'ts:public',
-                    'ts:server'
+                    'bower'
                 ]
             },
             run: {
@@ -253,5 +251,6 @@ module.exports = function (grunt) {
     grunt.registerTask('build', ['concurrent:build']);
     grunt.registerTask('test', ['concurrent:test', 'karma']);
     grunt.registerTask('default', ['concurrent:run']);
-    grunt.registerTask('install', ['concurrent:install', 'clean']);
+    grunt.registerTask('make', ['ts:server', 'ts:public', 'less']);
+    grunt.registerTask('install', ['concurrent:install', 'make', 'clean']);
 };
