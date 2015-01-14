@@ -2,8 +2,7 @@
 'use strict';
 
 import plat = require('platypus');
-
-declare var $;
+import $ = require('../../lib/jquery/dist/jquery');
 
 export function jQueryFactory() {
 	return $;

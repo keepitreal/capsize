@@ -4,6 +4,7 @@ Copyright 2013 Jose Vargas. Licensed under GPL license. Based on Stefan Petre's 
 
 For usage and examples: colpick.com/plugin
  */
+ var jQuery = require('../../jquery/dist/jquery');
 
 (function ($) {
 	var colpick = function () {

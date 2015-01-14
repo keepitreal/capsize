@@ -2,6 +2,9 @@
 'use strict';
 
 import plat = require('platypus');
+import jQueryInjectable = require('../common/injectables/jquery.injectable');
+
+window.jQuery = plat.acquire(jQueryInjectable.jQueryFactory);
 
 export class App extends plat.App {
     /**

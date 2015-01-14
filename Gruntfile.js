@@ -57,6 +57,16 @@ module.exports = function (grunt) {
                 }
             }
         },
+        cssmin: {
+            combine: {
+                files: {
+                    './public/css/style.css': [
+                        './public/app/lib/colpick/css/colpick.css',
+                        './public/css/main.css'
+                    ]
+                }
+            }
+        },
         concurrent: {
             options: {
                 logConcurrentOutput: true
@@ -231,7 +241,7 @@ module.exports = function (grunt) {
         watch: {
             less: {
                 files: 'public/css/**/*.less',
-                tasks: ['less']
+                tasks: ['less', 'cssmin']
             },
             browserify: {
                 files: publicFiles(),
@@ -243,6 +253,7 @@ module.exports = function (grunt) {
     // Load tasks
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concurrent');

@@ -2,8 +2,8 @@
 'use strict';
 
 import plat = require('platypus');
+import marked = require('../../lib/marked/index');
 
-declare var marked;
 var renderer = new marked.Renderer();
 
 export function Marked() {

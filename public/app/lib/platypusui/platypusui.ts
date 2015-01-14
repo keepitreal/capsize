@@ -1,5 +1,5 @@
 /// <reference path="../platypus/platypus-node.d.ts" />
-
+import plat = require('platypus');
 /* tslint:disable */
 /**
  * Copyright 2014 Platypi, LLC. All rights reserved. 

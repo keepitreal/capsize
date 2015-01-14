@@ -36,6 +36,7 @@
     "grunt-cli": "latest",
     "grunt-concurrent": "latest",
     "grunt-contrib-clean": "latest",
+    "grunt-contrib-cssmin": "^0.11.0",
     "grunt-contrib-less": "^1.0.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-karma": "latest",
