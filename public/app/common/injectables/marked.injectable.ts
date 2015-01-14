@@ -2,7 +2,7 @@
 'use strict';
 
 import plat = require('platypus');
-import marked = require('marked');
+var marked = require('marked');
 
 var renderer = new marked.Renderer();
 
