@@ -1,10 +1,8 @@
 /// <reference path="./references.d.ts" />
 declare var require: any;
 
-require('./lib/jquery/dist/jquery');
 require('./lib/colpick/js/colpick');
 require('./lib/markdown/lib/markdown');
-require('./lib/marked/lib/marked');
 require('./lib/platypusui/platypusui');
 
 // app

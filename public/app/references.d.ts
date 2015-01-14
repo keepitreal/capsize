@@ -1,4 +1,5 @@
 /// <reference path="./lib/platypus/platypus-node.d.ts" />
+/// <reference path="../../typings/tsd.d.ts" />
 
 /// Injectables
 
