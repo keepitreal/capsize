@@ -4,6 +4,9 @@
   "description": "Full stack JavaScript boilerplate based on MEANjs",
   "main": "server.js",
   "private": false,
+  "engines": {
+    "node": "0.10.33"
+  },
   "author": {
     "name": "Platypi",
     "email": "support@getplatypi.com"
@@ -43,8 +46,9 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-karma": "latest",
     "grunt-nodemon": "latest",
-    "grunt-shell": "latest",
+    "grunt-shell": "^1.1.1",
     "grunt-ts": "latest",
+    "grunt-tsd": "^0.1.0",
     "karma": "latest",
     "karma-chrome-launcher": "latest",
     "karma-cli": "latest",

@@ -231,6 +231,7 @@ module.exports = function (grunt) {
             tsd: {
                 command: [
                     'node node_modules/tsd/build/cli update -so --config tsd.public.json',
+                    'node node_modules/tsd/build/cli update -so --config tsd.json',
                     'node node_modules/tsd/build/cli update -so --config tsd.server.json'
                 ].join(' && ')
             },
@@ -269,6 +270,6 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['concurrent:test', 'karma']);
     grunt.registerTask('default', ['concurrent:run']);
     grunt.registerTask('make', ['ts:server', 'ts:public', 'browserify', 'less']);
-    grunt.registerTask('install', ['concurrent:install', 'make', 'clean']);
+    grunt.registerTask('install', ['shell:tsd','concurrent:install', 'make', 'clean']);
     grunt.registerTask('heroku', ['install']);
 };
