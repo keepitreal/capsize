@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"j",
+				"jQueryInjectable"
+			],
+			[
 				"public",
 				"publicFiles"
 			],
@@ -510,55 +514,11 @@
 			[
 				"paddin",
 				"padding-bottom"
-			],
-			[
-				"inline",
-				"inline-block"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "Gruntfile.js",
-			"settings":
-			{
-				"buffer_size": 7938,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "package.json",
-			"settings":
-			{
-				"buffer_size": 1471,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/index.html",
-			"settings":
-			{
-				"buffer_size": 2971,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/app/main.ts",
-			"settings":
-			{
-				"buffer_size": 1189,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/app/app/app.js",
-			"settings":
-			{
-				"buffer_size": 764,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -655,21 +615,54 @@
 		"/Users/darionwelch/Sites/capsize",
 		"/Users/darionwelch/Sites/capsize/public",
 		"/Users/darionwelch/Sites/capsize/public/app",
-		"/Users/darionwelch/Sites/capsize/public/app/app"
+		"/Users/darionwelch/Sites/capsize/public/app/app",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/colpick/css"
 	],
 	"file_history":
 	[
-		"/Users/darionwelch/Sites/capsize/public/css/main.less",
-		"/Users/darionwelch/Sites/capsize/public/app/scripts.js",
-		"/Users/darionwelch/Sites/capsize/public/app/main.ts",
-		"/Users/darionwelch/Sites/capsize/bower.json",
-		"/Users/darionwelch/Sites/capsize/.gitignore",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/colpick/js/colpick.js",
+		"/Users/darionwelch/Sites/capsize/tsd.json",
+		"/Users/darionwelch/Sites/capsize/tsd.public.json",
+		"/Users/darionwelch/Sites/capsize/Gruntfile.js",
 		"/Users/darionwelch/Sites/capsize/package.json",
+		"/Users/darionwelch/Sites/capsize/public/app/references.d.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/marked.injectable.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/main.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/app/app.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.ts",
+		"/Users/darionwelch/Sites/capsize/node_modules/marked/bin/marked",
+		"/Users/darionwelch/Sites/capsize/node_modules/.bin/marked",
+		"/Users/darionwelch/Sites/capsize/public/css/main.less",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/colpick/colpick.jquery.json",
+		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/lib/connect-logger.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/http/CacheObject.js",
 		"/Users/darionwelch/Sites/capsize/Capsize.sublime-project",
+		"/Users/darionwelch/Sites/capsize/public/index.html",
+		"/Users/darionwelch/Sites/capsize/public/css/base/defaults.less",
+		"/Users/darionwelch/Sites/capsize/public/css/layout/workspace.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/platypusui/platypusui.js",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/platypusui/platypusui.ts",
+		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt-browserify/test/fixtures/shim/jquery.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt-browserify/test/fixtures/noParse/jquery.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.idea/jasmine.iml",
+		"/Users/darionwelch/Sites/capsize/public/app/app/app.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt/appveyor.yml",
+		"/Users/darionwelch/Sites/capsize/public/app/app.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/passport-linkedin/node_modules/pkginfo/examples/all-properties.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt-cli/AUTHORS",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
+		"/Users/darionwelch/Sites/capsize/bower.json",
+		"/Users/darionwelch/Sites/capsize/public/css/modules/buttons.less",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt-browserify/node_modules/browserify/test/ignore/by-id.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/lang/isObject.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/indexOf.js",
+		"/Users/darionwelch/Sites/capsize/public/app/scripts.js",
+		"/Users/darionwelch/Sites/capsize/.gitignore",
 		"/Users/darionwelch/Sites/capsize/server/config/config.ts",
 		"/Users/darionwelch/Sites/capsize/.bowerrc",
 		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.sass-cache/0f32e16ff79ecad90b630b26e3ba41e1f9a6ab52/_background-origin.scssc",
-		"/Users/darionwelch/Sites/capsize/public/css/modules/buttons.less",
 		"/Users/darionwelch/Sites/capsize/server/config/env/production.json",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/fixtures/docs-pythonmarkdown2-tm-cases-pass/sublist-para.html",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/fixtures/docs-pythonmarkdown2-tm-cases-pass/sublist-para.text",
@@ -680,7 +673,6 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/.bin/grunt",
 		"/Users/darionwelch/Sites/capsize/node_modules/body-parser/node_modules/iconv-lite/encodings/tables/gb18030-ranges.json",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/base.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/navigation/navigation.templatecontrol.html",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/navigation.less",
 		"/Users/darionwelch/Sites/capsize/Procfile",
@@ -695,8 +687,6 @@
 		"/Users/darionwelch/Sites/capsize/public/app/lib/bootstrap/js/tooltip.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/xm/typeOf.js",
 		"/Users/darionwelch/Sites/capsize/public/css/base/typography.less",
-		"/Users/darionwelch/Sites/capsize/public/index.html",
-		"/Users/darionwelch/Sites/capsize/Gruntfile.js",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/manage/manage.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/single/single.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/login/login.viewcontrol.ts",
@@ -725,13 +715,8 @@
 		"/Users/darionwelch/Sites/capsize/public/app/services/users.service.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/services/base.service.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/markeddisplay/markeddisplay.templatecontrol.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/marked.injectable.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/app/app.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/app.ts",
-		"/Users/darionwelch/Sites/capsize/public/css/layout/workspace.less",
 		"/Users/darionwelch/Sites/capsize/public/css/common/variables.less",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/forms.less",
 		"/Users/darionwelch/Sites/capsize/public/css/common/mixins.less",
@@ -757,36 +742,12 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/grunt-karma/lib/background.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/lib/reporters/base_color.js",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/toggle.less",
-		"/Users/darionwelch/Sites/capsize/public/app/references.d.ts",
 		"/Users/darionwelch/Sites/capsize/public/css/modules/navbar.less",
-		"/Users/darionwelch/Sites/capsize/public/css/base/defaults.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.sass-cache/165c00c5840c6012ccde4069d7d3476235dd1124/_hover-link.scssc",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/home/home.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/body-parser/HISTORY.md",
 		"/Users/darionwelch/Sites/capsize/public/css/layout/auth.less",
-		"/Users/darionwelch/Sites/capsize/node_modules/express/lib/router/layer.js",
-		"/Users/darionwelch/Sites/capsize/public/app/lib/platypus/platypus.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/lib/platypusui/platypusui.ts",
-		"/Users/darionwelch/Sites/capsize/node_modules/mongoose/node_modules/mpromise/test/promises.Aplus.js",
-		"/Users/darionwelch/Sites/capsize/public/app/lib/platypus/platypus.d.ts",
-		"/Users/darionwelch/Sites/capsize/.tscache/watch_public/hashes/platypusui.ts-85981944b08694e039d07650d3c5436b",
-		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/tsd/support/PackageLinker.js",
-		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/fixtures/docs-maruku-unittest/blanks_in_code.html",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/lang/isObject.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/indexOf.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/manage/manage.viewcontrol.html",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/examples/patternLayout-tokens.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/passport-twitter/node_modules/passport-oauth1/node_modules/oauth/examples/express-gdata/views/layout.ejs",
-		"/Users/darionwelch/Sites/capsize/node_modules/passport-linkedin/node_modules/passport-oauth/node_modules/oauth/examples/express-gdata/views/layout.ejs",
-		"/Users/darionwelch/Sites/capsize/node_modules/passport-facebook/node_modules/passport-oauth2/node_modules/oauth/examples/express-gdata/views/layout.ejs",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/test/layouts-test.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/lib/layouts.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/inquirer/lib/ui/baseUI.js",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/single/single.viewcontrol.html",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/http-proxy/node_modules/pkginfo/examples/single-property.js",
-		"/Users/darionwelch/Sites/capsize/server/server.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/function/awaitDelay.js",
-		"/Users/darionwelch/Sites/capsize/server/models/post.ts"
+		"/Users/darionwelch/Sites/capsize/node_modules/express/lib/router/layer.js"
 	],
 	"find":
 	{
@@ -813,6 +774,9 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"require('platypus",
+			"lib/jquery/dist",
+			"jQuery",
 			"lib",
 			"'lib",
 			"lib",
@@ -937,10 +901,7 @@
 			"format",
 			"raphael",
 			"placeholder",
-			"placeholder=\"Darion\"",
-			"\"listview-input\"",
-			"setNavContext",
-			"rightNavText"
+			"placeholder=\"Darion\""
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -958,737 +919,8 @@
 	"groups":
 	[
 		{
-			"selected": 3,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "Gruntfile.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7938,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7934,
-								7934
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": "<",
-									"selector": "text.html"
-								},
-								{
-									"characters": ".#",
-									"selector": "text.html"
-								}
-							],
-							"codeintel": true,
-							"codeintel_config":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_files_in_project": false,
-									"javascriptExtraPaths":
-									[
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 5,
-									"codeintel_scan_files_in_project": false,
-									"phpExtraPaths":
-									[
-									]
-								},
-								"Python":
-								{
-									"env":
-									{
-									}
-								}
-							},
-							"codeintel_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_live": true,
-							"codeintel_live_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
-							{
-								"JavaScript":
-								[
-									"/build/",
-									"/min/"
-								]
-							},
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-								"PyWin32",
-								"jQuery",
-								"Rails"
-							],
-							"codeintel_snippets": true,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
-							"sublime_auto_complete": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1400.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "package.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1471,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								238,
-								238
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": "<",
-									"selector": "text.html"
-								},
-								{
-									"characters": ".#",
-									"selector": "text.html"
-								}
-							],
-							"codeintel": true,
-							"codeintel_config":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_files_in_project": false,
-									"javascriptExtraPaths":
-									[
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 5,
-									"codeintel_scan_files_in_project": false,
-									"phpExtraPaths":
-									[
-									]
-								},
-								"Python":
-								{
-									"env":
-									{
-									}
-								}
-							},
-							"codeintel_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_live": true,
-							"codeintel_live_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
-							{
-								"JavaScript":
-								[
-									"/build/",
-									"/min/"
-								]
-							},
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-								"PyWin32",
-								"jQuery",
-								"Rails"
-							],
-							"codeintel_snippets": true,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
-							"sublime_auto_complete": true,
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "public/index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2971,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								720,
-								720
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": "<",
-									"selector": "text.html"
-								},
-								{
-									"characters": ".#",
-									"selector": "text.html"
-								}
-							],
-							"codeintel": true,
-							"codeintel_config":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_files_in_project": false,
-									"javascriptExtraPaths":
-									[
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 5,
-									"codeintel_scan_files_in_project": false,
-									"phpExtraPaths":
-									[
-									]
-								},
-								"Python":
-								{
-									"env":
-									{
-									}
-								}
-							},
-							"codeintel_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_live": true,
-							"codeintel_live_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
-							{
-								"JavaScript":
-								[
-									"/build/",
-									"/min/"
-								]
-							},
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-								"PyWin32",
-								"jQuery",
-								"Rails"
-							],
-							"codeintel_snippets": true,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
-							"sublime_auto_complete": true,
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 311.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "public/app/main.ts",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1189,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								293,
-								293
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": "<",
-									"selector": "text.html"
-								},
-								{
-									"characters": ".#",
-									"selector": "text.html"
-								}
-							],
-							"codeintel": true,
-							"codeintel_config":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_files_in_project": false,
-									"javascriptExtraPaths":
-									[
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 5,
-									"codeintel_scan_files_in_project": false,
-									"phpExtraPaths":
-									[
-									]
-								},
-								"Python":
-								{
-									"env":
-									{
-									}
-								}
-							},
-							"codeintel_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_live": true,
-							"codeintel_live_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
-							{
-								"JavaScript":
-								[
-									"/build/",
-									"/min/"
-								]
-							},
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-								"PyWin32",
-								"jQuery",
-								"Rails"
-							],
-							"codeintel_snippets": true,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
-							"sublime_auto_complete": true,
-							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "public/app/app/app.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 764,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": "<",
-									"selector": "text.html"
-								},
-								{
-									"characters": ".#",
-									"selector": "text.html"
-								}
-							],
-							"codeintel": true,
-							"codeintel_config":
-							{
-								"JavaScript":
-								{
-									"codeintel_max_recursive_dir_depth": 2,
-									"codeintel_scan_files_in_project": false,
-									"javascriptExtraPaths":
-									[
-									]
-								},
-								"PHP":
-								{
-									"codeintel_max_recursive_dir_depth": 5,
-									"codeintel_scan_files_in_project": false,
-									"phpExtraPaths":
-									[
-									]
-								},
-								"Python":
-								{
-									"env":
-									{
-									}
-								}
-							},
-							"codeintel_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_live": true,
-							"codeintel_live_enabled_languages":
-							[
-								"JavaScript",
-								"Mason",
-								"XBL",
-								"XUL",
-								"RHTML",
-								"SCSS",
-								"Python",
-								"HTML",
-								"Ruby",
-								"Python3",
-								"XML",
-								"Sass",
-								"XSLT",
-								"Django",
-								"HTML5",
-								"Perl",
-								"CSS",
-								"Twig",
-								"Less",
-								"Smarty",
-								"Node.js",
-								"Tcl",
-								"TemplateToolkit",
-								"PHP"
-							],
-							"codeintel_max_recursive_dir_depth": 10,
-							"codeintel_scan_exclude_dir":
-							{
-								"JavaScript":
-								[
-									"/build/",
-									"/min/"
-								]
-							},
-							"codeintel_scan_files_in_project": true,
-							"codeintel_selected_catalogs":
-							[
-								"PyWin32",
-								"jQuery",
-								"Rails"
-							],
-							"codeintel_snippets": true,
-							"codeintel_syntax_map":
-							{
-								"Python Django": "Python"
-							},
-							"codeintel_tooltips": "popup",
-							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
-							"sublime_auto_complete": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1743,20 +975,40 @@
 		"selected_items":
 		[
 			[
-				"pack",
-				"package.json"
+				"grunt",
+				"Gruntfile.js"
+			],
+			[
+				"colpic",
+				"public/app/lib/colpick/js/colpick.js"
 			],
 			[
 				"main",
 				"public/app/main.ts"
 			],
 			[
-				"bower",
-				"bower.json"
+				"inde",
+				"public/index.html"
 			],
 			[
-				"grunt",
-				"Gruntfile.js"
+				"jquer",
+				"public/app/common/injectables/jquery.injectable.ts"
+			],
+			[
+				"app",
+				"public/app/app/app.ts"
+			],
+			[
+				"boxs",
+				"public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts"
+			],
+			[
+				"pack",
+				"package.json"
+			],
+			[
+				"bower",
+				"bower.json"
 			],
 			[
 				"sublime",
@@ -1777,10 +1029,6 @@
 			[
 				"user",
 				"public/app/repositories/users.repository.ts"
-			],
-			[
-				"inde",
-				"public/index.html"
 			],
 			[
 				"navig",
@@ -2001,10 +1249,6 @@
 			[
 				"grun",
 				"Gruntfile.js"
-			],
-			[
-				"app",
-				"public/app/app.ts"
 			],
 			[
 				"norma",
@@ -2241,18 +1485,6 @@
 			[
 				"dcn",
 				"dcn.sublime-project"
-			],
-			[
-				"detail",
-				"css/layout/detail.less"
-			],
-			[
-				"listvie",
-				"css/modules/listview.less"
-			],
-			[
-				"button",
-				"css/modules/buttons.less"
 			]
 		],
 		"width": 0.0

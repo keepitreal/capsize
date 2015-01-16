@@ -61,6 +61,7 @@ module.exports = function (grunt) {
             combine: {
                 files: {
                     './public/css/style.css': [
+                        './public/app/lib/fontawesome/css/font-awesome.min.css',
                         './public/app/lib/colpick/css/colpick.css',
                         './public/css/main.css'
                     ]

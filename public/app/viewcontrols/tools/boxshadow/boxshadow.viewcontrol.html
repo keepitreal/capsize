@@ -1,4 +1,17 @@
-<div class="workspace-title">Generators | Box Shadow</div>
+<div class="workspace-header">
+	<div class="workspace-title">Generators | Box Shadow</div>
+	<div class="workspace-effects">
+		<span class="new-effect effect">
+			<i class="fa fa-plus"></i>
+		</span>
+		<ul class="effects-list" plat-control="plat-foreach" plat-context="effects">
+			<li class="effect effect-existent">
+				<i class="fa fa-reorder" plat-visible="{{@rootContext.effects.length > 1}}"></i>
+				shadow {{id}}
+			</li>
+		</ul>
+	</div>
+</div>
 <div class="workspace">
 	<div class="workspace-sidebar">
 		<ul class="workspace-options">

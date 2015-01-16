@@ -32,7 +32,12 @@ export class BoxShadowViewControl extends baseViewcontrol.BaseViewControl {
 				a: 1
 			}
 		},
-		alphaAlias: 100
+		alphaAlias: 100,
+		effects: [
+			{ id: 1, effect: null },
+			{ id: 2, effect: null },
+			// { id: 3, effect: null }
+		]
 	};
 
 	loaded() {

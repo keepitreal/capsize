@@ -2,10 +2,14 @@
 
 // =============== Workspace Constants ==================
 
-@sidebar-width: 27em;
+@sidebar-width: 23em;
+@effects-margin: 0.4em;
 
 // =============== Workspace Constants ==================
-.workspace-title {
+.workspace-header {
+	.flexbox();
+	.flex-vertical-center();
+	.justify-content(space-between);
 	width: 100%;
 	height: 3em;
 	line-height: 3em;
@@ -13,6 +17,56 @@
 	background-color: @font-grey;
 	color: #ffffff;
 	font-weight: bold;
+
+	& > .workspace-title { }
+
+	& > .workspace-effects {
+		.flexbox();
+		.flex-vertical-center();
+		.justify-content(space-between);
+
+		& > .effects-list {
+			margin: 0 0 0 @effects-margin;
+			padding: 0;
+			list-style: none;
+
+			& > li {
+				float: left;
+				margin: 0 @effects-margin;
+			}
+		}
+
+		.effect {
+			.font-size {
+				font-size: 0.75em;
+				line-height: 0.75em;
+			}
+
+			.font-size();
+			padding: 0.7em 1em;
+			border: 1px dashed @accent-grey;
+			border-radius: 4px;
+			text-align: center;
+			font-weight: lighter;
+			cursor: pointer;
+
+			&.new-effect {
+				& > i.fa {
+					padding-right: 0;
+				}
+			}
+
+			&.effect-existent {
+				border-style: solid;
+			}
+
+			& > i.fa {
+				.font-size();
+				padding-right: 0.5em;
+				cursor: move;
+			}
+		}
+	}
 }
 
 .workspace {
@@ -34,6 +88,7 @@
 			padding: 0;
 			margin: 0;
 			color: @font-grey;
+			font-size: 14px;
 
 			& > li {
 				display: block;
