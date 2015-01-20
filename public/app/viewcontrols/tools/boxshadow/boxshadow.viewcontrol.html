@@ -1,66 +1,52 @@
-<div class="workspace-header">
-	<div class="workspace-title">Generators | Box Shadow</div>
-	<div class="workspace-effects">
-		<span class="new-effect effect">
-			<i class="fa fa-plus"></i>
-		</span>
-		<ul class="effects-list" plat-control="plat-foreach" plat-context="effects">
-			<li class="effect effect-existent">
-				<i class="fa fa-reorder" plat-visible="{{@rootContext.effects.length > 1}}"></i>
-				shadow {{id}}
-			</li>
-		</ul>
-	</div>
-</div>
 <div class="workspace">
 	<div class="workspace-sidebar">
 		<ul class="workspace-options">
 			<li class="workspace-item-inline">
 				<span class="workspace-option workspace-option-name">inset</span>
 				<span class="workspace-option workspace-option-control">
-					<plat-toggle plat-bind="demoShape.inset" plat-change="setProperty()"></plat-toggle>
+					<plat-toggle plat-bind="controlPanel.inset" plat-change="setProperty()"></plat-toggle>
 				</span>
 			</li>
 			<li>
 				<div class="workspace-option">
 					<div class="workspace-option-name">offset X:</div>
-					<div class="workspace-option-value">{{demoShape.offsetX}}px</div>
+					<div class="workspace-option-value">{{controlPanel.offsetX}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.offsetX" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
+					<plat-slider plat-bind="controlPanel.offsetX" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option">
 					<div class="workspace-option-name">offset Y:</div>
-					<div class="workspace-option-value">{{demoShape.offsetY}}px</div>
+					<div class="workspace-option-value">{{controlPanel.offsetY}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.offsetY" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
+					<plat-slider plat-bind="controlPanel.offsetY" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option">
 					<div class="workspace-option-name">blur radius:</div>
-					<div class="workspace-option-value">{{demoShape.blurRadius}}px</div>
+					<div class="workspace-option-value">{{controlPanel.blurRadius}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.blurRadius" plat-react="setProperty()"></plat-slider>
+					<plat-slider plat-bind="controlPanel.blurRadius" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option">
 					<div class="workspace-option-name">spread radius:</div>
-					<div class="workspace-option-value">{{demoShape.spreadRadius}}px</div>
+					<div class="workspace-option-value">{{controlPanel.spreadRadius}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="demoShape.spreadRadius" plat-react="setProperty()"></plat-slider>
+					<plat-slider plat-bind="controlPanel.spreadRadius" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
 				<div class="workspace-option">
 					<div class="workspace-option-name">transparency:</div>
-					<div class="workspace-option-value">{{demoShape.rgba.a}}</div>
+					<div class="workspace-option-value">{{controlPanel.rgba.a}}</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
 					<plat-slider plat-bind="alphaAlias" plat-react="setAlpha()" plat-options="{ min: 0, max: 100 }"></plat-slider>
@@ -77,8 +63,26 @@
 		</ul>
 	</div>
 	<div class="workspace-demo">
-		<ul class="workspace-css">
-			<li>box-shadow: {{demoShape.inset ? 'inset' : ''}} {{demoShape.offsetX}}px {{demoShape.offsetY}}px {{demoShape.blurRadius}}px {{demoShape.spreadRadius}}px rgba({{demoShape.rgba.r}},{{demoShape.rgba.g}},{{demoShape.rgba.b}},{{demoShape.rgba.a}});</li>
+		<div class="workspace-demo-options">
+			<div class="workspace-effects">
+				<span class="effect">Change Demo Shape</span>
+			</div>
+			<button plat-tap="setColpick()">set colpick</button>
+			<div class="workspace-effects">
+				<span class="new-effect effect" plat-tap="createEffect()">
+					<i class="fa fa-plus"></i>
+				</span>
+				<ul class="effects-list" plat-control="plat-foreach" plat-context="effects">
+					<li class="effect effect-existent {{ @index === selectedIndex ? 'effect-selected' : '' }}" plat-tap="selectEffect(@index)">
+					
+						<i class="fa fa-ellipsis-v" plat-touchstart="moveEffect(id)" plat-visible="{{@rootContext.effects.length > 1}}"></i>
+						shadow {{@index + 1}}
+					</li>
+				</ul>
+			</div>
+		</div>
+		<ul class="workspace-css" plat-control="plat-foreach" plat-context="effects">
+			<li>{{inlineStyle}}</li>
 		</ul>
 		<div class="workspace-demo-shape" plat-name="demoShape"></div>
 	</div>

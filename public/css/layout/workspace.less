@@ -3,71 +3,9 @@
 // =============== Workspace Constants ==================
 
 @sidebar-width: 23em;
-@effects-margin: 0.4em;
+@effects-margin: 0.2em;
 
 // =============== Workspace Constants ==================
-.workspace-header {
-	.flexbox();
-	.flex-vertical-center();
-	.justify-content(space-between);
-	width: 100%;
-	height: 3em;
-	line-height: 3em;
-	padding: 0 @horizontal-container;
-	background-color: @font-grey;
-	color: #ffffff;
-	font-weight: bold;
-
-	& > .workspace-title { }
-
-	& > .workspace-effects {
-		.flexbox();
-		.flex-vertical-center();
-		.justify-content(space-between);
-
-		& > .effects-list {
-			margin: 0 0 0 @effects-margin;
-			padding: 0;
-			list-style: none;
-
-			& > li {
-				float: left;
-				margin: 0 @effects-margin;
-			}
-		}
-
-		.effect {
-			.font-size {
-				font-size: 0.75em;
-				line-height: 0.75em;
-			}
-
-			.font-size();
-			padding: 0.7em 1em;
-			border: 1px dashed @accent-grey;
-			border-radius: 4px;
-			text-align: center;
-			font-weight: lighter;
-			cursor: pointer;
-
-			&.new-effect {
-				& > i.fa {
-					padding-right: 0;
-				}
-			}
-
-			&.effect-existent {
-				border-style: solid;
-			}
-
-			& > i.fa {
-				.font-size();
-				padding-right: 0.5em;
-				cursor: move;
-			}
-		}
-	}
-}
 
 .workspace {
 	position: relative;
@@ -139,12 +77,78 @@
 	}
 
 	& > .workspace-demo {
+		@workspace-demo-grey: lighten(@font-grey, 15%);
+
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		right: 0;
 		width: calc(~'100% - @{sidebar-width}');
 		text-align: center;
+
+		& > .workspace-demo-options {
+			.flexbox();
+			.flex-vertical-center();
+			.justify-content(space-between);
+			position: relative;
+			width: 100%;
+			height: 2.75em;
+			padding: @horizontal-container / 2;
+
+			& > .workspace-effects {
+				.flexbox();
+				.flex-vertical-center();
+				.justify-content(space-between);
+
+				& > .effects-list {
+					margin: 0 0 0 @effects-margin;
+					padding: 0;
+					list-style: none;
+
+					& > li {
+						float: left;
+						margin: 0 @effects-margin;
+					}
+				}
+
+				.effect {
+					.effect-font {
+						font-size: 0.75em;
+						line-height: 0.75em;
+						color: @workspace-demo-grey;
+					}
+
+					.effect-font();
+					padding: 0.7em 1em;
+					border: 1px dashed @workspace-demo-grey;
+					border-radius: 4px;
+					text-align: center;
+					font-weight: lighter;
+
+					&.new-effect {
+						& > i.fa {
+							padding-right: 0;
+							cursor: pointer;
+						}
+					}
+
+					&.effect-existent {
+						border-style: solid;
+					}
+
+					&.effect-selected {
+						border-color: @blue;
+						color: @blue;
+					}
+
+					& > i.fa {
+						.effect-font();
+						padding-right: 0.5em;
+						cursor: move;
+					}
+				}
+			}
+		}
 
 		& > .workspace-demo-shape {
 			background-color: lighten(@blue, 20%);

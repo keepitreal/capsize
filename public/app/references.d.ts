@@ -21,3 +21,8 @@
 
 /// <reference path="./repositories/posts.repository.ts" />
 /// <reference path="./repositories/users.repository.ts" />
+
+/// ViewControls
+
+/// <reference path="./viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts" />
+/// <reference path="./viewcontrols/tools/boxshadow/boxshadow.interfaces.viewcontrol.ts" />

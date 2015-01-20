@@ -3345,78 +3345,6 @@ textarea.manage-input {
   float: right;
   border-radius: 2px;
 }
-.workspace-header {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  -moz-align-items: center;
-  -ms-align-items: center;
-  align-items: center;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  -ms-justify-content: space-between;
-  justify-content: space-between;
-  width: 100%;
-  height: 3em;
-  line-height: 3em;
-  padding: 0 1.6em;
-  background-color: #7c7c7c;
-  color: #ffffff;
-  font-weight: bold;
-}
-.workspace-header > .workspace-effects {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  -moz-align-items: center;
-  -ms-align-items: center;
-  align-items: center;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  -ms-justify-content: space-between;
-  justify-content: space-between;
-}
-.workspace-header > .workspace-effects > .effects-list {
-  margin: 0 0 0 0.4em;
-  padding: 0;
-  list-style: none;
-}
-.workspace-header > .workspace-effects > .effects-list > li {
-  float: left;
-  margin: 0 0.4em;
-}
-.workspace-header > .workspace-effects .effect {
-  font-size: 0.75em;
-  line-height: 0.75em;
-  padding: 0.7em 1em;
-  border: 1px dashed #ebebeb;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: lighter;
-  cursor: pointer;
-}
-.workspace-header > .workspace-effects .effect .font-size {
-  font-size: 0.75em;
-  line-height: 0.75em;
-}
-.workspace-header > .workspace-effects .effect.new-effect > i.fa {
-  padding-right: 0;
-}
-.workspace-header > .workspace-effects .effect.effect-existent {
-  border-style: solid;
-}
-.workspace-header > .workspace-effects .effect > i.fa {
-  font-size: 0.75em;
-  line-height: 0.75em;
-  padding-right: 0.5em;
-  cursor: move;
-}
 .workspace {
   position: relative;
   width: 100%;
@@ -3490,6 +3418,82 @@ textarea.manage-input {
   right: 0;
   width: calc(100% - 23em);
   text-align: center;
+}
+.workspace > .workspace-demo > .workspace-demo-options {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  height: 2.75em;
+  padding: 0.8em;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects > .effects-list {
+  margin: 0 0 0 0.2em;
+  padding: 0;
+  list-style: none;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects > .effects-list > li {
+  float: left;
+  margin: 0 0.2em;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect {
+  font-size: 0.75em;
+  line-height: 0.75em;
+  color: #a2a2a2;
+  padding: 0.7em 1em;
+  border: 1px dashed #a2a2a2;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: lighter;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect .effect-font {
+  font-size: 0.75em;
+  line-height: 0.75em;
+  color: #a2a2a2;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect.new-effect > i.fa {
+  padding-right: 0;
+  cursor: pointer;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect.effect-existent {
+  border-style: solid;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect.effect-selected {
+  border-color: #5ea9d3;
+  color: #5ea9d3;
+}
+.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect > i.fa {
+  font-size: 0.75em;
+  line-height: 0.75em;
+  color: #a2a2a2;
+  padding-right: 0.5em;
+  cursor: move;
 }
 .workspace > .workspace-demo > .workspace-demo-shape {
   background-color: #aed4e9;

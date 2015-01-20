@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"back",
+				"background-color"
+			],
+			[
 				"j",
 				"jQueryInjectable"
 			],
@@ -166,10 +170,6 @@
 			[
 				"listivew",
 				"listview-detail	 main.css"
-			],
-			[
-				"back",
-				"background-image"
 			],
 			[
 				"lin",
@@ -519,6 +519,55 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
+			"settings":
+			{
+				"buffer_size": 3525,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+			"settings":
+			{
+				"buffer_size": 2984,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/app/references.d.ts",
+			"settings":
+			{
+				"buffer_size": 872,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.interfaces.viewcontrol.ts",
+			"settings":
+			{
+				"buffer_size": 380,
+				"line_ending": "Unix",
+				"name": "box"
+			}
+		},
+		{
+			"file": "public/css/layout/workspace.less",
+			"settings":
+			{
+				"buffer_size": 3349,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/css/common/variables.less",
+			"settings":
+			{
+				"buffer_size": 561,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -591,7 +640,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 602.0
+		"width": 534.0
 	},
 	"console":
 	{
@@ -615,32 +664,51 @@
 		"/Users/darionwelch/Sites/capsize",
 		"/Users/darionwelch/Sites/capsize/public",
 		"/Users/darionwelch/Sites/capsize/public/app",
-		"/Users/darionwelch/Sites/capsize/public/app/app",
-		"/Users/darionwelch/Sites/capsize/public/app/lib/colpick/css"
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow"
 	],
 	"file_history":
 	[
+		"/Users/darionwelch/Sites/capsize/public/css/layout/main.less",
+		"/Users/darionwelch/Sites/capsize/public/css/main.less",
+		"/Users/darionwelch/Sites/capsize/public/app/main.ts",
+		"/Users/darionwelch/Sites/capsize/public/css/modules/buttons.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+		"/Users/darionwelch/Sites/capsize/bower.json",
+		"/Users/darionwelch/Sites/capsize/public/css/common/variables.less",
+		"/Users/darionwelch/Sites/capsize/public/css/common/mixins.less",
+		"/Users/darionwelch/Sites/capsize/Gruntfile.js",
+		"/Users/darionwelch/Sites/capsize/public/css/layout/workspace.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
+		"/Users/darionwelch/Sites/capsize/Capsize.sublime-project",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/fontawesome/css/font-awesome.min.css",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/fontawesome/scss/font-awesome.scss",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/fontawesome/less/font-awesome.less",
+		"/Users/darionwelch/Sites/capsize/public/app/lib/fontawesome/css/font-awesome.css",
+		"/Users/darionwelch/Sites/capsize/public/assets/fonts/fontawesome/FontAwesome.otf",
+		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/examples/flush-on-exit.js",
+		"/Users/darionwelch/Sites/capsize/public/css/modules/forms.less",
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt/internal-tasks/subgrunt.js",
+		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/source-map/build/suffix-utils.jsm",
+		"/Users/darionwelch/Sites/capsize/server/server.js",
+		"/Users/darionwelch/Sites/capsize/public/index.html",
+		"/Users/darionwelch/Sites/capsize/public/css/base/typography.less",
+		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/colpick/js/colpick.js",
 		"/Users/darionwelch/Sites/capsize/tsd.json",
 		"/Users/darionwelch/Sites/capsize/tsd.public.json",
-		"/Users/darionwelch/Sites/capsize/Gruntfile.js",
 		"/Users/darionwelch/Sites/capsize/package.json",
 		"/Users/darionwelch/Sites/capsize/public/app/references.d.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/marked.injectable.ts",
-		"/Users/darionwelch/Sites/capsize/public/app/main.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/app/app.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/marked/bin/marked",
 		"/Users/darionwelch/Sites/capsize/node_modules/.bin/marked",
-		"/Users/darionwelch/Sites/capsize/public/css/main.less",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/colpick/colpick.jquery.json",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/log4js/lib/connect-logger.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/http/CacheObject.js",
-		"/Users/darionwelch/Sites/capsize/Capsize.sublime-project",
-		"/Users/darionwelch/Sites/capsize/public/index.html",
 		"/Users/darionwelch/Sites/capsize/public/css/base/defaults.less",
-		"/Users/darionwelch/Sites/capsize/public/css/layout/workspace.less",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/platypusui/platypusui.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/platypusui/platypusui.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/injectables/jquery.injectable.js",
@@ -652,9 +720,6 @@
 		"/Users/darionwelch/Sites/capsize/public/app/app.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/passport-linkedin/node_modules/pkginfo/examples/all-properties.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/grunt-cli/AUTHORS",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
-		"/Users/darionwelch/Sites/capsize/bower.json",
-		"/Users/darionwelch/Sites/capsize/public/css/modules/buttons.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/grunt-browserify/node_modules/browserify/test/ignore/by-id.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/lang/isObject.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/indexOf.js",
@@ -667,7 +732,6 @@
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/fixtures/docs-pythonmarkdown2-tm-cases-pass/sublist-para.html",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/fixtures/docs-pythonmarkdown2-tm-cases-pass/sublist-para.text",
 		"/Users/darionwelch/Sites/capsize/.tscache/watch_server/hashes/user.ts-b8ad5c429f47bf196c3d4f4bae6bf5db",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/source-map/build/suffix-utils.jsm",
 		"/Users/darionwelch/Sites/capsize/server/server.ts",
 		"/Users/darionwelch/Sites/capsize/node_modules/grunt-contrib-watch/node_modules/.bin/tiny-lr-fork",
 		"/Users/darionwelch/Sites/capsize/node_modules/.bin/grunt",
@@ -686,7 +750,6 @@
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/mout/array/toLookup.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/bootstrap/js/tooltip.js",
 		"/Users/darionwelch/Sites/capsize/node_modules/tsd/build/xm/typeOf.js",
-		"/Users/darionwelch/Sites/capsize/public/css/base/typography.less",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/manage/manage.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/blog/single/single.viewcontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/auth/login/login.viewcontrol.ts",
@@ -716,10 +779,6 @@
 		"/Users/darionwelch/Sites/capsize/public/app/services/base.service.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/common/templatecontrols/markeddisplay/markeddisplay.templatecontrol.ts",
 		"/Users/darionwelch/Sites/capsize/public/app/app.ts",
-		"/Users/darionwelch/Sites/capsize/public/css/common/variables.less",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.js",
-		"/Users/darionwelch/Sites/capsize/public/css/modules/forms.less",
-		"/Users/darionwelch/Sites/capsize/public/css/common/mixins.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/karma/node_modules/socket.io/lib/manager.js",
 		"/Users/darionwelch/Sites/capsize/.tscache/watch_public/hashes/manage.viewcontrol.ts-1c3a16cea7aa1c7006503fc92c81f276",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/test/core/Manager.js",
@@ -731,7 +790,6 @@
 		"/Users/darionwelch/Sites/capsize/public/css/layout/blog.less",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/features/code/blank_lines.text",
 		"/Users/darionwelch/Sites/capsize/public/css/common/animations.less",
-		"/Users/darionwelch/Sites/capsize/public/css/layout/main.less",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/bower-logger/lib/Logger.js",
 		"/Users/darionwelch/Sites/capsize/public/app/lib/markdown/test/features/code/block.text",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/.bin/opn",
@@ -739,15 +797,7 @@
 		"/Users/darionwelch/Sites/capsize/public/app/lib/bootstrap/less/responsive-embed.less",
 		"/Users/darionwelch/Sites/capsize/README.md",
 		"/Users/darionwelch/Sites/capsize/node_modules/bower/node_modules/inquirer/node_modules/rx/src/core/backpressureheader.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/grunt-karma/lib/background.js",
-		"/Users/darionwelch/Sites/capsize/node_modules/karma/lib/reporters/base_color.js",
-		"/Users/darionwelch/Sites/capsize/public/css/modules/toggle.less",
-		"/Users/darionwelch/Sites/capsize/public/css/modules/navbar.less",
-		"/Users/darionwelch/Sites/capsize/node_modules/jasmine-core/.sass-cache/165c00c5840c6012ccde4069d7d3476235dd1124/_hover-link.scssc",
-		"/Users/darionwelch/Sites/capsize/public/app/viewcontrols/home/home.viewcontrol.ts",
-		"/Users/darionwelch/Sites/capsize/node_modules/body-parser/HISTORY.md",
-		"/Users/darionwelch/Sites/capsize/public/css/layout/auth.less",
-		"/Users/darionwelch/Sites/capsize/node_modules/express/lib/router/layer.js"
+		"/Users/darionwelch/Sites/capsize/node_modules/grunt-karma/lib/background.js"
 	],
 	"find":
 	{
@@ -774,6 +824,19 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"obj",
+			"IBoxShadowEffect",
+			"IBox",
+			"shapeContext",
+			"value",
+			"repositories",
+			"font-grey",
+			"font-size",
+			"1em",
+			"0.8em",
+			"../fonts",
+			"effect",
+			"one",
 			"require('platypus",
 			"lib/jquery/dist",
 			"jQuery",
@@ -888,20 +951,7 @@
 			"rightActionText",
 			"rightNavIcon",
 			"10",
-			"2px",
-			"15",
-			"0,",
-			"10px",
-			"90",
-			"15",
-			"2px",
-			"graph",
-			"150px",
-			"images",
-			"format",
-			"raphael",
-			"placeholder",
-			"placeholder=\"Darion\""
+			"2px"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -919,14 +969,783 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3525,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								318,
+								318
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2984,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2878,
+								2878
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 982.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/app/references.d.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 872,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								852,
+								852
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "public/app/viewcontrols/tools/boxshadow/boxshadow.interfaces.viewcontrol.ts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 380,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								302,
+								302
+							]
+						],
+						"settings":
+						{
+							"auto_name": "box",
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/Better TypeScript/TypeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "public/css/layout/workspace.less",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3349,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1868,
+								1868
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/LESS/LESS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 970.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "public/css/common/variables.less",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 561,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flat_Dark.tmTheme",
+							"syntax": "Packages/LESS/LESS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -941,11 +1760,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.588422309028,
 			1.0
 		],
 		"rows":
@@ -966,7 +1792,7 @@
 	"project": "Capsize.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -975,16 +1801,60 @@
 		"selected_items":
 		[
 			[
+				"var",
+				"public/css/common/variables.less"
+			],
+			[
+				"vari",
+				"public/css/common/variables.less"
+			],
+			[
+				"main",
+				"public/css/layout/main.less"
+			],
+			[
+				"work",
+				"public/css/layout/workspace.less"
+			],
+			[
+				"box",
+				"public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts"
+			],
+			[
+				"font-awes",
+				"public/app/lib/fontawesome/css/font-awesome.min.css"
+			],
+			[
+				"subli",
+				"Capsize.sublime-project"
+			],
+			[
+				"grun",
+				"Gruntfile.js"
+			],
+			[
 				"grunt",
 				"Gruntfile.js"
 			],
 			[
-				"colpic",
-				"public/app/lib/colpick/js/colpick.js"
+				"sublime",
+				"Capsize.sublime-project"
 			],
 			[
-				"main",
-				"public/app/main.ts"
+				"typo",
+				"public/css/base/typography.less"
+			],
+			[
+				"mixi",
+				"public/css/common/mixins.less"
+			],
+			[
+				"boxsh",
+				"public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html"
+			],
+			[
+				"colpic",
+				"public/app/lib/colpick/js/colpick.js"
 			],
 			[
 				"inde",
@@ -1011,10 +1881,6 @@
 				"bower.json"
 			],
 			[
-				"sublime",
-				"Capsize.sublime-project"
-			],
-			[
 				"navi",
 				"public/css/modules/navigation.less"
 			],
@@ -1035,18 +1901,6 @@
 				"public/app/common/templatecontrols/navigation/navigation.templatecontrol.ts"
 			],
 			[
-				"work",
-				"public/css/layout/workspace.less"
-			],
-			[
-				"box",
-				"public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html"
-			],
-			[
-				"vari",
-				"public/css/common/variables.less"
-			],
-			[
 				"list",
 				"public/app/viewcontrols/blog/list/list.viewcontrol.html"
 			],
@@ -1059,16 +1913,8 @@
 				"public/css/common/mixins.less"
 			],
 			[
-				"typo",
-				"public/css/base/typography.less"
-			],
-			[
 				"typ",
 				"public/css/base/typography.less"
-			],
-			[
-				"var",
-				"public/css/common/variables.less"
 			],
 			[
 				"form",
@@ -1207,10 +2053,6 @@
 				"public/app/common/templatecontrols/navigation/navigation.templatecontrol.html"
 			],
 			[
-				"boxsh",
-				"public/app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.ts"
-			],
-			[
 				"model.t",
 				"public/app/models/user.model.ts"
 			],
@@ -1245,10 +2087,6 @@
 			[
 				"mixins.",
 				"public/css/common/mixins.less"
-			],
-			[
-				"grun",
-				"Gruntfile.js"
 			],
 			[
 				"norma",
@@ -1411,10 +2249,6 @@
 				"platyfi.sublime-project"
 			],
 			[
-				"subli",
-				"platyfi.sublime-project"
-			],
-			[
 				"tslint",
 				"tslint.json"
 			],
@@ -1477,14 +2311,6 @@
 			[
 				"base.v",
 				"public/app/viewcontrols/base/base.viewcontrol.ts"
-			],
-			[
-				".less",
-				"public/css/main.less"
-			],
-			[
-				"dcn",
-				"dcn.sublime-project"
 			]
 		],
 		"width": 0.0
@@ -1512,8 +2338,8 @@
 	"show_minimap": false,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
-	"side_bar_width": 246.0,
+	"side_bar_visible": false,
+	"side_bar_width": 283.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
