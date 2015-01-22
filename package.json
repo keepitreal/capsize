@@ -31,7 +31,7 @@
     "passport-linkedin": "latest",
     "passport-local": "latest",
     "passport-twitter": "latest",
-    "platypus": "latest",
+    "platypus": "0.9.9",
     "underscore": "latest"
   },
   "devDependencies": {
