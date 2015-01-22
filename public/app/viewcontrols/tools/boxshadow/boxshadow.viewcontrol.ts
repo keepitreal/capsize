@@ -4,10 +4,10 @@
 
 declare var $;
 
-import plat = require('platypus');
 import baseViewcontrol = require('../../base.viewcontrol');
 import jQueryInjectable = require('../../../common/injectables/jquery.injectable');
 import interfaces = require('./boxshadow.interfaces.viewcontrol');
+import plat = require('platypus');
 
 export class BoxShadowViewControl extends baseViewcontrol.BaseViewControl {
 	title = 'Tools - Box Shadow Generator';
@@ -49,18 +49,18 @@ export class BoxShadowViewControl extends baseViewcontrol.BaseViewControl {
 		};
 		context.effects.push({
 			effect:	this.$utils.clone({
-	inset: false,
-	offsetX: 5,
-	offsetY: 5,
-	blurRadius: 4,
-	spreadRadius: 3,
-	rgba: {
-		r: 100,
-		g: 100,
-		b: 100,
-		a: 1
-	}
-}),
+				inset: false,
+				offsetX: 5,
+				offsetY: 5,
+				blurRadius: 4,
+				spreadRadius: 3,
+				rgba: {
+					r: 100,
+					g: 100,
+					b: 100,
+					a: 1
+				}
+			}),
 			inlineStyle: ''
 		});
 	}
