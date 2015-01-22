@@ -5,7 +5,7 @@ declare var $;
 
 import jQueryInjectable = require('../../../common/injectables/jquery.injectable');
 import interfaces = require('./boxshadow.interfaces.viewcontrol');
-import plat = require('platypus');
+import plat = require('../../../lib/platypus/platypus');
 
 export class BoxShadowViewControl extends plat.ui.WebViewControl {
 	title = 'Tools - Box Shadow Generator';
@@ -180,7 +180,6 @@ export class BoxShadowViewControl extends plat.ui.WebViewControl {
 		this.context.effects[selected].effect = this.$utils.clone(context.controlPanel);
 		this.objToInlineStr(context.selectedEffect);
 		this.demoShape.element.style.boxShadow = this.concatInlineStrings(context.effects);
-		console.log(this.context.effects);
 	}
 }
 

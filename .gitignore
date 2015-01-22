@@ -2,7 +2,6 @@
 .nodemonignore
 .sass-cache
 node_modules/
-public/assets
 typings/
 .idea/
 *.sublime-project

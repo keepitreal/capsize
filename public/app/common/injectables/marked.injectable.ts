@@ -1,7 +1,7 @@
 /// <reference path="../../references.d.ts" />
 'use strict';
 
-import plat = require('platypus');
+import plat = require('../../lib/platypus/platypus');
 var marked = require('../../lib/marked/lib/marked');
 
 var renderer = new marked.Renderer();

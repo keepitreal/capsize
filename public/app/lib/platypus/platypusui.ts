@@ -1,4 +1,5 @@
-/// <reference path="../platypus/platypus-node.d.ts" />
+/// <reference path="/node_modules/platypus/platypus-node.d.ts" />
+var plat = require('platypus');
 
 /* tslint:disable */
 /**

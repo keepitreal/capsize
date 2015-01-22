@@ -116,6 +116,7 @@ module plat {
         __TrackUp = __Plat + 'trackup',
         __TrackDown = __Plat + 'trackdown',
         __TrackEnd = __Plat + 'trackend',
+        __React = __Plat + 'react',
         __Link = __Plat + 'link',
         __ForEach = __Plat + 'foreach',
         __Html = __Plat + 'html',
@@ -27279,18 +27280,24 @@ module plat {
             }
 
             /**
-             * Sets the event listener.
+             * Parses function args and sets the event listener.
              */
             protected _setListener(): void {
-                var event = this.event,
-                    fn = this.attributes[this.attribute];
+                var fn = this.attributes[this.attribute];
 
-                if (isEmpty(event) || isEmpty(fn)) {
+                if (isEmpty(this.event) || isEmpty(fn)) {
                     return;
                 }
 
                 this._parseArgs(fn);
-                this.addEventListener(this.element, event, this._onEvent, false);
+                this._addEventListeners();
+            }
+
+            /**
+             * Adds any and all necessary event listeners.
+             */
+            protected _addEventListeners(): void {
+                this.addEventListener(this.element, this.event, this._onEvent, false);
             }
 
             /**
@@ -27699,6 +27706,82 @@ module plat {
             }
         }
 
+        /**
+         * A SimpleEventControl for the 'input' event. If 
+         * 'input' is not an event, it will simulate an 'input' using other events like 'keydown', 
+         * 'cut', 'paste', etc. Also fires on the 'change' event.
+         */
+        export class React extends SimpleEventControl {
+            /**
+             * Reference to the ICompat injectable.
+             */
+            $Compat: ICompat = acquire(__Compat);
+
+            /**
+             * The event name.
+             */
+            event: string = 'input';
+
+            /**
+             * Adds any and all necessary event listeners.
+             */
+            protected _addEventListeners(): void {
+                var element = this.element,
+                    $compat = this.$Compat,
+                    composing = false,
+                    input = 'input',
+                    timeout: IRemoveListener,
+                    eventListener = (ev: Event) => {
+                        if (composing) {
+                            return;
+                        }
+
+                        this._onEvent(ev);
+                    },
+                    postponedEventListener = (ev: Event) => {
+                        if (isFunction(timeout)) {
+                            return;
+                        }
+
+                        timeout = postpone(() => {
+                            eventListener(ev);
+                            timeout = null;
+                        });
+                    };
+
+                if (isUndefined($compat.ANDROID)) {
+                    this.addEventListener(element, 'compositionstart', () => (composing = true), false);
+                    this.addEventListener(element, 'compositionend', (ev: Event) => {
+                        composing = false;
+                        eventListener(ev);
+                    }, false);
+                }
+
+                this.addEventListener(element, input, eventListener, false);
+                this.addEventListener(element, 'change', eventListener, false);
+
+                if ($compat.hasEvent(input)) {
+                    return;
+                }
+
+                this.addEventListener(element, 'keydown', (ev: KeyboardEvent) => {
+                    var key = ev.keyCode,
+                        codes = KeyCodes;
+
+                    if (key === codes.lwk ||
+                        key === codes.rwk ||
+                        (key >= codes.shift && key <= codes.escape) ||
+                        (key > codes.space && key <= codes.down)) {
+                        return;
+                    }
+
+                    postponedEventListener(ev);
+                }, false);
+                this.addEventListener(element, 'cut', postponedEventListener, false);
+                this.addEventListener(element, 'paste', postponedEventListener, false);
+            }
+        }
+
         register.control(__Tap, Tap);
         register.control(__Blur, Blur);
         register.control(__Change, Change);
@@ -27725,6 +27808,7 @@ module plat {
         register.control(__TrackUp, TrackUp);
         register.control(__TrackDown, TrackDown);
         register.control(__TrackEnd, TrackEnd);
+        register.control(__React, React);
 
         /**
          * A mapping of all keys to their equivalent keyCode.
@@ -28451,7 +28535,7 @@ module plat {
             $document: Document = acquire(__Document);
 
             /**
-             * The priority of Bind is set high to take precede 
+             * The priority of Bind is set high to precede 
              * other controls that may be listening to the same 
              * event.
              */
@@ -28515,12 +28599,14 @@ module plat {
              * Parses and watches the expression being bound to.
              */
             loaded(): void {
-                if (isNull(this.parent) || isNull(this.element)) {
+                var parent = this.parent;
+                if (isNull(parent) || isNull(this.element)) {
                     return;
                 }
 
                 var attr = camelCase(this.type),
-                    expression = this._expression = this.$Parser.parse(this.attributes[attr]);
+                    $parser = this.$Parser,
+                    expression = this._expression = $parser.parse(this.attributes[attr]);
 
                 var identifiers = expression.identifiers;
 
@@ -28536,10 +28622,10 @@ module plat {
                 this._property = split.pop();
 
                 if (split.length > 0) {
-                    this._contextExpression = this.$Parser.parse(split.join('.'));
+                    this._contextExpression = $parser.parse(split.join('.'));
                 } else if (expression.aliases.length > 0) {
                     var alias = expression.aliases[0],
-                        resourceObj = this.parent.findResource(alias);
+                        resourceObj = parent.findResource(alias);
 
                     if (isNull(resourceObj) || resourceObj.resource.type !== __OBSERVABLE_RESOURCE) {
                         return;
@@ -28558,7 +28644,7 @@ module plat {
                 } else {
                     this._contextExpression = {
                         evaluate: () => {
-                            return this.parent.context;
+                            return parent.context;
                         },
                         aliases: [],
                         identifiers: [],
@@ -28597,6 +28683,7 @@ module plat {
                 var element = this.element,
                     $compat = this.$Compat,
                     composing = false,
+                    input = 'input',
                     timeout: IRemoveListener,
                     eventListener = () => {
                         if (composing) {
@@ -28624,8 +28711,8 @@ module plat {
                     }, false);
                 }
 
-                if ($compat.hasEvent('input')) {
-                    this.addEventListener(element, 'input', eventListener, false);
+                if ($compat.hasEvent(input)) {
+                    this.addEventListener(element, input, eventListener, false);
                 } else {
                     this.addEventListener(element, 'keydown', (ev: KeyboardEvent) => {
                         var key = ev.keyCode,

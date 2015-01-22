@@ -3,6 +3,7 @@ declare var require: any;
 
 require('./lib/colpick/js/colpick');
 require('./lib/markdown/lib/markdown');
+require('./lib/platypus/platypus');
 require('./lib/platypusui/platypusui');
 
 // injectables

@@ -1,7 +1,7 @@
 /// <reference path="../references.d.ts" />
 'use strict';
 
-import plat = require('platypus');
+import plat = require('../lib/platypus/platypus');
 import jQueryInjectable = require('../common/injectables/jquery.injectable');
 
 export class App extends plat.App {

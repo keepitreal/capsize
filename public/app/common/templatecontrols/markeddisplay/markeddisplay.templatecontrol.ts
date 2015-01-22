@@ -1,7 +1,7 @@
 /// <reference path="../../../references.d.ts" />
 'use strict';
 
-import plat = require('platypus');
+import plat = require('../../../lib/platypus/platypus');
 import markedInjectable = require('../../injectables/marked.injectable');
 
 export class MarkedDisplay extends plat.ui.controls.Html {

@@ -1,7 +1,7 @@
 ﻿/// <reference path="../references.d.ts" />
 'use strict';
 
-import plat = require('platypus');
+import plat = require('../lib/platypus/platypus');
 
 export class BaseService {
     private __http = plat.acquire(plat.async.IHttp);

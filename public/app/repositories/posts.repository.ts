@@ -1,7 +1,7 @@
 /// <reference path="../references.d.ts" />
 'use strict';
 
-import plat = require('platypus');
+import plat = require('../lib/platypus/platypus');
 import postModel = require('../models/post.model');
 import postService = require('../services/posts.service');
 
