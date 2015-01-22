@@ -261,6 +261,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-force-task');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-karma');
@@ -272,7 +273,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', ['concurrent:build']);
     grunt.registerTask('test', ['concurrent:test', 'karma']);
     grunt.registerTask('default', ['concurrent:run']);
-    grunt.registerTask('make', ['ts:server', 'ts:public', 'browserify', 'less']);
+    grunt.registerTask('make', ['force:ts:server', 'force:ts:public', 'browserify', 'less']);
     grunt.registerTask('install', ['shell:tsd','concurrent:install', 'make', 'clean']);
     grunt.registerTask('heroku', ['install']);
 };
