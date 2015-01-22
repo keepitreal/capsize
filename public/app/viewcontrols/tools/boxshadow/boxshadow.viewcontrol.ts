@@ -4,17 +4,17 @@
 
 declare var $;
 
-import baseViewcontrol = require('../../base.viewcontrol');
 import jQueryInjectable = require('../../../common/injectables/jquery.injectable');
 import interfaces = require('./boxshadow.interfaces.viewcontrol');
 import plat = require('platypus');
 
-export class BoxShadowViewControl extends baseViewcontrol.BaseViewControl {
+export class BoxShadowViewControl extends plat.ui.WebViewControl {
 	title = 'Tools - Box Shadow Generator';
 	
 	templateUrl = 'app/viewcontrols/tools/boxshadow/boxshadow.viewcontrol.html';
 
 	$ = plat.acquire(jQueryInjectable.jQueryFactory);
+	$utils = plat.acquire(plat.IUtils);
 
 	demoShape: plat.controls.INamedElement<HTMLDivElement, any>;
 	colpick: any;
