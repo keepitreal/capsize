@@ -117,6 +117,8 @@ module.exports = function (grunt) {
             options: {
                 module: 'commonjs',
                 target: 'es5',
+                sourceMap: false,
+                noImplicitAny: true,
                 fast: 'always'
             },
             watch_server: {

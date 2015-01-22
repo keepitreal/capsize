@@ -6,9 +6,6 @@ require('./lib/markdown/lib/markdown');
 require('platypus');
 require('./lib/platypusui/platypusui');
 
-// app
-require('./app/app');
-
 // injectables
 require('./common/injectables/jquery.injectable');
 require('./common/injectables/marked.injectable');
@@ -27,3 +24,6 @@ require('./viewcontrols/blog/manage/manage.viewcontrol');
 require('./viewcontrols/blog/single/single.viewcontrol');
 require('./viewcontrols/tools/boxshadow/boxshadow.viewcontrol');
 require('./viewcontrols/tools/home/home.viewcontrol');
+
+// app
+require('./app/app');
