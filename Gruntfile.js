@@ -53,7 +53,8 @@ module.exports = function (grunt) {
                     commondir: true,
                     browserifyOptions: {
                         debug: true
-                    }
+                    },
+                    transform: ['deamdify']
                 }
             }
         },
