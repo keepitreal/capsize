@@ -2,9 +2,8 @@
 'use strict';
 
 import plat = require('platypus');
-import baseViewcontrol = require('../../base.viewcontrol');
 
-export class ToolsHomeViewControl extends baseViewcontrol.BaseViewControl {
+export class ToolsHomeViewControl extends plat.ui.WebViewControl {
 	title = 'Tools';
 	templateUrl = 'app/viewcontrols/tools/home/home.viewcontrol.html';
 

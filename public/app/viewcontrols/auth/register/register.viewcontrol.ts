@@ -4,11 +4,11 @@
 import plat = require('platypus');
 import userModel = require('../../../models/user.model');
 import usersRepository = require('../../../repositories/users.repository');
-import baseViewcontrol = require('../../base.viewcontrol');
 
-export class RegisterViewControl extends baseViewcontrol.BaseViewControl {
+export class RegisterViewControl extends plat.ui.WebViewControl {
     title = 'PlatyNEM - Register';
     templateUrl = 'app/viewcontrols/auth/register/register.viewcontrol.html';
+    $utils = plat.acquire(plat.IUtils);
 
     constructor(private usersRepository: usersRepository.UsersRepository) {
         super();

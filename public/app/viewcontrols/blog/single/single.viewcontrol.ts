@@ -5,11 +5,11 @@ import plat = require('platypus');
 import postModel = require('../../../models/post.model');
 import postsRepository = require('../../../repositories/posts.repository');
 import usersRepository = require('../../../repositories/users.repository');
-import baseViewcontrol = require('../../base.viewcontrol');
 
-export class SingleViewControl extends baseViewcontrol.BaseViewControl {
+export class SingleViewControl extends plat.ui.WebViewControl {
     title = 'Blog';
     templateUrl = 'app/viewcontrols/blog/single/single.viewcontrol.html';
+    $utils = plat.acquire(plat.IUtils);
 
     constructor(private postsRepository: postsRepository.PostsRepository,
         private usersRepository: usersRepository.UsersRepository,

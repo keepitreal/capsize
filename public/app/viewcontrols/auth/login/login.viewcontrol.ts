@@ -4,9 +4,8 @@
 import plat = require('platypus');
 import userModel = require('../../../models/user.model');
 import usersRepository = require('../../../repositories/users.repository');
-import baseViewcontrol = require('../../base.viewcontrol');
 
-export class LoginViewControl extends baseViewcontrol.BaseViewControl {
+export class LoginViewControl extends plat.ui.WebViewControl {
     title = 'PlatyNEM - Login';
     templateUrl = 'app/viewcontrols/auth/login/login.viewcontrol.html';
 

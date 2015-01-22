@@ -4,12 +4,12 @@
 import plat = require('platypus');
 import postModel = require('../../../models/post.model');
 import postsRepository = require('../../../repositories/posts.repository');
-import baseViewcontrol = require('../../base.viewcontrol');
 
-export class ManagePostViewControl extends baseViewcontrol.BaseViewControl {
+export class ManagePostViewControl extends plat.ui.WebViewControl {
 	title = 'Blog - Manage';
 	templateUrl = 'app/viewcontrols/blog/manage/manage.viewcontrol.html';
 	editMode = false;
+	$utils = plat.acquire(plat.IUtils);
 
 	constructor(private postsRepository: postsRepository.PostsRepository) {
 	    super();

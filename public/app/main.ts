@@ -15,7 +15,6 @@ require('./common/templatecontrols/navigation/navigation.templatecontrol');
 require('./common/templatecontrols/socialauth/socialauth.templatecontrol');
 
 // view controls
-require('./viewcontrols/base.viewcontrol');
 require('./viewcontrols/about/about.viewcontrol');
 require('./viewcontrols/auth/login/login.viewcontrol');
 require('./viewcontrols/auth/register/register.viewcontrol');
