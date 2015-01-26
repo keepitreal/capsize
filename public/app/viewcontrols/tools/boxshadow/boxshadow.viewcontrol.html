@@ -1,5 +1,5 @@
 <div class="workspace">
-	<div class="workspace-sidebar">
+	<div class="workspace-left-drawer">
 		<ul class="workspace-options">
 			<li class="workspace-item-inline">
 				<span class="workspace-option workspace-option-name">inset</span>
@@ -13,7 +13,7 @@
 					<div class="workspace-option-value">{{controlPanel.offsetX}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="controlPanel.offsetX" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
+					<plat-slider class="slider-primary" plat-bind="controlPanel.offsetX" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
@@ -22,7 +22,7 @@
 					<div class="workspace-option-value">{{controlPanel.offsetY}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="controlPanel.offsetY" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
+					<plat-slider class="slider-primary" plat-bind="controlPanel.offsetY" plat-options="{ min: -50, max: 50 }" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
@@ -31,7 +31,7 @@
 					<div class="workspace-option-value">{{controlPanel.blurRadius}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="controlPanel.blurRadius" plat-react="setProperty()"></plat-slider>
+					<plat-slider class="slider-primary" plat-bind="controlPanel.blurRadius" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
@@ -40,7 +40,7 @@
 					<div class="workspace-option-value">{{controlPanel.spreadRadius}}px</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="controlPanel.spreadRadius" plat-react="setProperty()"></plat-slider>
+					<plat-slider class="slider-primary" plat-bind="controlPanel.spreadRadius" plat-react="setProperty()"></plat-slider>
 				</div>
 			</li>
 			<li>
@@ -49,7 +49,7 @@
 					<div class="workspace-option-value">{{controlPanel.rgba.a}}</div>
 				</div>
 				<div class="workspace-option workspace-option-control">
-					<plat-slider plat-bind="alphaAlias" plat-react="setAlpha()" plat-options="{ min: 0, max: 100 }"></plat-slider>
+					<plat-slider class="slider-primary" plat-bind="alphaAlias" plat-react="setAlpha()" plat-options="{ min: 0, max: 100 }"></plat-slider>
 				</div>
 			</li>
 			<li>
@@ -63,16 +63,16 @@
 		</ul>
 	</div>
 	<div class="workspace-demo">
-		<div class="workspace-demo-options">
-			<div class="workspace-effects">
-				<span class="effect">Change Demo Shape</span>
+		<div class="workspace-tab-menu">
+			<div class="workspace-tabs">
+				<span class="tab">Change Demo Shape</span>
 			</div>
-			<div class="workspace-effects">
-				<span class="new-effect effect" plat-tap="createEffect()">
+			<div class="workspace-tabs">
+				<span class="new-tab tab" plat-tap="createEffect()">
 					<i class="fa fa-plus"></i>
 				</span>
-				<ul class="effects-list" plat-control="plat-foreach" plat-context="effects">
-					<li class="effect effect-existent {{ @index === selectedIndex ? 'effect-selected' : '' }}" plat-tap="selectEffect(@index)">
+				<ul class="tabs-list" plat-control="plat-foreach" plat-context="effects">
+					<li class="tab tab-existent {{ @index === selectedIndex ? 'tab-selected' : '' }}" plat-tap="selectEffect(@index)">
 					
 						<i class="fa fa-ellipsis-v" plat-touchstart="moveEffect(id)" plat-visible="{{@rootContext.effects.length > 1}}"></i>
 						shadow {{@index + 1}}
@@ -80,9 +80,14 @@
 				</ul>
 			</div>
 		</div>
+		<div class="workspace-demo-shape" plat-name="demoShape"></div>
+	</div>
+	<div class="workspace-bottom-drawer">
+		<div class="workspace-tab-menu">
+			
+		</div>
 		<ul class="workspace-css" plat-control="plat-foreach" plat-context="effects">
 			<li>{{inlineStyle}}</li>
 		</ul>
-		<div class="workspace-demo-shape" plat-name="demoShape"></div>
 	</div>
 </div>

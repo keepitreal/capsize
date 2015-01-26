@@ -3149,7 +3149,7 @@ body {
   box-sizing: border-box;
   height: 100%;
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
 }
 *,
 *:before,
@@ -3350,53 +3350,60 @@ textarea.manage-input {
   width: 100%;
   height: 100%;
   min-height: 45em;
+  overflow-y: auto;
 }
-.workspace > .workspace-sidebar {
+.workspace > .workspace-left-drawer {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  overflow-y: visible;
+  overflow-x: hidden;
   left: 0;
+  height: 95vh;
   width: 23em;
-  border-right: 1px solid #ebebeb;
-  background-color: #f9f9f9;
+  border-right: 2px solid #434d5c;
+  background-color: #343c47;
 }
-.workspace > .workspace-sidebar > ul.workspace-options {
+.workspace > .workspace-left-drawer > ul.workspace-options {
+  height: 100%;
   padding: 0;
   margin: 0;
-  color: #7c7c7c;
+  color: #bbbbbb;
   font-size: 14px;
+  overflow-y: visible;
+  overflow-x: hidden;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li {
+.workspace > .workspace-left-drawer > ul.workspace-options > li {
   display: block;
   padding: 0.35em 0.8em;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #434d5c;
+  border-top: 1px solid #272d35;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li > .workspace-option {
+.workspace > .workspace-left-drawer > ul.workspace-options > li > .workspace-option {
   height: 2.4em;
   line-height: 2.4em;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li > .workspace-option > .workspace-option-name {
+.workspace > .workspace-left-drawer > ul.workspace-options > li > .workspace-option > .workspace-option-name {
   text-align: center;
   float: left;
   padding-right: 0.8em;
   padding-left: 0.8em;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li > .workspace-option > .workspace-option-value {
+.workspace > .workspace-left-drawer > ul.workspace-options > li > .workspace-option > .workspace-option-value {
   float: right;
   padding-right: 0.8em;
   padding-left: 0.8em;
   font-size: 0.9em;
   font-family: monospace;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li > .workspace-option > .workspace-option-colorpicker {
+.workspace > .workspace-left-drawer > ul.workspace-options > li > .workspace-option > .workspace-option-colorpicker {
   display: block;
   height: auto;
+  margin-bottom: 5em;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li.workspace-item-inline {
+.workspace > .workspace-left-drawer > ul.workspace-options > li.workspace-item-inline {
   padding-right: 1.6em;
   padding-left: 1.6em;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li.workspace-item-inline > .workspace-option-control {
+.workspace > .workspace-left-drawer > ul.workspace-options > li.workspace-item-inline > .workspace-option-control {
   float: right;
   display: -webkit-box;
   display: -moz-box;
@@ -3408,18 +3415,57 @@ textarea.manage-input {
   -ms-align-items: center;
   align-items: center;
 }
-.workspace > .workspace-sidebar > ul.workspace-options > li:last-child {
+.workspace > .workspace-left-drawer > ul.workspace-options > li:last-child {
   border-bottom-width: 0;
 }
 .workspace > .workspace-demo {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
   position: absolute;
   top: 0;
-  bottom: 0;
+  height: 70%;
   right: 0;
   width: calc(100% - 23em);
   text-align: center;
 }
-.workspace > .workspace-demo > .workspace-demo-options {
+.workspace > .workspace-demo > .workspace-demo-shape {
+  background-color: #aed4e9;
+  width: 20em;
+  height: 20em;
+  margin: 0 auto 8em;
+}
+.workspace > .workspace-bottom-drawer {
+  height: 30%;
+  left: 23em;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #343c47;
+  border-top: 2px solid #434d5c;
+  overflow-y: scroll;
+}
+.workspace > .workspace-bottom-drawer > ul.workspace-css {
+  font-family: monospace;
+  font-size: 0.9em;
+  padding: 2em 0.5em;
+  margin: 0 auto;
+  max-width: 40em;
+  list-style: none;
+  color: #bbbbbb;
+}
+.workspace > .workspace-bottom-drawer > ul.workspace-css > li {
+  text-align: center;
+}
+.workspace-tab-menu {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -3438,7 +3484,7 @@ textarea.manage-input {
   height: 2.75em;
   padding: 0.8em;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects {
+.workspace-tab-menu > .workspace-tabs {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -3453,16 +3499,16 @@ textarea.manage-input {
   -ms-justify-content: space-between;
   justify-content: space-between;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects > .effects-list {
+.workspace-tab-menu > .workspace-tabs > .tabs-list {
   margin: 0 0 0 0.2em;
   padding: 0;
   list-style: none;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects > .effects-list > li {
+.workspace-tab-menu > .workspace-tabs > .tabs-list > li {
   float: left;
   margin: 0 0.2em;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect {
+.workspace-tab-menu > .workspace-tabs .tab {
   font-size: 0.75em;
   line-height: 0.75em;
   color: #a2a2a2;
@@ -3472,48 +3518,28 @@ textarea.manage-input {
   text-align: center;
   font-weight: lighter;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect .effect-font {
+.workspace-tab-menu > .workspace-tabs .tab .tab-font {
   font-size: 0.75em;
   line-height: 0.75em;
   color: #a2a2a2;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect.new-effect > i.fa {
+.workspace-tab-menu > .workspace-tabs .tab.new-tab > i.fa {
   padding-right: 0;
   cursor: pointer;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect.effect-existent {
+.workspace-tab-menu > .workspace-tabs .tab.tab-existent {
   border-style: solid;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect.effect-selected {
+.workspace-tab-menu > .workspace-tabs .tab.tab-selected {
   border-color: #5ea9d3;
   color: #5ea9d3;
 }
-.workspace > .workspace-demo > .workspace-demo-options > .workspace-effects .effect > i.fa {
+.workspace-tab-menu > .workspace-tabs .tab > i.fa {
   font-size: 0.75em;
   line-height: 0.75em;
   color: #a2a2a2;
   padding-right: 0.5em;
   cursor: move;
-}
-.workspace > .workspace-demo > .workspace-demo-shape {
-  background-color: #aed4e9;
-  width: 20em;
-  height: 20em;
-  margin: 0 auto 8em;
-}
-.workspace > .workspace-demo > ul.workspace-css {
-  font-family: monospace;
-  font-size: 0.9em;
-  background-color: #f9f9f9;
-  padding: 2em 0.5em;
-  margin: 4em auto;
-  max-width: 40em;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  list-style: none;
-}
-.workspace > .workspace-demo > ul.workspace-css > li {
-  text-align: center;
 }
 .colpick {
   background-color: transparent;
@@ -3521,6 +3547,25 @@ textarea.manage-input {
 }
 .colpick_field_letter {
   width: 18px;
+}
+.colpick_color {
+  outline-color: #4a5564;
+}
+.colpick_hue,
+.colpick_new_color {
+  border-color: #4a5564;
+}
+.colpick_field,
+.colpick_hex_field,
+.colpick_field_letter {
+  background-color: #4a5564;
+  border-color: #5f6e82;
+  color: #bbbbbb;
+}
+.colpick_field input,
+.colpick_hex_field input,
+.colpick_field_letter input {
+  color: #bbbbbb;
 }
 .form-input-block {
   width: 100%;
@@ -3622,6 +3667,32 @@ ul.navigation-menu > li > ul.navigation-submenu > li {
 ul.navigation-menu > li > ul.navigation-submenu > li:last-child {
   border-bottom-width: 0;
 }
+.plat-slider .plat-slider-container {
+  background-color: #4a5564;
+}
+.plat-slider .plat-slider-container .plat-slider-offset .plat-knob {
+  background-color: #13bc96;
+  border-color: #0e8e71;
+}
+.plat-slider.slider-primary .plat-slider-container .plat-slider-offset {
+  background-color: #13bc96;
+  box-shadow: none;
+}
 .plat-toggle .plat-toggle-container {
   box-sizing: content-box;
+  background-color: #4a5564;
+  border-color: #5f6e82;
+}
+.plat-toggle .plat-toggle-container .plat-knob {
+  background-color: #78879c;
+  box-shadow: none;
+}
+.plat-toggle .plat-toggle-container.plat-slide {
+  border-color: #78879c;
+  background-color: #62d3ba;
+}
+.plat-toggle .plat-toggle-container.plat-slide .plat-knob {
+  background-color: #13bc96;
+  border-color: #0e8e71;
+  box-shadow: none;
 }
